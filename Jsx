@@ -1,0 +1,677 @@
+import { useState, useEffect, useRef } from "react";
+
+/* ─── Google Fonts ─────────────────────────────────────────────────────── */
+const FONT_LINK = document.createElement("link");
+FONT_LINK.rel = "stylesheet";
+FONT_LINK.href = "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap";
+document.head.appendChild(FONT_LINK);
+
+/* ─── Constants ────────────────────────────────────────────────────────── */
+const JEE_MAIN_2027  = new Date("2027-04-27T00:00:00");
+const JEE_ADV_2027   = new Date("2027-06-08T00:00:00");
+const START_DATE     = new Date("2025-06-01");
+
+const DP_CHAPTERS = {
+  Physics: ["Kinematics","Laws of Motion","Work Energy Power","Rotational Motion","Gravitation","Elasticity & Fluids","Thermal Physics","Kinetic Theory","Oscillations","Waves","Ray Optics","Wave Optics","Electrostatics","Current Electricity","Magnetism","EMI & AC","Modern Physics","Semiconductors"],
+  Chemistry: ["Basic Concepts","Atomic Structure","Chemical Bonding","Thermodynamics","Equilibrium","Redox & Electrochemistry","Solid State","Solutions","Surface Chemistry","d-f Block","Coordination Compounds","Haloalkanes","Alcohols & Ethers","Carbonyl Compounds","Amines","Biomolecules","Polymers","GOC"],
+  Mathematics: ["Sets & Relations","Complex Numbers","Quadratic Equations","Sequences & Series","Permutations","Binomial Theorem","Straight Lines","Circles","Conics","3D Geometry","Vectors","Limits & Continuity","Differentiation","Applications of Derivatives","Integrals","Differential Equations","Matrices & Determinants","Probability"],
+};
+const TASK_TYPES = ["PDF Lecture","Notes","Test Planner"];
+const SUB_COLOR  = { Physics:"#60a5fa", Chemistry:"#34d399", Mathematics:"#fbbf24" };
+const SUB_GLOW   = { Physics:"#60a5fa33", Chemistry:"#34d39933", Mathematics:"#fbbf2433" };
+const SUB_ICON   = { Physics:"⚛️", Chemistry:"🧪", Mathematics:"📐" };
+
+/* ─── helpers ──────────────────────────────────────────────────────────── */
+const pad = n => String(n).padStart(2,"0");
+function msToHMS(ms){
+  if(ms<=0)return"00:00:00";
+  const s=Math.floor(ms/1000);
+  return`${pad(Math.floor(s/3600))}:${pad(Math.floor((s%3600)/60))}:${pad(s%60)}`;
+}
+function getCountdown(target){
+  const diff = target - Date.now();
+  if(diff<=0) return {d:0,h:0,m:0,s:0};
+  return {
+    d: Math.floor(diff/86400000),
+    h: Math.floor((diff%86400000)/3600000),
+    m: Math.floor((diff%3600000)/60000),
+    s: Math.floor((diff%60000)/1000),
+  };
+}
+function todayKey(){ return new Date().toISOString().slice(0,10); }
+function daysSinceStart(){ return Math.max(1,Math.floor((Date.now()-START_DATE)/86400000)+1); }
+
+/* ─── Firestore (optional) ─────────────────────────────────────────────── */
+const FIREBASE_CONFIG = null;
+let db=null;
+async function getDB(){
+  if(db) return db;
+  if(!FIREBASE_CONFIG) return null;
+  try{
+    const{initializeApp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+    const{getFirestore,doc,setDoc,getDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const app=initializeApp(FIREBASE_CONFIG);
+    db={fs:getFirestore(app),doc,setDoc,getDoc};
+    return db;
+  }catch{return null;}
+}
+async function cloudSave(key,data){
+  const d=await getDB(); if(!d) return;
+  await d.setDoc(d.doc(d.fs,"jeeOS2027",key),{data:JSON.stringify(data)});
+}
+
+/* ─── AI MCQ ───────────────────────────────────────────────────────────── */
+async function generateMCQ(chapter,subject,qNum){
+  const res=await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",
+      max_tokens:1000,
+      messages:[{role:"user",content:`Generate 1 JEE Advanced-level MCQ for "${chapter}" (${subject}), question #${qNum}. Return ONLY valid JSON, no markdown:
+{"question":"...","options":["A) ...","B) ...","C) ...","D) ..."],"answer":"A","explanation":"..."}`}],
+    }),
+  });
+  const data=await res.json();
+  const text=data.content?.find(b=>b.type==="text")?.text||"{}";
+  return JSON.parse(text.replace(/```json|```/g,"").trim());
+}
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+/* STYLES                                                                   */
+/* ═══════════════════════════════════════════════════════════════════════ */
+const G = {
+  bg:       "#060612",
+  surface:  "rgba(255,255,255,0.04)",
+  surfaceHover:"rgba(255,255,255,0.07)",
+  border:   "rgba(255,255,255,0.08)",
+  borderBright:"rgba(255,255,255,0.15)",
+  text:     "#f1f5f9",
+  muted:    "#64748b",
+  accent:   "#818cf8",       // indigo
+  accentGlow:"#818cf822",
+  green:    "#34d399",
+  amber:    "#fbbf24",
+  red:      "#f87171",
+  blue:     "#60a5fa",
+  font:     "'Outfit', sans-serif",
+  mono:     "'JetBrains Mono', monospace",
+};
+
+const glassCard = {
+  background: G.surface,
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  border: `1px solid ${G.border}`,
+  borderRadius: 20,
+  padding: 20,
+};
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+export default function App(){
+  const [tab, setTab] = useState("home");
+  const [tasks, setTasks] = useState(()=>{ try{return JSON.parse(localStorage.getItem("jee27_tasks")||"{}")}catch{return{}} });
+  const [weights, setWeights] = useState(()=>{ try{return JSON.parse(localStorage.getItem("jee27_weights")||"[]")}catch{return[]} });
+  const [sessions, setSessions] = useState(()=>{ try{return JSON.parse(localStorage.getItem("jee27_sessions")||"[]")}catch{return[]} });
+  const [focusMode, setFocusMode] = useState(false);
+  const [focusTimer, setFocusTimer] = useState({running:false,elapsed:0,start:null});
+  const [pState, setPState] = useState({active:false,subject:"Physics",chapter:"",qNums:"",questions:[],current:0,selected:{},score:null,loading:false});
+  const [newW, setNewW] = useState({label:"",value:""});
+  const [ticker, setTicker] = useState(0);
+  const focusRef = useRef(null);
+
+  useEffect(()=>{ const t=setInterval(()=>setTicker(x=>x+1),1000); return()=>clearInterval(t); },[]);
+  useEffect(()=>{ localStorage.setItem("jee27_tasks",JSON.stringify(tasks)); },[tasks]);
+  useEffect(()=>{ localStorage.setItem("jee27_weights",JSON.stringify(weights)); },[weights]);
+  useEffect(()=>{ localStorage.setItem("jee27_sessions",JSON.stringify(sessions)); },[sessions]);
+  useEffect(()=>{
+    if(focusTimer.running){ focusRef.current=setInterval(()=>setFocusTimer(f=>({...f,elapsed:Date.now()-f.start})),1000); }
+    else clearInterval(focusRef.current);
+    return()=>clearInterval(focusRef.current);
+  },[focusTimer.running]);
+
+  function toggleTask(sub,ch,type){
+    const key=`${sub}__${ch}__${type}`;
+    const next={...tasks,[key]:!tasks[key]};
+    setTasks(next); cloudSave("tasks",next);
+  }
+  function startFocus(){
+    setFocusMode(true);
+    setFocusTimer({running:true,elapsed:0,start:Date.now()});
+    document.documentElement.requestFullscreen?.();
+  }
+  function stopFocus(){
+    setFocusMode(false);
+    const secs=Math.floor(focusTimer.elapsed/1000);
+    if(secs>30){ const next=[...sessions,{date:todayKey(),secs}]; setSessions(next); cloudSave("sessions",next); }
+    setFocusTimer({running:false,elapsed:0,start:null});
+    document.exitFullscreen?.();
+  }
+  async function startPractice(){
+    const{subject,chapter,qNums}=pState;
+    if(!chapter||!qNums.trim()) return;
+    const nums=qNums.split(",").map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)).slice(0,10);
+    if(!nums.length) return;
+    setPState(p=>({...p,loading:true,questions:[],current:0,selected:{},score:null}));
+    try{
+      const qs=[];
+      for(const n of nums){ const q=await generateMCQ(chapter,subject,n); qs.push({...q,qNum:n}); }
+      setPState(p=>({...p,active:true,loading:false,questions:qs}));
+    }catch{ setPState(p=>({...p,loading:false})); alert("AI error"); }
+  }
+
+  const main27  = getCountdown(JEE_MAIN_2027);
+  const adv27   = getCountdown(JEE_ADV_2027);
+  const today   = todayKey();
+  const todaySecs = sessions.filter(s=>s.date===today).reduce((a,b)=>a+b.secs,0);
+
+  /* ── FOCUS OVERLAY ─────────────────────────────────────────────────── */
+  if(focusMode) return(
+    <div style={{position:"fixed",inset:0,background:"#020208",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",fontFamily:G.font,zIndex:9999}}>
+      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center, #1e1b4b 0%, #020208 70%)",opacity:.6}}/>
+      <div style={{position:"relative",textAlign:"center"}}>
+        <div style={{fontSize:11,letterSpacing:5,color:G.green,marginBottom:20,textTransform:"uppercase"}}>● Focus Mode Active</div>
+        <div style={{fontSize:88,fontWeight:800,color:"#fff",fontFamily:G.mono,lineHeight:1,textShadow:"0 0 60px #818cf866"}}>{msToHMS(focusTimer.elapsed)}</div>
+        <div style={{fontSize:13,color:G.muted,marginTop:12}}>Stay locked in. No distractions.</div>
+        <button onClick={stopFocus} style={{marginTop:48,padding:"12px 48px",background:"transparent",border:`1px solid ${G.red}`,color:G.red,borderRadius:50,cursor:"pointer",fontSize:14,fontFamily:G.font,fontWeight:600,letterSpacing:1}}>END SESSION</button>
+      </div>
+    </div>
+  );
+
+  const TABS=[
+    {id:"home",   icon:"🏠", label:"Home"},
+    {id:"tasks",  icon:"✅", label:"Tasks"},
+    {id:"practice",icon:"⚡",label:"Practice"},
+    {id:"focus",  icon:"🎯", label:"Focus"},
+    {id:"stats",  icon:"📊", label:"Stats"},
+    {id:"weight", icon:"📝", label:"Notes"},
+  ];
+
+  return(
+    <div style={{minHeight:"100vh",background:G.bg,fontFamily:G.font,color:G.text,display:"flex",flexDirection:"column",maxWidth:430,margin:"0 auto",position:"relative",overflow:"hidden"}}>
+
+      {/* Deep space background */}
+      <div style={{position:"fixed",inset:0,maxWidth:430,margin:"0 auto",pointerEvents:"none",zIndex:0}}>
+        <div style={{position:"absolute",top:-120,left:-80,width:400,height:400,background:"radial-gradient(circle,#4338ca22 0%,transparent 70%)",borderRadius:"50%"}}/>
+        <div style={{position:"absolute",top:200,right:-100,width:300,height:300,background:"radial-gradient(circle,#0ea5e922 0%,transparent 70%)",borderRadius:"50%"}}/>
+        <div style={{position:"absolute",bottom:100,left:20,width:250,height:250,background:"radial-gradient(circle,#7c3aed11 0%,transparent 70%)",borderRadius:"50%"}}/>
+        {/* stars */}
+        {[...Array(30)].map((_,i)=>(
+          <div key={i} style={{position:"absolute",width:1.5,height:1.5,background:"#fff",borderRadius:"50%",opacity:Math.random()*0.5+0.1,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`}}/>
+        ))}
+      </div>
+
+      {/* Top Header */}
+      <div style={{position:"relative",zIndex:10,padding:"16px 20px 12px",borderBottom:`1px solid ${G.border}`,background:"rgba(6,6,18,0.8)",backdropFilter:"blur(20px)"}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div>
+            <div style={{fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#818cf8,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",letterSpacing:-0.5}}>JEE OS 2027</div>
+            <div style={{fontSize:11,color:G.muted,marginTop:1}}>Day {daysSinceStart()} · {new Date().toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})}</div>
+          </div>
+          <div style={{textAlign:"right"}}>
+            <div style={{fontSize:11,color:G.green,fontWeight:600}}>MAIN {main27.d}d</div>
+            <div style={{fontSize:11,color:G.amber,fontWeight:600}}>ADV {adv27.d}d</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div style={{flex:1,overflowY:"auto",padding:"16px 16px 88px",position:"relative",zIndex:5}}>
+        {tab==="home"     && <HomeTab main27={main27} adv27={adv27} tasks={tasks} sessions={sessions} todaySecs={todaySecs}/>}
+        {tab==="tasks"    && <TasksTab tasks={tasks} toggleTask={toggleTask}/>}
+        {tab==="practice" && <PracticeTab state={pState} setState={setPState} onStart={startPractice}/>}
+        {tab==="focus"    && <FocusTab onStart={startFocus} sessions={sessions} todaySecs={todaySecs}/>}
+        {tab==="stats"    && <StatsTab sessions={sessions} tasks={tasks}/>}
+        {tab==="weight"   && <WeightTab weights={weights} setWeights={setWeights} newW={newW} setNewW={setNewW} cloudSave={cloudSave}/>}
+      </div>
+
+      {/* Bottom Nav */}
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,background:"rgba(6,6,18,0.92)",backdropFilter:"blur(24px)",borderTop:`1px solid ${G.border}`,display:"flex",zIndex:20}}>
+        {TABS.map(t=>(
+          <button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,padding:"10px 0 8px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:3,color:tab===t.id?G.accent:G.muted,transition:"color .2s",borderTop:tab===t.id?`2px solid ${G.accent}`:"2px solid transparent"}}>
+            <span style={{fontSize:18}}>{t.icon}</span>
+            <span style={{fontSize:9,fontWeight:600,letterSpacing:.5}}>{t.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ══ HOME ══════════════════════════════════════════════════════════════════ */
+function HomeTab({main27,adv27,tasks,sessions,todaySecs}){
+  const totalTasks = Object.keys(DP_CHAPTERS).flatMap(s=>DP_CHAPTERS[s].flatMap(c=>TASK_TYPES)).length;
+  const doneTasks  = Object.values(tasks).filter(Boolean).length;
+  const pct        = Math.round((doneTasks/totalTasks)*100);
+  const totalSecs  = sessions.reduce((a,b)=>a+b.secs,0);
+
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+
+      {/* Target Banner */}
+      <div style={{background:"linear-gradient(135deg,#4338ca,#7c3aed,#2563eb)",borderRadius:20,padding:"20px 22px",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:-20,right:-20,width:120,height:120,background:"rgba(255,255,255,0.05)",borderRadius:"50%"}}/>
+        <div style={{position:"absolute",bottom:-30,left:40,width:80,height:80,background:"rgba(255,255,255,0.04)",borderRadius:"50%"}}/>
+        <div style={{fontSize:11,color:"rgba(255,255,255,0.6)",letterSpacing:3,marginBottom:6,textTransform:"uppercase"}}>🎯 Target</div>
+        <div style={{fontSize:26,fontWeight:800,color:"#fff",letterSpacing:-0.5}}>IIT Bombay / Delhi</div>
+        <div style={{fontSize:13,color:"rgba(255,255,255,0.65)",marginTop:4}}>Har din ek kadam aur karib 🚀</div>
+      </div>
+
+      {/* Countdown Cards */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        <CountdownCard title="JEE MAIN 2027" date="27 Apr 2027" cd={main27} color="#60a5fa"/>
+        <CountdownCard title="JEE ADV 2027"  date="~Jun 2027"   cd={adv27}  color="#fbbf24"/>
+      </div>
+
+      {/* Overall Progress */}
+      <GCard>
+        <Row><ColLabel>Overall Progress</ColLabel><span style={{fontSize:13,fontWeight:700,color:G.accent}}>{pct}%</span></Row>
+        <ArcProgress value={pct} color={G.accent}/>
+        <div style={{fontSize:11,color:G.muted,textAlign:"center",marginTop:8}}>{doneTasks} / {totalTasks} tasks completed</div>
+        <SubjectMiniProgress tasks={tasks}/>
+      </GCard>
+
+      {/* Today stats */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        <GCard style={{textAlign:"center"}}>
+          <ColLabel>Today</ColLabel>
+          <div style={{fontSize:22,fontWeight:800,color:G.green,fontFamily:G.mono}}>{msToHMS(todaySecs*1000)}</div>
+          <div style={{fontSize:10,color:G.muted}}>study time</div>
+        </GCard>
+        <GCard style={{textAlign:"center"}}>
+          <ColLabel>All-time</ColLabel>
+          <div style={{fontSize:22,fontWeight:800,color:G.blue,fontFamily:G.mono}}>{msToHMS(totalSecs*1000)}</div>
+          <div style={{fontSize:10,color:G.muted}}>total hours</div>
+        </GCard>
+      </div>
+
+      {/* Day counter */}
+      <GCard style={{display:"flex",alignItems:"center",gap:14}}>
+        <div style={{width:52,height:52,borderRadius:14,background:"linear-gradient(135deg,#4338ca,#7c3aed)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>📅</div>
+        <div>
+          <div style={{fontSize:12,color:G.muted}}>Preparation started · 1 Jun 2025</div>
+          <div style={{fontSize:18,fontWeight:700,color:G.text}}>Day {daysSinceStart()} of your journey</div>
+        </div>
+      </GCard>
+    </div>
+  );
+}
+
+function CountdownCard({title,date,cd,color}){
+  return(
+    <div style={{...glassCard,padding:14,border:`1px solid ${color}33`}}>
+      <div style={{fontSize:9,color:color,fontWeight:700,letterSpacing:2,marginBottom:10,textTransform:"uppercase"}}>{title}</div>
+      <div style={{display:"flex",gap:6,marginBottom:8}}>
+        {[["D",cd.d],["H",cd.h],["M",cd.m],["S",cd.s]].map(([l,v])=>(
+          <div key={l} style={{flex:1,background:"rgba(255,255,255,0.06)",borderRadius:8,padding:"6px 0",textAlign:"center"}}>
+            <div style={{fontSize:20,fontWeight:800,color,fontFamily:G.mono,lineHeight:1}}>{pad(v)}</div>
+            <div style={{fontSize:8,color:G.muted,marginTop:2}}>{l}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{fontSize:10,color:G.muted,textAlign:"center"}}>📅 {date}</div>
+    </div>
+  );
+}
+
+function ArcProgress({value,color}){
+  const r=52, cx=64, cy=64, circ=2*Math.PI*r;
+  const offset=circ*(1-value/100);
+  return(
+    <div style={{display:"flex",justifyContent:"center",margin:"8px 0 0"}}>
+      <svg width={128} height={80} viewBox="0 0 128 100">
+        <path d={`M${cx-r},${cy} A${r},${r} 0 0,1 ${cx+r},${cy}`} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={10} strokeLinecap="round"/>
+        <path d={`M${cx-r},${cy} A${r},${r} 0 0,1 ${cx+r},${cy}`} fill="none" stroke={color} strokeWidth={10} strokeLinecap="round"
+          strokeDasharray={`${circ/2}`} strokeDashoffset={`${offset/2}`} style={{transition:"stroke-dashoffset .6s ease"}}/>
+        <text x={cx} y={cy-4} textAnchor="middle" fontSize={22} fontWeight={800} fill={color} fontFamily={G.font}>{value}%</text>
+      </svg>
+    </div>
+  );
+}
+
+function SubjectMiniProgress({tasks}){
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:4}}>
+      {Object.keys(DP_CHAPTERS).map(sub=>{
+        const chs=DP_CHAPTERS[sub];
+        const total=chs.length*TASK_TYPES.length;
+        const done=chs.flatMap(ch=>TASK_TYPES.map(t=>tasks[`${sub}__${ch}__${t}`])).filter(Boolean).length;
+        const pct=Math.round((done/total)*100);
+        return(
+          <div key={sub}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+              <span style={{fontSize:11,color:SUB_COLOR[sub]}}>{SUB_ICON[sub]} {sub}</span>
+              <span style={{fontSize:11,color:G.muted}}>{pct}%</span>
+            </div>
+            <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:2,overflow:"hidden"}}>
+              <div style={{height:"100%",width:`${pct}%`,background:SUB_COLOR[sub],borderRadius:2,transition:"width .4s"}}/>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ══ TASKS ══════════════════════════════════════════════════════════════════ */
+function TasksTab({tasks,toggleTask}){
+  const [openSub,setOpenSub]=useState("Physics");
+
+  function subPct(sub){
+    const chs=DP_CHAPTERS[sub];
+    const total=chs.length*TASK_TYPES.length;
+    const done=chs.flatMap(ch=>TASK_TYPES.map(t=>tasks[`${sub}__${ch}__${t}`])).filter(Boolean).length;
+    return Math.round((done/total)*100);
+  }
+
+  return(
+    <div>
+      {/* Subject tabs */}
+      <div style={{display:"flex",gap:8,marginBottom:16}}>
+        {Object.keys(DP_CHAPTERS).map(s=>{
+          const active=openSub===s;
+          return(
+            <button key={s} onClick={()=>setOpenSub(s)} style={{flex:1,padding:"10px 4px",background:active?SUB_GLOW[s]:"rgba(255,255,255,0.03)",border:`1px solid ${active?SUB_COLOR[s]+"66":G.border}`,borderRadius:12,color:active?SUB_COLOR[s]:G.muted,cursor:"pointer",fontFamily:G.font,fontWeight:600,transition:"all .2s"}}>
+              <div style={{fontSize:18}}>{SUB_ICON[s]}</div>
+              <div style={{fontSize:10,marginTop:2}}>{s.slice(0,4)}</div>
+              <div style={{fontSize:10,marginTop:1,color:active?SUB_COLOR[s]:G.muted}}>{subPct(s)}%</div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {DP_CHAPTERS[openSub].map((ch,i)=>{
+          const done=TASK_TYPES.filter(t=>tasks[`${openSub}__${ch}__${t}`]).length;
+          const allDone=done===TASK_TYPES.length;
+          return(
+            <div key={ch} style={{...glassCard,padding:"14px 16px",border:`1px solid ${allDone?SUB_COLOR[openSub]+"44":G.border}`,transition:"border .2s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <div style={{width:24,height:24,borderRadius:6,background:SUB_GLOW[openSub],display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:SUB_COLOR[openSub],fontWeight:700}}>{i+1}</div>
+                  <span style={{fontSize:13,fontWeight:600,color:allDone?SUB_COLOR[openSub]:G.text}}>{ch}</span>
+                </div>
+                <span style={{fontSize:10,color:done===TASK_TYPES.length?G.green:G.muted}}>{done}/{TASK_TYPES.length}</span>
+              </div>
+              <div style={{display:"flex",gap:8}}>
+                {TASK_TYPES.map(type=>{
+                  const key=`${openSub}__${ch}__${type}`;
+                  const checked=!!tasks[key];
+                  const icons={"PDF Lecture":"📄","Notes":"📝","Test Planner":"🗓️"};
+                  return(
+                    <button key={type} onClick={()=>toggleTask(openSub,ch,type)} style={{flex:1,padding:"8px 4px",borderRadius:10,background:checked?SUB_GLOW[openSub]:"rgba(255,255,255,0.03)",border:`1px solid ${checked?SUB_COLOR[openSub]+"66":G.border}`,color:checked?SUB_COLOR[openSub]:G.muted,cursor:"pointer",fontFamily:G.font,fontSize:10,fontWeight:600,transition:"all .15s",display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                      <span style={{fontSize:16}}>{checked?"✅":icons[type]}</span>
+                      <span style={{fontSize:9,lineHeight:1.2,textAlign:"center"}}>{type}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ══ PRACTICE ═══════════════════════════════════════════════════════════════ */
+function PracticeTab({state,setState,onStart}){
+  const{active,subject,chapter,qNums,questions,current,selected,score,loading}=state;
+
+  if(loading) return(
+    <div style={{textAlign:"center",paddingTop:100}}>
+      <div style={{fontSize:48,marginBottom:20}}>⚡</div>
+      <div style={{fontSize:16,fontWeight:700,color:G.accent}}>Generating Questions...</div>
+      <div style={{fontSize:12,color:G.muted,marginTop:8}}>AI crafting JEE Advanced-level MCQs</div>
+      <div style={{marginTop:24,display:"flex",justifyContent:"center",gap:6}}>
+        {[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:G.accent,animation:`pulse 1.2s ${i*0.2}s infinite alternate`,opacity:0.4}}/>)}
+      </div>
+    </div>
+  );
+
+  if(!active) return(
+    <div>
+      <STitle>⚡ Self Practice</STitle>
+      <GCard>
+        <ColLabel>Select Subject</ColLabel>
+        <div style={{display:"flex",gap:8,marginBottom:16}}>
+          {Object.keys(DP_CHAPTERS).map(s=>{
+            const sel=subject===s;
+            return<button key={s} onClick={()=>setState(p=>({...p,subject:s,chapter:""}))} style={{flex:1,padding:"10px 4px",background:sel?SUB_GLOW[s]:"rgba(255,255,255,0.03)",border:`1px solid ${sel?SUB_COLOR[s]+"66":G.border}`,borderRadius:12,color:sel?SUB_COLOR[s]:G.muted,cursor:"pointer",fontFamily:G.font,fontWeight:600,fontSize:11}}>
+              {SUB_ICON[s]}<br/>{s.slice(0,4)}
+            </button>;
+          })}
+        </div>
+        <ColLabel>Chapter</ColLabel>
+        <select value={chapter} onChange={e=>setState(p=>({...p,chapter:e.target.value}))} style={selStyle}>
+          <option value="">-- Select Chapter --</option>
+          {DP_CHAPTERS[subject].map(ch=><option key={ch}>{ch}</option>)}
+        </select>
+        <ColLabel style={{marginTop:14}}>Question Numbers (comma-separated, max 10)</ColLabel>
+        <input value={qNums} onChange={e=>setState(p=>({...p,qNums:e.target.value}))} placeholder="e.g. 1, 5, 12, 23" style={inpStyle}/>
+        <div style={{fontSize:11,color:G.muted,margin:"10px 0 14px"}}>AI will generate a unique JEE-level MCQ for each number</div>
+        <BigBtn color={G.accent} onClick={onStart} disabled={!chapter||!qNums.trim()}>Generate & Start ⚡</BigBtn>
+      </GCard>
+    </div>
+  );
+
+  if(score!==null){
+    const total=questions.length;
+    const pct=Math.round((score/total)*100);
+    const jeeScore=score*4-(total-score);
+    return(
+      <div>
+        <STitle>📊 Results</STitle>
+        <div style={{...glassCard,textAlign:"center",marginBottom:14,border:`1px solid ${pct>=60?G.green+"44":G.red+"44"}`}}>
+          <div style={{fontSize:56,fontWeight:900,color:pct>=60?G.green:G.red}}>{pct}%</div>
+          <div style={{fontSize:14,color:G.text,marginBottom:4}}>{score} / {total} Correct</div>
+          <div style={{fontSize:12,color:G.muted}}>JEE Score: <span style={{color:jeeScore>=0?G.green:G.red,fontWeight:700}}>+{score*4} – {total-score} = {jeeScore}</span></div>
+        </div>
+        {questions.map((q,i)=>{
+          const ua=selected[i]?.[0]; const ok=ua===q.answer;
+          return(
+            <div key={i} style={{...glassCard,marginBottom:10,border:`1px solid ${ok?"#34d39933":"#f8717133"}`}}>
+              <div style={{fontSize:10,color:G.muted,marginBottom:6}}>Q{q.qNum}</div>
+              <div style={{fontSize:12,color:G.text,marginBottom:10,lineHeight:1.6}}>{q.question}</div>
+              {q.options.map(opt=>(
+                <div key={opt} style={{fontSize:11,padding:"5px 10px",borderRadius:8,marginBottom:4,background:opt[0]===q.answer?"#34d39918":opt[0]===ua&&!ok?"#f8717118":"transparent",color:opt[0]===q.answer?G.green:opt[0]===ua&&!ok?G.red:G.muted}}>{opt}</div>
+              ))}
+              <div style={{fontSize:11,color:"#c4b5fd",marginTop:8,lineHeight:1.5}}>💡 {q.explanation}</div>
+            </div>
+          );
+        })}
+        <BigBtn color={G.accent} onClick={()=>setState(p=>({...p,active:false,questions:[],score:null,qNums:""}))}>New Practice Session</BigBtn>
+      </div>
+    );
+  }
+
+  const q=questions[current];
+  return(
+    <div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <STitle>Q{q.qNum}</STitle>
+        <span style={{fontSize:12,color:SUB_COLOR[subject],fontWeight:600}}>{current+1}/{questions.length}</span>
+      </div>
+      <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:2,marginBottom:16,overflow:"hidden"}}>
+        <div style={{height:"100%",width:`${((current+1)/questions.length)*100}%`,background:G.accent,borderRadius:2,transition:"width .3s"}}/>
+      </div>
+      <GCard>
+        <div style={{fontSize:14,color:G.text,lineHeight:1.7,marginBottom:18}}>{q.question}</div>
+        {q.options.map(opt=>{
+          const sel=selected[current]===opt;
+          return<button key={opt} onClick={()=>setState(p=>({...p,selected:{...p.selected,[current]:opt}}))} style={{display:"block",width:"100%",textAlign:"left",padding:"12px 14px",marginBottom:10,borderRadius:12,background:sel?"rgba(129,140,248,0.12)":"rgba(255,255,255,0.03)",border:`1px solid ${sel?G.accent:G.border}`,color:sel?G.accent:G.text,cursor:"pointer",fontFamily:G.font,fontSize:13,fontWeight:sel?600:400,transition:"all .15s"}}>{opt}</button>;
+        })}
+      </GCard>
+      <div style={{display:"flex",gap:10,marginTop:14}}>
+        {current>0&&<BigBtn color={G.muted} onClick={()=>setState(p=>({...p,current:p.current-1}))}>← Prev</BigBtn>}
+        {current<questions.length-1
+          ?<BigBtn color={G.accent} onClick={()=>setState(p=>({...p,current:p.current+1}))}>Next →</BigBtn>
+          :<BigBtn color={G.green} onClick={()=>{ const{questions:qs,selected:sel}=state; let c=0; qs.forEach((q,i)=>{if(sel[i]?.[0]===q.answer)c++;}); setState(p=>({...p,score:c})); }}>Submit ✓</BigBtn>
+        }
+      </div>
+    </div>
+  );
+}
+
+/* ══ FOCUS ═══════════════════════════════════════════════════════════════════ */
+function FocusTab({onStart,sessions,todaySecs}){
+  const totalSecs=sessions.reduce((a,b)=>a+b.secs,0);
+  return(
+    <div>
+      <STitle>🎯 Focus Mode</STitle>
+      <div style={{...glassCard,textAlign:"center",marginBottom:14,background:"linear-gradient(135deg,rgba(67,56,202,0.2),rgba(124,58,237,0.15))"}}>
+        <div style={{fontSize:52,marginBottom:12}}>🎯</div>
+        <div style={{fontSize:18,fontWeight:700,color:G.text,marginBottom:6}}>Deep Work Session</div>
+        <div style={{fontSize:13,color:G.muted,marginBottom:24}}>Fullscreen lock · All distractions blocked<br/>Timer auto-saves when you end</div>
+        <BigBtn color={G.accent} onClick={onStart}>Enter Focus Mode 🚀</BigBtn>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:14}}>
+        <GCard style={{textAlign:"center"}}>
+          <div style={{fontSize:11,color:G.muted,marginBottom:4}}>Today</div>
+          <div style={{fontSize:24,fontWeight:800,color:G.green,fontFamily:G.mono}}>{msToHMS(todaySecs*1000)}</div>
+        </GCard>
+        <GCard style={{textAlign:"center"}}>
+          <div style={{fontSize:11,color:G.muted,marginBottom:4}}>All Time</div>
+          <div style={{fontSize:24,fontWeight:800,color:G.blue,fontFamily:G.mono}}>{msToHMS(totalSecs*1000)}</div>
+        </GCard>
+      </div>
+      <GCard>
+        <ColLabel>Recent Sessions</ColLabel>
+        {sessions.slice(-6).reverse().map((s,i)=>(
+          <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:`1px solid ${G.border}`}}>
+            <span style={{fontSize:12,color:G.muted}}>{s.date}</span>
+            <span style={{fontSize:12,color:G.accent,fontFamily:G.mono,fontWeight:700}}>{msToHMS(s.secs*1000)}</span>
+          </div>
+        ))}
+        {!sessions.length&&<div style={{fontSize:12,color:G.muted,textAlign:"center",padding:16}}>No sessions yet — start your first! 💪</div>}
+      </GCard>
+    </div>
+  );
+}
+
+/* ══ STATS ════════════════════════════════════════════════════════════════════ */
+function StatsTab({sessions,tasks}){
+  const days=Array.from({length:7},(_,i)=>{ const d=new Date(); d.setDate(d.getDate()-(6-i)); return d.toISOString().slice(0,10); });
+  const weekData=days.map(date=>({date,secs:sessions.filter(s=>s.date===date).reduce((a,b)=>a+b.secs,0)}));
+  const maxSecs=Math.max(...weekData.map(d=>d.secs),1);
+  const totalTasks=Object.keys(DP_CHAPTERS).flatMap(s=>DP_CHAPTERS[s].flatMap(c=>TASK_TYPES)).length;
+  const doneTasks=Object.values(tasks).filter(Boolean).length;
+
+  return(
+    <div>
+      <STitle>📊 Weekly Stats</STitle>
+      <GCard>
+        <ColLabel>Study Time — Last 7 Days</ColLabel>
+        <div style={{display:"flex",alignItems:"flex-end",gap:8,height:90,marginTop:12,marginBottom:4}}>
+          {weekData.map((d,i)=>(
+            <div key={d.date} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+              <div style={{width:"100%",background:d.secs?`linear-gradient(180deg,${G.accent},#6366f1)`:G.border,height:`${Math.max(3,(d.secs/maxSecs)*72)}px`,borderRadius:"5px 5px 0 0",transition:"height .4s",opacity:d.secs?1:0.3}}/>
+              <div style={{fontSize:8,color:G.muted}}>{d.date.slice(5)}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{fontSize:11,color:G.muted,textAlign:"right"}}>Total: {msToHMS(weekData.reduce((a,b)=>a+b.secs,0)*1000)}</div>
+      </GCard>
+
+      <GCard style={{marginTop:12}}>
+        <ColLabel>Subject Completion</ColLabel>
+        {Object.keys(DP_CHAPTERS).map(sub=>{
+          const chs=DP_CHAPTERS[sub];
+          const total=chs.length*TASK_TYPES.length;
+          const done=chs.flatMap(ch=>TASK_TYPES.map(t=>tasks[`${sub}__${ch}__${t}`])).filter(Boolean).length;
+          const pct=Math.round((done/total)*100);
+          return(
+            <div key={sub} style={{marginBottom:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+                <span style={{fontSize:12,fontWeight:600,color:SUB_COLOR[sub]}}>{SUB_ICON[sub]} {sub}</span>
+                <span style={{fontSize:12,color:G.muted,fontFamily:G.mono}}>{done}/{total}</span>
+              </div>
+              <div style={{height:6,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden"}}>
+                <div style={{height:"100%",width:`${pct}%`,background:SUB_COLOR[sub],borderRadius:3,transition:"width .4s"}}/>
+              </div>
+            </div>
+          );
+        })}
+      </GCard>
+
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginTop:12}}>
+        {[
+          {l:"Tasks Done",v:doneTasks,c:G.green},
+          {l:"Remaining",v:totalTasks-doneTasks,c:G.amber},
+          {l:"Sessions",v:sessions.length,c:G.blue},
+        ].map(({l,v,c})=>(
+          <GCard key={l} style={{textAlign:"center",padding:14}}>
+            <div style={{fontSize:26,fontWeight:800,color:c}}>{v}</div>
+            <div style={{fontSize:10,color:G.muted,marginTop:2}}>{l}</div>
+          </GCard>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ══ WEIGHT/NOTES ════════════════════════════════════════════════════════════ */
+function WeightTab({weights,setWeights,newW,setNewW,cloudSave}){
+  function add(){
+    if(!newW.label.trim()||!newW.value.trim()) return;
+    const entry={...newW,date:todayKey(),id:Date.now()};
+    const next=[...weights,entry]; setWeights(next); cloudSave("weights",next);
+    setNewW({label:"",value:""});
+  }
+  function remove(id){
+    const next=weights.filter(w=>w.id!==id); setWeights(next); cloudSave("weights",next);
+  }
+  const priorityColor={HIGH:G.red,MEDIUM:G.amber,LOW:G.green};
+
+  return(
+    <div>
+      <STitle>📝 Task Weight Log</STitle>
+      <GCard>
+        <ColLabel>Add Entry</ColLabel>
+        <input value={newW.label} onChange={e=>setNewW(w=>({...w,label:e.target.value}))} placeholder="Task / Topic name" style={inpStyle}/>
+        <input value={newW.value} onChange={e=>setNewW(w=>({...w,value:e.target.value}))} placeholder="Weight / Priority (e.g. HIGH, 3 hrs, 80%)" style={{...inpStyle,marginTop:8}}/>
+        <BigBtn color={G.accent} onClick={add} style={{marginTop:12}}>+ Add Entry</BigBtn>
+      </GCard>
+
+      <div style={{marginTop:14,display:"flex",flexDirection:"column",gap:10}}>
+        {weights.slice().reverse().map(w=>{
+          const pc=priorityColor[w.value.toUpperCase()]||G.accent;
+          return(
+            <div key={w.id} style={{...glassCard,padding:"14px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div>
+                <div style={{fontSize:13,fontWeight:600,color:G.text}}>{w.label}</div>
+                <div style={{fontSize:10,color:G.muted,marginTop:2}}>{w.date}</div>
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontSize:11,color:pc,background:pc+"22",padding:"4px 12px",borderRadius:20,fontWeight:700}}>{w.value}</span>
+                <button onClick={()=>remove(w.id)} style={{background:"none",border:"none",color:G.muted,cursor:"pointer",fontSize:18,lineHeight:1}}>×</button>
+              </div>
+            </div>
+          );
+        })}
+        {!weights.length&&<div style={{fontSize:12,color:G.muted,textAlign:"center",padding:32}}>No entries yet. Add your first task weight!</div>}
+      </div>
+    </div>
+  );
+}
+
+/* ══ Primitives ══════════════════════════════════════════════════════════════ */
+function GCard({children,style}){
+  return<div style={{...glassCard,...style}}>{children}</div>;
+}
+function ColLabel({children,style}){
+  return<div style={{fontSize:10,letterSpacing:2,color:G.muted,textTransform:"uppercase",marginBottom:8,fontWeight:600,...style}}>{children}</div>;
+}
+function Row({children}){
+  return<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>{children}</div>;
+}
+function STitle({children}){
+  return<div style={{fontSize:16,fontWeight:800,color:G.text,marginBottom:16,letterSpacing:-0.3}}>{children}</div>;
+}
+function BigBtn({children,color,onClick,disabled,style}){
+  return(
+    <button onClick={onClick} disabled={disabled} style={{width:"100%",padding:"13px",background:disabled?"rgba(255,255,255,0.04)":`linear-gradient(135deg,${color}22,${color}11)`,border:`1px solid ${disabled?G.border:color+"66"}`,color:disabled?G.muted:color,borderRadius:12,cursor:disabled?"not-allowed":"pointer",fontFamily:G.font,fontSize:14,fontWeight:700,transition:"all .2s",...style}}>{children}</button>
+  );
+}
+const selStyle={width:"100%",background:"rgba(255,255,255,0.04)",border:`1px solid ${G.border}`,color:G.text,padding:"10px 12px",borderRadius:10,fontFamily:G.font,fontSize:13,marginBottom:14,outline:"none"};
+const inpStyle={width:"100%",background:"rgba(255,255,255,0.04)",border:`1px solid ${G.border}`,color:G.text,padding:"10px 12px",borderRadius:10,fontFamily:G.font,fontSize:13,outline:"none",boxSizing:"border-box"};
