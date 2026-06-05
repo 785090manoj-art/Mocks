@@ -375,30 +375,7 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 .wbf{width:100%;border-radius:6px;transition:height .5s;}
 .wbd{font-size:9px;font-weight:700;color:var(--text3);}
 .wbh{font-size:9px;font-weight:600;color:var(--text2);}
-
-/* SYLLABUS */
-.syl-stab{flex:1;padding:10px 6px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;text-align:center;font-family:'Inter',sans-serif;}
-#stab-ph.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-#stab-ch.on{background:var(--orange);color:#fff;border-color:var(--orange);}
-#stab-ma.on{background:var(--green);color:#fff;border-color:var(--green);}
-.prog-bg{background:var(--border);border-radius:99px;height:8px;overflow:hidden;margin-bottom:6px;}
-.prog-fill{height:100%;border-radius:99px;transition:width .5s;}
-.syl-ch-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;border:1.5px solid var(--border);margin-bottom:6px;background:#fff;user-select:none;}
-.syl-ch-item.dph{background:var(--bluelt);border-color:#c7d2fe;}
-.syl-ch-item.dch{background:var(--orangelt);border-color:#fed7aa;}
-.syl-ch-item.dma{background:var(--greenlt);border-color:#bbf7d0;}
-.syl-tick{width:22px;height:22px;border-radius:6px;border:2px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;}
-.syl-ch-item.dph .syl-tick{background:var(--blue);border-color:var(--blue);color:#fff;}
-.syl-ch-item.dch .syl-tick{background:var(--orange);border-color:var(--orange);color:#fff;}
-.syl-ch-item.dma .syl-tick{background:var(--green);border-color:var(--green);color:#fff;}
-.syl-ch-item.dph .syl-ch-name,.syl-ch-item.dch .syl-ch-name,.syl-ch-item.dma .syl-ch-name{text-decoration:line-through;color:var(--text3);}
-.syl-ch-num{font-size:11px;font-weight:800;color:var(--text3);min-width:20px;}
-.syl-ch-name{font-size:14px;font-weight:600;flex:1;}
-.sub-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-.sub-bar-lbl{font-size:11px;font-weight:700;min-width:68px;}
-.sub-bar-bg{flex:1;background:var(--border);border-radius:99px;height:7px;overflow:hidden;}
-.sub-bar-fill{height:100%;border-radius:99px;transition:width .5s;}
-.sub-bar-pct{font-size:11px;font-weight:700;min-width:34px;text-align:right;}
+;}
 
 /* ARENA */
 .cfg-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px;}
@@ -467,36 +444,6 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 .motiv{border-radius:10px;padding:12px;text-align:center;font-size:14px;font-weight:700;background:var(--greenlt);border:1px solid #bbf7d0;color:var(--green);margin-top:8px;display:none;}
 .motiv.on{display:block;}
 
-/* ARENA CHAPTER STATS */
-.acs-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.acs-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.acs-fbtn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
-.acs-fbtn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-.acs-row{display:flex;align-items:center;gap:8px;padding:10px 11px;border-radius:9px;margin-bottom:5px;background:var(--bg);border:1px solid var(--border);}
-.acs-rank{font-size:12px;font-weight:800;color:var(--text3);min-width:20px;}
-.acs-ch{flex:1;font-size:13px;font-weight:600;color:var(--text);}
-.acs-sub-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;}
-.acs-count{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;text-align:center;min-width:52px;}
-.acs-count-val{font-size:16px;font-weight:900;color:var(--blue);line-height:1;}
-.acs-count-lbl{font-size:9px;color:var(--text3);font-weight:600;margin-top:1px;}
-.acs-empty{text-align:center;color:var(--text3);font-size:13px;padding:24px 0;line-height:1.8;}
-.acs-clear-btn{font-size:11px;color:var(--red);background:transparent;border:1px solid #fca5a5;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;}
-
-/* AI CHAT */
-.ai-tabs{display:flex;border-bottom:2px solid var(--border);}
-.ai-tab{flex:1;padding:11px 6px;border:none;background:transparent;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'Inter',sans-serif;}
-.ai-tab.on{color:var(--blue);border-bottom-color:var(--blue);}
-.chat-win{height:350px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
-.cmsg{display:flex;}.cmsg.u{justify-content:flex-end;}.cmsg.b{justify-content:flex-start;}
-.cbub{max-width:84%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.55;word-break:break-word;white-space:pre-wrap;}
-.cbub.u{background:var(--blue);color:#fff;border-radius:14px 14px 4px 14px;}
-.cbub.b{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:14px 14px 14px 4px;}
-.cbub.ty{color:var(--text3);font-size:12px;font-style:italic;}
-.chat-inp{display:flex;gap:8px;padding:12px;background:var(--bg);border-top:1px solid var(--border);align-items:flex-end;}
-#chatTxt{flex:1;background:#fff;border:1.5px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;font-size:14px;resize:none;min-height:42px;max-height:110px;outline:none;font-family:'Inter',sans-serif;}
-#chatTxt:focus{border-color:var(--blue);}
-#chatSendBtn{padding:10px 16px;background:var(--blue);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;min-height:42px;font-family:'Inter',sans-serif;}
-#chatSendBtn:disabled{opacity:.5;}
 
 /* PLANNER */
 .plan-stab{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;text-align:center;font-family:'Inter',sans-serif;transition:all .2s;}
@@ -523,74 +470,12 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
-/* ── POMODORO ── */
-.pom-toggle{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:12px;}
-.pom-switch{position:relative;width:44px;height:24px;cursor:pointer;}
-.pom-switch input{opacity:0;width:0;height:0;}
-.pom-slider{position:absolute;inset:0;background:rgba(255,255,255,.2);border-radius:24px;transition:.3s;}
-.pom-slider:before{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;left:3px;top:3px;transition:.3s;}
-.pom-switch input:checked+.pom-slider{background:#fff;}
-.pom-switch input:checked+.pom-slider:before{transform:translateX(20px);background:var(--blue);}
-.pom-label{font-size:12px;opacity:.85;font-weight:700;}
-.pom-phase{font-size:11px;font-weight:800;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:8px;}
-.pom-phase.study{background:rgba(255,255,255,.15);color:#fff;}
-.pom-phase.brk{background:#10b981;color:#fff;}
-
-/* ── DAILY CHECKLIST ── */
-.chk-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;margin-bottom:8px;border:1.5px solid var(--border);background:#fff;cursor:pointer;user-select:none;transition:all .2s;}
-.chk-item.done-chk{background:var(--greenlt);border-color:#86efac;}
-.chk-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;transition:all .2s;}
-.chk-item.done-chk .chk-box{background:var(--green);border-color:var(--green);color:#fff;}
-.chk-text{flex:1;font-size:14px;font-weight:600;}
-.chk-item.done-chk .chk-text{text-decoration:line-through;color:var(--text3);}
-
-/* ── MILESTONE BADGES ── */
-.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.bdg{border-radius:12px;padding:12px 8px;text-align:center;border:2px solid var(--border);transition:all .3s;position:relative;overflow:hidden;}
-.bdg.earned{border-color:transparent;box-shadow:0 4px 12px rgba(0,0,0,.1);}
-.bdg.locked{opacity:.45;filter:grayscale(.6);}
-.bdg-ico{font-size:26px;margin-bottom:4px;}
-.bdg-name{font-size:10px;font-weight:800;line-height:1.3;}
-.bdg-sub{font-size:9px;color:var(--text3);margin-top:2px;}
-
-/* ── WEAK SPOT HEATMAP ── */
-.hm-cell{border-radius:8px;padding:8px 10px;margin-bottom:5px;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;}
-.hm-bar{position:absolute;left:0;top:0;bottom:0;border-radius:8px;transition:width .6s;}
-.hm-label{font-size:12px;font-weight:700;flex:1;position:relative;z-index:1;}
-.hm-sub-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;position:relative;z-index:1;}
-.hm-acc{font-size:13px;font-weight:900;position:relative;z-index:1;min-width:36px;text-align:right;}
-
 /* ── MISTAKE LOG ── */
 .err-item{background:var(--redlt);border:1px solid #fca5a5;border-radius:10px;padding:12px;margin-bottom:8px;}
 .err-q{font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px;}
 .err-note{width:100%;border:1.5px solid #fca5a5;border-radius:8px;padding:8px 10px;font-size:13px;background:#fff;color:var(--text);resize:none;font-family:'Inter',sans-serif;outline:none;min-height:60px;}
 .err-note:focus{border-color:var(--red);}
 .err-save-btn{margin-top:6px;padding:6px 14px;background:var(--red);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-
-/* ── FLASHCARDS ── */
-.fc-scene{perspective:1000px;height:180px;margin:0 auto 16px;max-width:340px;cursor:pointer;}
-.fc-card{width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;position:relative;border-radius:16px;}
-.fc-card.flipped{transform:rotateY(180deg);}
-.fc-face{position:absolute;inset:0;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
-.fc-front{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;box-shadow:0 8px 24px rgba(79,70,229,.3);}
-.fc-back{background:#fff;border:2px solid var(--border);transform:rotateY(180deg);box-shadow:0 8px 24px rgba(0,0,0,.08);}
-.fc-hint{font-size:10px;opacity:.6;font-weight:700;letter-spacing:1px;margin-bottom:8px;}
-.fc-q{font-size:16px;font-weight:800;text-align:center;line-height:1.4;}
-.fc-a{font-size:15px;font-weight:700;color:var(--blue);text-align:center;line-height:1.5;}
-.fc-nav{display:flex;gap:8px;justify-content:center;align-items:center;}
-.fc-nav-btn{padding:8px 18px;border-radius:8px;border:2px solid var(--border);background:#fff;color:var(--text);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.fc-counter{font-size:13px;font-weight:700;color:var(--text2);}
-.fc-sub-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
-.fc-sub-btn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.fc-sub-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-
-/* ── LEADERBOARD ── */
-.lb-row{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;margin-bottom:6px;background:var(--bg);border:1px solid var(--border);}
-.lb-row.me{background:var(--bluelt);border-color:#c7d2fe;}
-.lb-rank{font-size:15px;font-weight:900;min-width:30px;}
-.lb-name{flex:1;font-size:13px;font-weight:700;}
-.lb-score{font-size:16px;font-weight:900;color:var(--blue);}
-.lb-acc{font-size:11px;color:var(--text2);font-weight:600;}
 
 /* ── SPACED REPETITION ── */
 .sr-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;border:1.5px solid var(--border);background:#fff;}
@@ -602,52 +487,16 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 /* ── DOUBLE CONFIRM MODAL ── */
 .dconfirm-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;}
 .dconfirm-overlay.open{display:flex;}
-.dconfirm-box{background:var(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
+.dconfirm-box{background:(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
 .dconfirm-icon{font-size:44px;margin-bottom:10px;}
-.dconfirm-title{font-size:17px;font-weight:900;color:var(--text);margin-bottom:6px;}
-.dconfirm-msg{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:22px;}
+.dconfirm-title{font-size:17px;font-weight:900;color:(--text);margin-bottom:6px;}
+.dconfirm-msg{font-size:13px;color:(--text2);line-height:1.6;margin-bottom:22px;}
 .dconfirm-step{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--text3);margin-bottom:16px;text-transform:uppercase;}
 .dconfirm-btns{display:flex;gap:10px;}
-.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid (--border);background:transparent;color:(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 .dconfirm-ok.step2{background:#7f1d1d;animation:shake .3s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
-
-/* ── DEEP WORK MODE ── */
-body.deep-work #topbar{opacity:.3;pointer-events:none;}
-body.deep-work .nav-btn:not(.on){opacity:.2;}
-.dw-overlay{display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.85);align-items:center;justify-content:center;flex-direction:column;gap:20px;}
-body.deep-work .dw-overlay{display:flex;}
-.dw-time{font-size:72px;font-weight:900;color:#fff;letter-spacing:6px;font-variant-numeric:tabular-nums;}
-.dw-msg{font-size:16px;color:rgba(255,255,255,.7);font-weight:600;text-align:center;}
-.dw-exit{padding:10px 24px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-/* ── PW VIDEO MODAL ── */
-.pw-modal{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.92);flex-direction:column;align-items:stretch;}
-.pw-modal.open{display:flex;}
-.pw-modal-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#1a1a2e;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;}
-.pw-modal-title{flex:1;color:#fff;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pw-close-btn{background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.pw-video-wrap{flex:1;background:#000;position:relative;overflow:hidden;min-height:200px;}
-.pw-video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-.pw-panel{background:#1a1a2e;padding:14px 16px;flex-shrink:0;max-height:42vh;overflow-y:auto;}
-.pw-search-bar{display:flex;gap:8px;margin-bottom:12px;}
-.pw-search-inp{flex:1;padding:9px 12px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;}
-.pw-search-inp::placeholder{color:rgba(255,255,255,.35);}
-.pw-search-inp:focus{border-color:#4f46e5;}
-.pw-search-btn{padding:9px 14px;border-radius:8px;border:none;background:#4f46e5;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;}
-.pw-playlist-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
-.pw-vid-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;margin-bottom:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:background .15s;}
-.pw-vid-item.playing{background:rgba(79,70,229,.35);border-color:#4f46e5;}
-.pw-vid-info{flex:1;overflow:hidden;}
-.pw-vid-title{font-size:12px;font-weight:700;color:#fff;line-height:1.4;}
-.pw-vid-meta{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;}
-.pw-vid-play{color:#4f46e5;font-size:20px;flex-shrink:0;}
-.pw-save-btn{width:100%;padding:9px;border-radius:8px;border:none;background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:10px;}
-.lec-ch-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;border:1.5px solid var(--border);margin-bottom:6px;background:#fff;}
-.lec-ch-name{flex:1;font-size:13px;font-weight:600;}
-.lec-watch-btn{padding:6px 12px;border-radius:7px;border:none;background:linear-gradient(90deg,#ff0000,#cc0000);color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;font-family:'Inter',sans-serif;}
-.lec-watch-btn.saved{background:linear-gradient(90deg,#4f46e5,#7c3aed);}
-.lec-sub-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
 
 </style>
 </head>
@@ -661,31 +510,6 @@ body.deep-work .dw-overlay{display:flex;}
 </div>
 
 
-<!-- PW VIDEO MODAL -->
-<div class="pw-modal" id="pwModal">
-  <div class="pw-modal-header">
-    <div style="font-size:18px;">▶️</div>
-    <div class="pw-modal-title" id="pwModalTitle">Physics Wallah Lecture</div>
-    <button class="pw-close-btn" onclick="closePWModal()">✕</button>
-  </div>
-  <div class="pw-video-wrap">
-    <iframe id="pwIframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-  </div>
-  <div class="pw-panel">
-    <!-- Custom link input -->
-    <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;">📎 Custom YouTube Link Paste Karo (optional)</div>
-    <div class="pw-search-bar">
-      <input class="pw-search-inp" id="pwCustomInp" placeholder="youtube.com/watch?v=... ya youtu.be/..." oninput="pwLivePreview(this.value)">
-      <button class="pw-search-btn" onclick="pwLoadCustom()">▶ Load</button>
-    </div>
-    <button class="pw-save-btn" onclick="pwSaveLink()">💾 Is Chapter ke liye Save Karo</button>
-    <!-- Related PW videos list -->
-    <div id="pwRelatedLabel" class="pw-playlist-label" style="margin-top:14px;">🔴 PW RELATED VIDEOS (YouTube mein khulenge)</div>
-    <div id="pwRelatedList"></div>
-    <!-- Open YouTube search fallback -->
-    <button onclick="pwOpenYTSearch()" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.7);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;">🔍 YouTube pe PW Search Karo</button>
-  </div>
-</div>
 
 <!-- LOADING SCREEN — shown while Firebase checks auth state -->
 <div id="loadingScreen" style="position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);">
@@ -733,7 +557,7 @@ body.deep-work .dw-overlay{display:flex;}
   <div class="tb-right">
     <div class="streak-badge" id="streakBadge">⭐ 0</div>
     <button class="dm-btn" id="notifBellBtn" onclick="openNotifSettings()" title="Notifications set karo" style="font-size:16px;">🔔</button>
-    <button class="dm-btn" id="dmToggleBtn" onclick="toggleDarkMode()" title="Dark/Light Mode">🌙</button>
+    <button class="dm-btn" id="dmToggleBtn" onclick="toggleDarkMode()" title="Dark/Light Mode">💀/button>
     <button id="logoutBtn" onclick="confirmLogout()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;">🚪 Logout</button>
     <button id="loginFromGuestBtn" onclick="loginFromGuest()" style="display:none;background:var(--blue);border:none;color:#fff;font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;">🔑 Login Karo</button>
   </div>
@@ -837,29 +661,6 @@ body.deep-work .dw-overlay{display:flex;}
   <div class="sec" id="sec-timer">
     <div class="timer-hero">
       <div style="font-size:11px;opacity:.7;font-weight:700;letter-spacing:1px;">STUDY TIMER</div>
-      <!-- Pomodoro toggle -->
-      <div class="pom-toggle">
-        <span class="pom-label">🍅 Pomodoro</span>
-        <label class="pom-switch">
-          <input type="checkbox" id="pomToggle" onchange="togglePomodoro()">
-          <span class="pom-slider"></span>
-        </label>
-        <span class="pom-label" id="pomInfo">OFF</span>
-      </div>
-      <div class="pom-phase study" id="pomPhaseLabel" style="display:none;">📚 STUDY PHASE — 25 min</div>
-      <div class="timer-display" id="studyDisp">00:00:00</div>
-      <div class="timer-sub" id="studySubLabel">Subject chuno, phir start karo</div>
-      <div class="sub-selector">
-        <button class="sub-btn on" id="sbph" onclick="selSub('physics')">⚡ Physics</button>
-        <button class="sub-btn" id="sbch" onclick="selSub('chemistry')">🧪 Chem</button>
-        <button class="sub-btn" id="sbma" onclick="selSub('maths')">📐 Maths</button>
-      </div>
-      <div class="timer-btns">
-        <button class="t-btn start" id="studyStartBtn" onclick="togStudyTimer()">▶ Start</button>
-        <button class="t-btn reset-btn" onclick="rstStudyTimer()">↺ Reset</button>
-        <button class="t-btn reset-btn" id="deepWorkBtn" onclick="enterDeepWork()" title="Deep Work Mode">🎯 Focus</button>
-      </div>
-    </div>
 
     <!-- CHAPTER PLANNER -->
     <div class="card">
@@ -880,120 +681,7 @@ body.deep-work .dw-overlay{display:flex;}
         </div>
       </div>
     </div>
-
-    <!-- DAILY GOAL -->
-    <div class="card">
-      <div class="card-title">🎯 Daily Goal</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-        <span style="font-size:13px;font-weight:600;">Aaj ka study time</span>
-        <span style="font-size:13px;font-weight:700;color:var(--blue);" id="goalValDisp">0h 0m / 8h</span>
-      </div>
-      <div class="goal-bar-bg"><div class="goal-bar-fill" id="goalBar" style="width:0%"></div></div>
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        <input type="number" class="goal-inp" id="goalInp" placeholder="Daily goal (hrs)" min="1" max="16" value="8">
-        <button class="gen-btn" onclick="saveGoal()">Set</button>
-      </div>
-    </div>
-
-    <!-- SUBJECT TIME -->
-    <div class="card">
-      <div class="card-title">📊 Today's Subject Time</div>
-      <div class="sub-time-grid">
-        <div class="stc ph"><div class="stc-icon">⚡</div><div class="stc-name">PHYSICS</div><div class="stc-val" id="ph-time">0h 0m</div></div>
-        <div class="stc ch"><div class="stc-icon">🧪</div><div class="stc-name">CHEMISTRY</div><div class="stc-val" id="ch-time">0h 0m</div></div>
-        <div class="stc ma"><div class="stc-icon">📐</div><div class="stc-name">MATHS</div><div class="stc-val" id="ma-time">0h 0m</div></div>
-      </div>
-    </div>
-
-    <!-- WEEKLY GRAPH -->
-    <div class="card">
-      <div class="card-title">📅 Weekly Progress</div>
-      <div class="week-graph" id="weekGraph"></div>
-    </div>
-  </div>
-
-  <!-- SYLLABUS SECTION -->
-  <div class="sec" id="sec-syl">
-    <div class="card">
-      <div class="card-title">📚 Syllabus Progress</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div><div style="font-size:12px;font-weight:600;color:var(--text2);">Overall</div><div style="font-size:30px;font-weight:900;color:var(--green);" id="sylPct">0%</div></div>
-        <div style="text-align:right;"><div style="font-size:12px;font-weight:600;color:var(--text2);">Done</div><div style="font-size:22px;font-weight:900;" id="sylCnt">0/0</div></div>
-      </div>
-      <div class="prog-bg"><div class="prog-fill" id="sylBar" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--green));"></div></div>
-      <div id="sylSubBars" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;"></div>
-    </div>
-    <!-- Main Tabs: Chapters | Flashcards | Lectures -->
-    <div style="display:flex;gap:6px;margin-bottom:10px;">
-      <button id="sylModeChap" onclick="setSylMode('chap',this)" style="flex:1;padding:9px 4px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">📖 Chapters</button>
-      <button id="sylModeFlash" onclick="setSylMode('flash',this)" style="flex:1;padding:9px 4px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">🃏 Flashcards</button>
-      <button id="sylModeLec" onclick="setSylMode('lec',this)" style="flex:1;padding:9px 4px;border-radius:10px;border:1.5px solid #ff0000;background:#fff;color:#cc0000;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">▶ Lectures</button>
-    </div>
-    <!-- Chapter view -->
-    <div id="sylChapView">
-      <div style="display:flex;gap:8px;margin-bottom:10px;">
-        <button class="syl-stab on" id="stab-ph" onclick="sylTab('physics')">⚡ Physics</button>
-        <button class="syl-stab" id="stab-ch" onclick="sylTab('chemistry')">🧪 Chemistry</button>
-        <button class="syl-stab" id="stab-ma" onclick="sylTab('maths')">📐 Maths</button>
-      </div>
-      <div class="card" style="padding:12px;">
-        <div id="sylChapList"></div>
-      </div>
-    </div>
-    <!-- Lectures view -->
-    <div id="sylLecView" style="display:none;">
-      <div style="display:flex;gap:8px;margin-bottom:10px;">
-        <button class="syl-stab on" id="ltab-ph" onclick="lecTab('physics')">⚡ Physics</button>
-        <button class="syl-stab" id="ltab-ch" onclick="lecTab('chemistry')">🧪 Chemistry</button>
-        <button class="syl-stab" id="ltab-ma" onclick="lecTab('maths')">📐 Maths</button>
-      </div>
-      <div style="background:linear-gradient(90deg,#ff0000,#cc0000);border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:22px;">▶️</div>
-        <div>
-          <div style="color:#fff;font-size:13px;font-weight:800;">PW Lectures — In-App Player</div>
-          <div style="color:rgba(255,255,255,.8);font-size:11px;">Chapter pe tap karo → YouTube link paste karo → Save karo</div>
-        </div>
-      </div>
-      <div class="card" style="padding:12px;">
-        <div id="lecChapList"></div>
-      </div>
-    </div>
-
-    <!-- Flashcard view -->
-    <div id="sylFlashView" style="display:none;">
-      <div class="card">
-        <div class="card-title">🃏 Formula Flashcards</div>
-        <div class="fc-sub-row">
-          <button class="fc-sub-btn on" onclick="setFCSub('physics',this)">⚡ Physics</button>
-          <button class="fc-sub-btn" onclick="setFCSub('chemistry',this)">🧪 Chemistry</button>
-          <button class="fc-sub-btn" onclick="setFCSub('maths',this)">📐 Maths</button>
-        </div>
-        <div class="fc-scene" onclick="flipCard()">
-          <div class="fc-card" id="fcCard">
-            <div class="fc-face fc-front">
-              <div class="fc-hint">TAP TO FLIP</div>
-              <div class="fc-q" id="fcQuestion">Loading...</div>
-            </div>
-            <div class="fc-face fc-back">
-              <div class="fc-hint">ANSWER</div>
-              <div class="fc-a" id="fcAnswer">...</div>
-            </div>
-          </div>
-        </div>
-        <div class="fc-nav">
-          <button class="fc-nav-btn" onclick="prevCard()">← Prev</button>
-          <span class="fc-counter" id="fcCounter">1 / 1</span>
-          <button class="fc-nav-btn" onclick="nextCard()">Next →</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:12px;justify-content:center;">
-          <button onclick="markFC('know')" style="flex:1;max-width:130px;padding:9px;border-radius:8px;border:none;background:var(--greenlt);color:var(--green);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">✅ Pata Hai</button>
-          <button onclick="markFC('review')" style="flex:1;max-width:130px;padding:9px;border-radius:8px;border:none;background:var(--redlt);color:var(--red);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">🔁 Dobara Dekho</button>
-        </div>
-        <div id="fcProgress" style="margin-top:10px;text-align:center;font-size:12px;color:var(--text2);font-weight:600;"></div>
-      </div>
-    </div>
-  </div>
-
+    
   <!-- ARENA SECTION -->
   <div class="sec" id="sec-arena">
     <div class="card">
@@ -1071,30 +759,6 @@ body.deep-work .dw-overlay{display:flex;}
         <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">💾 Mistakes Firestore mein Save Karo</button>
       </div>
       <button onclick="showNav('stats',document.querySelectorAll('.nav-btn')[4])" style="margin-top:12px;width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">📊 Stats mein dekho →</button>
-      <!-- RANK PREDICTOR -->
-      <div id="rankPredictor" style="display:none;margin-top:14px;background:linear-gradient(135deg,#1e1b4b,#4f46e5);border-radius:14px;padding:18px 16px;color:#fff;text-align:center;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;opacity:.75;margin-bottom:4px;">🎯 JEE RANK PREDICTOR</div>
-        <div style="font-size:11px;opacity:.55;margin-bottom:14px;">Is Arena session ke score se estimated</div>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;">
-          <div style="background:rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;min-width:85px;">
-            <div style="font-size:22px;font-weight:900;line-height:1;" id="predPercentile">-</div>
-            <div style="font-size:9px;opacity:.75;margin-top:4px;font-weight:700;letter-spacing:.5px;">PERCENTILE</div>
-          </div>
-          <div style="background:rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;min-width:85px;">
-            <div style="font-size:22px;font-weight:900;line-height:1;" id="predRank">-</div>
-            <div style="font-size:9px;opacity:.75;margin-top:4px;font-weight:700;letter-spacing:.5px;">EST. RANK</div>
-          </div>
-          <div style="background:rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;min-width:85px;">
-            <div style="font-size:16px;font-weight:900;line-height:1;" id="predCategory">-</div>
-            <div style="font-size:9px;opacity:.75;margin-top:4px;font-weight:700;letter-spacing:.5px;">CATEGORY</div>
-          </div>
-        </div>
-        <div id="predMsg" style="font-size:14px;font-weight:700;line-height:1.55;"></div>
-        <div id="predScaledScore" style="font-size:11px;opacity:.6;margin-top:6px;"></div>
-        <div style="font-size:10px;opacity:.4;margin-top:8px;">*Practice estimate — actual JEE mein vary hoga</div>
-      </div>
-    </div>
-  </div>
 
   <!-- STATS SECTION -->
   <div class="sec" id="sec-stats">
@@ -1208,28 +872,7 @@ body.deep-work .dw-overlay{display:flex;}
 
   </div>
 
-  <!-- AI SECTION -->
-  <div class="sec" id="sec-ai">
-    <div class="card" style="padding:0;overflow:hidden;">
-      <div class="ai-tabs">
-        <button class="ai-tab on" id="atgemini" onclick="switchAI('gemini')">✦ Gemini</button>
-        <button class="ai-tab" id="atgrok" onclick="switchAI('grok')">𝕏 Grok</button>
-        <button class="ai-tab" id="atchatgpt" onclick="switchAI('chatgpt')">⬡ ChatGPT</button>
-      </div>
-      <div style="padding:6px 12px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-        <span id="aiLabel" style="font-size:11px;font-weight:700;color:var(--blue);">GEMINI 2.0 FLASH</span>
-        <button onclick="clearChat()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:11px;padding:3px 10px;border-radius:6px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;">Clear</button>
-      </div>
-      <div class="chat-win" id="chatWin"></div>
-      <div class="chat-inp">
-        <textarea id="chatTxt" placeholder="JEE ka sawaal likho... (Enter = Send)" onkeydown="chatKey(event)" oninput="chatResize(this)"></textarea>
-        <button id="chatSendBtn" onclick="chatSend()">Send ▶</button>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <!-- TASKS SECTION -->
+    <!-- TASKS SECTION -->
   <div class="sec" id="sec-tasks">
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
@@ -1304,99 +947,6 @@ body.deep-work .dw-overlay{display:flex;}
   </div>
 
 </div><!-- end .wrap -->
-
-<!-- MOCK TEST SECTION -->
-<div class="sec" id="sec-mcq">
-  <div style="max-width:520px;margin:0 auto;padding:70px 14px 155px;">
-
-  <!-- VIEW: Upload / Bank -->
-  <div id="mockBankView">
-    <!-- Upload Card -->
-    <div class="card">
-      <div class="card-title">📝 Mock Test Bank</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6;">
-        Apna test HTML file upload karo — questions render honge, test do, result save hoga! 🎯
-      </div>
-      <label id="mockHtmlLabel" for="mockHtmlInput" style="display:block;border:2px dashed var(--border);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s;"
-        ondragover="event.preventDefault();this.style.borderColor='var(--blue)';this.style.background='var(--bluelt)';"
-        ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--bg)';"
-        ondrop="mockHandleDrop(event)">
-        <div style="font-size:36px;margin-bottom:8px;" id="mockHtmlIcon">📄</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);" id="mockHtmlText">HTML test file yahan drop karo ya tap karo</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:4px;">Sirf .html file • Max 75 questions</div>
-      </label>
-      <input type="file" id="mockHtmlInput" accept=".html,text/html" style="display:none;" onchange="mockHtmlChosen(this)">
-      <div style="margin-top:12px;">
-        <label class="cfg-lbl" style="display:block;margin-bottom:4px;">Test ka Naam</label>
-        <input type="text" id="mockTestName" class="cfg-in" placeholder="e.g. Physics Mock 1" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;">
-      </div>
-      <button id="mockStartBtn" onclick="mockStartTest()" class="gen-btn" style="width:100%;margin-top:12px;padding:13px;font-size:14px;border-radius:10px;opacity:.5;cursor:not-allowed;" disabled>
-        🚀 Test Shuru Karo
-      </button>
-    </div>
-
-    <!-- Past Results Card -->
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div class="card-title" style="margin-bottom:0;">📊 Past Mock Results</div>
-        <button onclick="mockLoadHistory()" style="background:transparent;border:1px solid var(--border);color:var(--blue);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;">🔄 Refresh</button>
-      </div>
-      <div id="mockHistoryList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:14px 0;">Koi result nahi abhi • Pehle test do!</div></div>
-    </div>
-  </div>
-
-  <!-- VIEW: Active Test -->
-  <div id="mockTestView" style="display:none;">
-    <!-- Test Header -->
-    <div class="card" style="padding:12px 16px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <div style="font-size:13px;font-weight:800;color:var(--text);" id="mockActiveTitle">Test</div>
-        <button onclick="mockAbort()" style="background:var(--red);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">✕ Quit</button>
-      </div>
-      <div style="display:flex;gap:10px;font-size:12px;font-weight:700;">
-        <span style="color:var(--blue);" id="mockQProgress">0 / 0 answered</span>
-        <span style="color:var(--text3);">•</span>
-        <span style="color:var(--orange);" id="mockTimer">00:00</span>
-      </div>
-    </div>
-
-    <!-- Questions -->
-    <div id="mockQuestionList"></div>
-
-    <!-- Submit -->
-    <button id="mockSubmitBtn" onclick="mockSubmitTest()" style="width:100%;padding:14px;background:var(--green);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;margin-top:10px;">
-      ✅ Submit & Result Dekho
-    </button>
-  </div>
-
-  <!-- VIEW: Result -->
-  <div id="mockResultView" style="display:none;">
-    <!-- Score Card -->
-    <div class="card" style="border:2px solid var(--green);text-align:center;padding:20px;">
-      <div style="font-size:40px;margin-bottom:8px;">🎯</div>
-      <div style="font-size:13px;font-weight:700;color:var(--text2);" id="mockResultTitle"></div>
-      <div style="font-size:40px;font-weight:900;color:var(--green);margin:8px 0;" id="mockResultScore"></div>
-      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0;">
-        <div style="background:var(--greenlt);border-radius:8px;padding:8px 14px;"><div style="font-size:18px;font-weight:900;color:var(--green);" id="mrCorr">0</div><div style="font-size:10px;color:var(--green);font-weight:700;">CORRECT</div></div>
-        <div style="background:var(--redlt);border-radius:8px;padding:8px 14px;"><div style="font-size:18px;font-weight:900;color:var(--red);" id="mrWrong">0</div><div style="font-size:10px;color:var(--red);font-weight:700;">WRONG</div></div>
-        <div style="background:var(--bg);border-radius:8px;padding:8px 14px;"><div style="font-size:18px;font-weight:900;color:var(--text2);" id="mrSkip">0</div><div style="font-size:10px;color:var(--text2);font-weight:700;">SKIPPED</div></div>
-        <div style="background:var(--purplelt);border-radius:8px;padding:8px 14px;"><div style="font-size:18px;font-weight:900;color:var(--purple);" id="mrAcc">0%</div><div style="font-size:10px;color:var(--purple);font-weight:700;">ACCURACY</div></div>
-      </div>
-      <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:10px;" id="mrMsg"></div>
-      <div style="font-size:11px;color:var(--text3);" id="mrTime"></div>
-      <!-- Firebase save status -->
-      <div id="mrSaveStatus" style="margin-top:10px;font-size:12px;font-weight:700;color:var(--blue);">⏳ Result save ho raha hai...</div>
-    </div>
-    <!-- Review answers -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin:10px 0 6px;">
-      <div style="font-size:13px;font-weight:800;color:var(--text);">📋 Answer Review</div>
-      <button onclick="mockGoBack()" style="background:var(--blue);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">🏠 Back</button>
-    </div>
-    <div id="mockReviewList"></div>
-  </div>
-
-  </div>
-</div>
 
 <!-- BOTTOM NAV -->
 <div id="bottomNav" style="display:none">
@@ -2786,75 +2336,7 @@ function renderSubjectStats(){
   el.innerHTML=overallHtml+cardsHtml;
 }
 
-// ═══════════════════════════════════════
-// ⚔️ ARENA CHAPTER STATS  ← NEW FEATURE
-// ═══════════════════════════════════════
-var ACS_SCOLOR = {physics:'#eef2ff', chemistry:'#fff7ed', maths:'#dcfce7'};
-var ACS_TCOLOR = {physics:'#4f46e5', chemistry:'#ea580c', maths:'#16a34a'};
-var ACS_EMOJI  = {physics:'⚡', chemistry:'🧪', maths:'📐'};
-
-// Called after every Arena result — merges this session's data into global stats
-function updateArenaChapterStats(chapData){
-  Object.keys(chapData).forEach(function(ck){
-    if(!arenaChapterStats[ck]){
-      arenaChapterStats[ck] = {sub: chapData[ck].sub, ch: chapData[ck].ch, attempted:0, corr:0, wrong:0, skip:0};
-    }
-    arenaChapterStats[ck].attempted += chapData[ck].attempted;
-    arenaChapterStats[ck].corr     += (chapData[ck].corr  || 0);
-    arenaChapterStats[ck].wrong    += (chapData[ck].wrong || 0);
-    arenaChapterStats[ck].skip     += (chapData[ck].skip  || 0);
-  });
-  saveLocal();
-  if(window.FS && window._uid) window.FS.saveArenaChapterStats(arenaChapterStats);
-  renderArenaChapterStats();
-  renderHeatmap();
-  renderSubjectStats();
-}
-
-// Render the stats card in the Stats section
-function renderArenaChapterStats(){
-  var el = document.getElementById('arenaChapList');
-  if(!el) return;
-
-  // Get keys and apply subject filter
-  var keys = Object.keys(arenaChapterStats);
-  if(acsFilter !== 'all'){
-    keys = keys.filter(function(k){ return arenaChapterStats[k].sub === acsFilter; });
-  }
-
-  // Sort: most attempted first
-  keys.sort(function(a,b){
-    return arenaChapterStats[b].attempted - arenaChapterStats[a].attempted;
-  });
-
-  if(!keys.length){
-    el.innerHTML = '<div class="acs-empty">'
-      + '⚔️ Abhi koi data nahi<br>'
-      + '<span style="font-size:11px;">Arena mein test do — chapter stats yahan dikhenge!</span>'
-      + '</div>';
-    return;
-  }
-
-  var html = '';
-  keys.forEach(function(ck, idx){
-    var s = arenaChapterStats[ck];
-    var rank = idx + 1;
-    var rankColor = rank === 1 ? '#f59e0b' : rank === 2 ? '#94a3b8' : rank === 3 ? '#cd7c2f' : 'var(--text3)';
-    var acc = s.attempted > 0 ? Math.round((s.corr||0)/s.attempted*100) : 0;
-    html += '<div class="acs-row" style="flex-wrap:wrap;gap:4px;">'
-      + '<div style="display:flex;align-items:center;gap:8px;width:100%;">'
-      +   '<div class="acs-rank" style="color:'+rankColor+'">'+(rank<=3?['🥇','🥈','🥉'][rank-1]:rank)+'</div>'
-      +   '<div class="acs-ch">'+s.ch+'</div>'
-      +   '<span class="acs-sub-tag" style="background:'+ACS_SCOLOR[s.sub]+';color:'+ACS_TCOLOR[s.sub]+'">'+ ACS_EMOJI[s.sub] +'</span>'
-      + '</div>'
-      + '<div style="display:flex;gap:5px;width:100%;margin-top:4px;">'
-      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--blue)">'+s.attempted+'</div><div class="acs-count-lbl">TOTAL</div></div>'
-      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--green)">'+(s.corr||0)+'</div><div class="acs-count-lbl">CORRECT</div></div>'
-      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--red)">'+(s.wrong||0)+'</div><div class="acs-count-lbl">WRONG</div></div>'
-      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--text2)">'+(s.skip||0)+'</div><div class="acs-count-lbl">SKIP</div></div>'
-      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--purple)">'+acc+'%</div><div class="acs-count-lbl">ACC</div></div>'
-      + '</div>'
-      + '</div>';
+/k      + '</div>';
   });
   el.innerHTML = html;
 }
@@ -3799,28 +3281,6 @@ function dconfirmNext(){
 }
 function dconfirmCancel(){
   document.getElementById('dconfirmOverlay').classList.remove('open');
-  _dconfirmStep = 1;
-  _dconfirmCb = null;
-}
-
-// DARK MODE
-var _darkMode=false;
-function initDarkMode(){try{var s=localStorage.getItem('jee_dark_mode');if(s==='1'){_darkMode=true;document.body.classList.add('dark');var b=document.getElementById('dmToggleBtn');if(b)b.textContent='\u2600\ufe0f';}}catch(e){}}
-function toggleDarkMode(){_darkMode=!_darkMode;document.body.classList.toggle('dark',_darkMode);var b=document.getElementById('dmToggleBtn');if(b)b.textContent=_darkMode?'\u2600\ufe0f':'\ud83c\udf19';try{localStorage.setItem('jee_dark_mode',_darkMode?'1':'0');}catch(e){}}
-initDarkMode();
-
-// LOGOUT
-// ═══════════════════════════════════════
-function confirmLogout(){
-  document.getElementById('logoutModal').style.display='flex';
-}
-function closeLogoutModal(){
-  document.getElementById('logoutModal').style.display='none';
-}
-function doLogout(){
-  closeLogoutModal();
-  window._doLogoutFn && window._doLogoutFn();
-}
 
 // ═══════════════════════════════════════
 // TASKS — PRAYAS JEE 2027 SCHEDULE
