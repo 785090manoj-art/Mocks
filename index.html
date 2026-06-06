@@ -375,7 +375,7 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 .wbf{width:100%;border-radius:6px;transition:height .5s;}
 .wbd{font-size:9px;font-weight:700;color:var(--text3);}
 .wbh{font-size:9px;font-weight:600;color:var(--text2);}
-;}
+}
 
 /* ARENA */
 .cfg-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px;}
@@ -487,14 +487,14 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 /* ── DOUBLE CONFIRM MODAL ── */
 .dconfirm-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;}
 .dconfirm-overlay.open{display:flex;}
-.dconfirm-box{background:(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
+.dconfirm-box{background:var(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
 .dconfirm-icon{font-size:44px;margin-bottom:10px;}
-.dconfirm-title{font-size:17px;font-weight:900;color:(--text);margin-bottom:6px;}
-.dconfirm-msg{font-size:13px;color:(--text2);line-height:1.6;margin-bottom:22px;}
+.dconfirm-title{font-size:17px;font-weight:900;color:var(--text);margin-bottom:6px;}
+.dconfirm-msg{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:22px;}
 .dconfirm-step{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--text3);margin-bottom:16px;text-transform:uppercase;}
 .dconfirm-btns{display:flex;gap:10px;}
-.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid (--border);background:transparent;color:(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 .dconfirm-ok.step2{background:#7f1d1d;animation:shake .3s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
 
@@ -557,7 +557,7 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
   <div class="tb-right">
     <div class="streak-badge" id="streakBadge">⭐ 0</div>
     <button class="dm-btn" id="notifBellBtn" onclick="openNotifSettings()" title="Notifications set karo" style="font-size:16px;">🔔</button>
-    <button class="dm-btn" id="dmToggleBtn" onclick="toggleDarkMode()" title="Dark/Light Mode">💀/button>
+    <button class="dm-btn" id="dmToggleBtn" onclick="toggleDarkMode()" title="Dark/Light Mode">💀</button>
     <button id="logoutBtn" onclick="confirmLogout()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;">🚪 Logout</button>
     <button id="loginFromGuestBtn" onclick="loginFromGuest()" style="display:none;background:var(--blue);border:none;color:#fff;font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;">🔑 Login Karo</button>
   </div>
@@ -661,6 +661,54 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
   <div class="sec" id="sec-timer">
     <div class="timer-hero">
       <div style="font-size:11px;opacity:.7;font-weight:700;letter-spacing:1px;">STUDY TIMER</div>
+      <!-- Subject selector -->
+      <div class="sub-selector">
+        <button class="sub-btn on" id="sbph" onclick="selSub('physics')">⚡ Physics</button>
+        <button class="sub-btn" id="sbch" onclick="selSub('chemistry')">🧪 Chem</button>
+        <button class="sub-btn" id="sbma" onclick="selSub('maths')">📐 Maths</button>
+      </div>
+      <!-- Timer display -->
+      <div class="timer-display" id="studyDisp">00:00:00</div>
+      <div class="timer-sub" id="studySubLabel">Physics padh raha hai...</div>
+      <!-- Pomodoro toggle -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:12px;font-weight:700;opacity:.8;">🍅 Pomodoro</span>
+        <label style="display:flex;align-items:center;cursor:pointer;">
+          <input type="checkbox" id="pomToggle" onchange="togglePomodoro()" style="width:0;height:0;opacity:0;position:absolute;">
+          <span style="width:38px;height:22px;background:rgba(255,255,255,.25);border-radius:99px;display:inline-block;position:relative;transition:background .2s;" id="pomToggleBg">
+            <span style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;display:block;" id="pomToggleKnob"></span>
+          </span>
+        </label>
+        <span style="font-size:11px;opacity:.7;" id="pomInfo">OFF</span>
+      </div>
+      <div id="pomPhaseLabel" style="display:none;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.18);margin-bottom:10px;letter-spacing:.5px;"></div>
+      <!-- Start/Reset buttons -->
+      <div class="timer-btns">
+        <button class="t-btn start" id="studyStartBtn" onclick="togStudyTimer()">▶ Start</button>
+        <button class="t-btn reset-btn" onclick="rstStudyTimer()">↺ Reset</button>
+        <button class="t-btn reset-btn" onclick="enterDeepWork()" style="background:rgba(255,255,255,.12);">🎯 Focus</button>
+      </div>
+    </div>
+
+    <!-- GOAL CARD -->
+    <div class="card">
+      <div class="card-title">🎯 Daily Goal</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+        <input type="number" class="goal-inp" id="goalInp" value="8" min="1" max="24" placeholder="Daily goal (hours)">
+        <button class="gen-btn" onclick="saveGoal()">Set</button>
+      </div>
+      <div class="goal-bar-bg"><div class="goal-bar-fill" id="goalBar" style="width:0%"></div></div>
+      <div id="goalValDisp" style="font-size:12px;font-weight:700;color:var(--text2);text-align:center;margin-top:4px;">0h / 8h</div>
+      <!-- Subject time breakdown -->
+      <div class="sub-time-grid" style="margin-top:10px;">
+        <div class="stc ph"><div class="stc-icon">⚡</div><div class="stc-name">Physics</div><div class="stc-val" id="ph-time">0h</div></div>
+        <div class="stc ch"><div class="stc-icon">🧪</div><div class="stc-name">Chem</div><div class="stc-val" id="ch-time">0h</div></div>
+        <div class="stc ma"><div class="stc-icon">📐</div><div class="stc-name">Maths</div><div class="stc-val" id="ma-time">0h</div></div>
+      </div>
+      <!-- Weekly graph -->
+      <div style="font-size:11px;font-weight:700;color:var(--text2);margin-top:12px;margin-bottom:4px;">📅 This Week</div>
+      <div class="week-graph" id="weekGraph"></div>
+    </div>
 
     <!-- CHAPTER PLANNER -->
     <div class="card">
@@ -943,6 +991,177 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 
       <!-- Chapter list -->
       <div id="revChList"></div>
+    </div>
+  </div>
+
+  <!-- SYLLABUS SECTION -->
+  <div class="sec" id="sec-syl">
+    <div class="card">
+      <div class="card-title">📚 JEE Syllabus</div>
+      <!-- Overall progress -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="flex:1;background:var(--border);border-radius:99px;height:10px;overflow:hidden;">
+          <div id="sylBar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .4s;width:0%;"></div>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:var(--blue);" id="sylPct">0%</div>
+        <div style="font-size:11px;color:var(--text2);" id="sylCnt">0/0</div>
+      </div>
+      <!-- Per-subject bars -->
+      <div id="sylSubBars" style="margin-bottom:12px;"></div>
+      <!-- Mode switcher -->
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <button style="flex:1;padding:8px 4px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;" id="sylModeChap" onclick="setSylMode('chap',this)">📋 Chapters</button>
+        <button style="flex:1;padding:8px 4px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;" id="sylModeFlash" onclick="setSylMode('flash',this)">🃏 Flashcards</button>
+        <button style="flex:1;padding:8px 4px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;color:#cc0000;border:1.5px solid #ff0000;background:#fff;transition:all .2s;" id="sylModeLec" onclick="setSylMode('lec',this)">▶ Lectures</button>
+      </div>
+
+      <!-- CHAPTER VIEW -->
+      <div id="sylChapView">
+        <!-- Subject tabs -->
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="rev-sub-tab on" id="stab-ph" onclick="sylTab('physics',this)">⚡ Physics</button>
+          <button class="rev-sub-tab" id="stab-ch" onclick="sylTab('chemistry',this)">🧪 Chemistry</button>
+          <button class="rev-sub-tab" id="stab-ma" onclick="sylTab('maths',this)">📐 Maths</button>
+        </div>
+        <div id="sylChapList"></div>
+      </div>
+
+      <!-- FLASHCARD VIEW -->
+      <div id="sylFlashView" style="display:none;">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="rev-sub-tab on" id="fstab-ph" onclick="fcSubTab('physics',this)">⚡ Physics</button>
+          <button class="rev-sub-tab" id="fstab-ch" onclick="fcSubTab('chemistry',this)">🧪 Chemistry</button>
+          <button class="rev-sub-tab" id="fstab-ma" onclick="fcSubTab('maths',this)">📐 Maths</button>
+        </div>
+        <!-- Flashcard progress -->
+        <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-align:center;" id="fcProgress">Card 1 / 10</div>
+        <!-- Card flip area -->
+        <div style="perspective:1000px;margin-bottom:12px;" onclick="flipFC()">
+          <div class="fc-back" style="background:#fff;border-radius:14px;padding:28px 16px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:2px solid var(--border);cursor:pointer;box-shadow:var(--shadow2);">
+            <div style="font-size:10px;font-weight:800;color:var(--text3);letter-spacing:1px;margin-bottom:10px;" id="fcSide">❓ QUESTION</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);line-height:1.5;" id="fcQuestion">Load ho raha hai...</div>
+            <div class="fc-a" style="font-size:13px;color:var(--blue);line-height:1.5;display:none;margin-top:10px;white-space:pre-wrap;" id="fcAnswer"></div>
+            <div style="font-size:11px;color:var(--text3);margin-top:12px;">👆 Tap to flip</div>
+          </div>
+        </div>
+        <!-- Navigation buttons -->
+        <div style="display:flex;gap:8px;">
+          <button onclick="fcNav(-1)" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">← Prev</button>
+          <button onclick="fcMark('know')" style="flex:1;padding:10px;border-radius:10px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">✓ Know</button>
+          <button onclick="fcMark('review')" style="flex:1;padding:10px;border-radius:10px;border:none;background:var(--orange);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">👀 Review</button>
+          <button onclick="fcNav(1)" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Next →</button>
+        </div>
+      </div>
+
+      <!-- LECTURE VIEW -->
+      <div id="sylLecView" style="display:none;">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="rev-sub-tab on" id="ltab-ph" onclick="lecTab('physics')">⚡ Physics</button>
+          <button class="rev-sub-tab" id="ltab-ch" onclick="lecTab('chemistry')">🧪 Chemistry</button>
+          <button class="rev-sub-tab" id="ltab-ma" onclick="lecTab('maths')">📐 Maths</button>
+        </div>
+        <div id="lecChapList"></div>
+      </div>
+    </div>
+
+    <!-- RANK PREDICTOR CARD -->
+    <div class="card" id="rankPredictor">
+      <div class="card-title">🏆 Rank Predictor</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px;">Mock scores ke hisab se estimated rank dekho</div>
+      <div id="predMsg" style="text-align:center;font-size:13px;color:var(--text2);padding:10px 0;">
+        Pehle Stats section mein mock scores save karo, phir yahan rank estimate dikhega!
+      </div>
+      <div id="predCategory" style="display:none;">
+        <div style="display:flex;gap:10px;justify-content:center;margin-bottom:10px;">
+          <div style="text-align:center;background:var(--bluelt);border-radius:10px;padding:12px 18px;">
+            <div style="font-size:26px;font-weight:900;color:var(--blue);" id="predPercentile">—</div>
+            <div style="font-size:10px;font-weight:700;color:var(--text2);">PERCENTILE</div>
+          </div>
+          <div style="text-align:center;background:var(--purplelt);border-radius:10px;padding:12px 18px;">
+            <div style="font-size:26px;font-weight:900;color:var(--purple);" id="predRank">—</div>
+            <div style="font-size:10px;font-weight:700;color:var(--text2);">EST. RANK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI CHAT SECTION -->
+  <div class="sec" id="sec-ai">
+    <div class="card" style="display:flex;flex-direction:column;height:calc(100vh - 180px);min-height:400px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div class="card-title" style="margin-bottom:0;">🤖 AI JEE Tutor</div>
+        <button onclick="clearChat()" style="background:transparent;border:1px solid var(--border);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;color:var(--text2);font-family:'Inter',sans-serif;">🗑 Clear</button>
+      </div>
+      <!-- AI switcher tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px;">
+        <button class="ai-tab on" id="atgemini" onclick="switchAI('gemini')" style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--blue);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">🔮 Gemini</button>
+        <button class="ai-tab" id="atgrok" onclick="switchAI('grok')" style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">⚡ Grok</button>
+        <button class="ai-tab" id="atchatgpt" onclick="switchAI('chatgpt')" style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">🤖 GPT-4o</button>
+      </div>
+      <div style="font-size:10px;font-weight:800;color:var(--text3);letter-spacing:1px;text-align:center;margin-bottom:8px;" id="aiLabel">GEMINI 2.0 FLASH</div>
+      <!-- Chat window -->
+      <div id="chatWin" style="flex:1;overflow-y:auto;padding:4px 0;display:flex;flex-direction:column;gap:8px;"></div>
+      <!-- Input row -->
+      <div class="chat-inp" style="display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+        <textarea id="chatTxt" rows="2" placeholder="JEE sawaal pucho... (Physics, Chem, Maths)" onkeydown="chatKey(event)" oninput="chatResize(this)" style="flex:1;resize:none;border-radius:10px;border:1.5px solid var(--border);padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:#fff;color:var(--text);min-height:42px;max-height:110px;overflow-y:auto;"></textarea>
+        <button id="chatSendBtn" onclick="chatSend()" class="gen-btn" style="align-self:flex-end;">Send ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MCQ GENERATOR SECTION -->
+  <div class="sec" id="sec-mcq">
+    <div class="card">
+      <div class="card-title">📝 AI MCQ Generator</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.5;">PDF ya topic se AI-powered MCQs generate karo</div>
+      <!-- PDF Upload area -->
+      <div id="mcqUploadArea" style="border:2px dashed var(--border);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;margin-bottom:12px;transition:all .2s;background:var(--bg);" onclick="document.getElementById('mcqFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--blue)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';handleMCQDrop(event)">
+        <div style="font-size:36px;margin-bottom:8px;" id="mcqUploadIcon">📄</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2);" id="mcqUploadText">PDF yahan drop karo ya tap karke choose karo</div>
+        <input type="file" id="mcqFileInput" accept=".pdf" style="display:none;" onchange="handleMCQFile(this.files[0])">
+      </div>
+      <!-- Config row -->
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+        <div class="cfg-grp">
+          <label class="cfg-lbl">QUESTIONS</label>
+          <select class="cfg-sel" id="mcqCount">
+            <option value="5">5 MCQs</option>
+            <option value="10" selected>10 MCQs</option>
+            <option value="15">15 MCQs</option>
+            <option value="20">20 MCQs</option>
+          </select>
+        </div>
+        <div class="cfg-grp">
+          <label class="cfg-lbl">DIFFICULTY</label>
+          <select class="cfg-sel" id="mcqDiff">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">JEE Advanced</option>
+          </select>
+        </div>
+      </div>
+      <!-- Generate button -->
+      <button class="gen-btn" id="mcqGenBtn" onclick="mcqGenerate()" style="width:100%;opacity:.5;cursor:not-allowed;" disabled>🧠 Generate MCQs</button>
+      <!-- Loading -->
+      <div id="mcqLoading" style="display:none;text-align:center;padding:20px 0;">
+        <div style="width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:mcqSpin .8s linear infinite;margin:0 auto 10px;"></div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2);" id="mcqLoadMsg">AI se MCQs ban rahi hain...</div>
+      </div>
+      <!-- Score bar -->
+      <div id="mcqScoreBar" style="display:none;margin:12px 0;background:var(--greenlt);border:1px solid #86efac;border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;font-weight:900;color:var(--green);" id="mcqScoreVal">0/0</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:4px;" id="mcqScoreMsg"></div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button onclick="mcqReset()" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">↩ New PDF</button>
+          <button onclick="mcqRetry()" style="flex:1;padding:9px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">🔄 Retry</button>
+        </div>
+      </div>
+      <!-- MCQ Results -->
+      <div id="mcqResults" style="display:none;">
+        <button class="gen-btn" id="mcqSubmitBtn" onclick="mcqSubmit()" style="width:100%;margin-bottom:12px;background:var(--green);">✅ Submit & Check</button>
+        <div id="mcqQuestionList"></div>
+      </div>
     </div>
   </div>
 
@@ -1387,12 +1606,13 @@ function showNav(name, btn, skipHistory){
   if(!skipHistory){
     history.pushState({section: name, prev: prevSection}, '', '#'+name);
   }
-  if(name==='syl'){renderSylChapList();updProg();}
+  if(name==='syl'){renderSylChapList();updProg();setSylMode('chap');if(typeof renderRankPredictor==='function')renderRankPredictor();}
   if(name==='timer'){renderStudyUI();renderPlanChapList();}
   if(name==='stats'){renderStats();renderArenaChapterStats();renderHeatmap();renderErrorBook();renderBadges();refreshLeaderboard();renderDailyArenaStats();}
   if(name==='revise'){renderRevTracker();}
   if(name==='home'){renderChecklist();renderBadges();renderSpacedRepReminders();}
   if(name==='tasks'){renderTasks();}
+  if(name==='ai'){renderChat();}
 }
 
 // Handle Android/browser back button via popstate
@@ -2336,11 +2556,6 @@ function renderSubjectStats(){
   el.innerHTML=overallHtml+cardsHtml;
 }
 
-/k      + '</div>';
-  });
-  el.innerHTML = html;
-}
-
 // Filter by subject
 function setACSFilter(f, btn){
   acsFilter = f;
@@ -2932,9 +3147,11 @@ function loadFC(){
   fcIdx=Math.max(0,Math.min(fcIdx,cards.length-1));
   var q=document.getElementById('fcQuestion'), a=document.getElementById('fcAnswer');
   var cnt=document.getElementById('fcCounter');
-  if(q) q.textContent=cards[fcIdx].q;
-  if(a) a.textContent=cards[fcIdx].a;
+  var side=document.getElementById('fcSide');
+  if(q){ q.textContent=cards[fcIdx].q; q.style.display='block'; }
+  if(a){ a.textContent=cards[fcIdx].a; a.style.display='none'; }
   if(cnt) cnt.textContent=(fcIdx+1)+' / '+cards.length;
+  if(side) side.textContent='❓ QUESTION';
   fcFlipped=false;
   var card=document.getElementById('fcCard'); if(card) card.classList.remove('flipped');
   updateFCProgress();
@@ -2965,7 +3182,60 @@ function updateFCProgress(){
   var cards=FLASHCARDS[fcSub]||[];
   var known=fcKnow.filter(function(k){return k.startsWith(fcSub+'_');}).length;
   var review=fcReview.filter(function(k){return k.startsWith(fcSub+'_');}).length;
-  el.textContent='✅ Pata hai: '+known+' | 🔁 Dobara: '+review+' | Total: '+cards.length;
+  el.textContent='Card '+(fcIdx+1)+' / '+cards.length+' • ✅ '+known+' known • 🔁 '+review+' review';
+}
+
+// Bridge functions for new flashcard UI
+function fcSubTab(sub,btn){
+  fcSub=sub; fcIdx=0; fcFlipped=false;
+  ['physics','chemistry','maths'].forEach(function(s){
+    var id='fstab-'+(s==='physics'?'ph':s==='chemistry'?'ch':'ma');
+    var b=document.getElementById(id); if(!b)return;
+    b.classList.toggle('on',s===sub);
+  });
+  loadFC();
+}
+function flipFC(){
+  fcFlipped=!fcFlipped;
+  var q=document.getElementById('fcQuestion'), a=document.getElementById('fcAnswer');
+  var side=document.getElementById('fcSide');
+  if(side) side.textContent=fcFlipped?'💡 ANSWER':'❓ QUESTION';
+  if(q) q.style.display=fcFlipped?'none':'block';
+  if(a) a.style.display=fcFlipped?'block':'none';
+}
+function fcNav(dir){
+  var cards=FLASHCARDS[fcSub]||[];
+  fcIdx=(fcIdx+dir+cards.length)%cards.length;
+  fcFlipped=false;
+  var q=document.getElementById('fcQuestion'), a=document.getElementById('fcAnswer');
+  var side=document.getElementById('fcSide');
+  if(side) side.textContent='❓ QUESTION';
+  if(q) q.style.display='block';
+  if(a) a.style.display='none';
+  loadFC();
+}
+function fcMark(status){ markFC(status); }
+
+// Rank predictor — estimates rank from mock data
+function renderRankPredictor(){
+  var msg=document.getElementById('predMsg');
+  var cat=document.getElementById('predCategory');
+  var ppct=document.getElementById('predPercentile');
+  var prank=document.getElementById('predRank');
+  if(!msg||!cat)return;
+  if(!mocks||!mocks.length){ msg.style.display='block'; cat.style.display='none'; return; }
+  var totalQs=0,totalCorr=0;
+  var recent=mocks.slice(-5); // use last 5 mocks
+  recent.forEach(function(m){ totalQs+=m.qs||0; totalCorr+=m.corr||0; });
+  if(!totalQs){ msg.style.display='block'; cat.style.display='none'; return; }
+  var acc=totalCorr/totalQs;
+  // Very rough JEE Main percentile estimate based on accuracy
+  var percentile=Math.min(99.9, Math.round(acc*110-5));
+  if(percentile<0) percentile=0;
+  var rank=Math.round((100-percentile)/100*1100000);
+  msg.style.display='none'; cat.style.display='block';
+  if(ppct) ppct.textContent=percentile.toFixed(1)+'ile';
+  if(prank) prank.textContent=rank>0?rank.toLocaleString('en-IN'):'< 100';
 }
 
 // ═══════════════════════════════════════
@@ -3281,6 +3551,7 @@ function dconfirmNext(){
 }
 function dconfirmCancel(){
   document.getElementById('dconfirmOverlay').classList.remove('open');
+}
 
 // ═══════════════════════════════════════
 // TASKS — PRAYAS JEE 2027 SCHEDULE
