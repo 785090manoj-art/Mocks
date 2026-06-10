@@ -39,6 +39,10 @@ body.dark{
 body.dark #topbar{background:#1a1a24;border-color:#2a2a3a;}
 body.dark #bottomNav{background:#1a1a24;border-color:#2a2a3a;}
 body.dark .card{background:#1a1a24;border-color:#2a2a3a;}
+body.dark .syl-ch-item{background:#1a1a24;border-color:#2a2a3a;}
+body.dark .syl-ch-item.dph{background:#1e1b4b;border-color:#3730a3;}
+body.dark .syl-ch-item.dch{background:#431407;border-color:#9a3412;}
+body.dark .syl-ch-item.dma{background:#052e16;border-color:#166534;}
 body.dark .mock-item2{background:#111118;border-color:#2a2a3a;}
 body.dark .sum-box{background:#111118;border-color:#2a2a3a;}
 body.dark .cd-box{background:#1e1b4b;}
@@ -156,11 +160,6 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 
 /* LOGIN */
 #loginScreen{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);overflow-y:auto;padding:20px 0;}
-#loginScreen[style*="display:none"]{pointer-events:none!important;}
-#loadingScreen[style*="display:none"]{pointer-events:none!important;}
-#fcCard.flipped #fcQuestion{display:none;}
-#fcCard.flipped #fcAnswer{display:block!important;}
-#fcCard.flipped #fcCardHint{display:none;}
 .login-card{background:#fff;border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,0.25);margin:auto;}
 .login-logo{font-size:56px;margin-bottom:10px;}
 .login-title{font-size:24px;font-weight:900;color:var(--blue);margin-bottom:4px;}
@@ -206,7 +205,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 #bottomNav{
   position:fixed;bottom:0;left:0;right:0;z-index:200;
   background:#f8f8fc;border-top:1.5px solid #e5e7eb;
-  display:grid;grid-template-columns:repeat(4,1fr) 56px;
+  display:grid;grid-template-columns:repeat(2,1fr) 56px;
   box-shadow:0 -4px 24px rgba(0,0,0,0.10);
   padding:6px 4px calc(6px + env(safe-area-inset-bottom)) 4px;
   gap:2px;
@@ -241,8 +240,12 @@ body.dark .drawer-btn .nav-label{color:#9ca3af;}
 body.dark .drawer-btn.on .nav-label{color:#e5e7eb;}
 .drawer-btn[data-sec="revise"] .nav-icon-wrap{background:#fde8d8;}
 .drawer-btn[data-sec="tasks"]  .nav-icon-wrap{background:#fef9c3;}
+.drawer-btn[data-sec="ai"]     .nav-icon-wrap{background:#f5f3ff;}
+.drawer-btn[data-sec="mcq"]    .nav-icon-wrap{background:#fce7f3;}
 .drawer-btn.on[data-sec="revise"] .nav-icon-wrap{background:#ea580c;box-shadow:0 3px 12px rgba(234,88,12,.40);}
 .drawer-btn.on[data-sec="tasks"]  .nav-icon-wrap{background:#ca8a04;box-shadow:0 3px 12px rgba(202,138,4,.40);}
+.drawer-btn.on[data-sec="ai"]     .nav-icon-wrap{background:#7c3aed;box-shadow:0 3px 12px rgba(124,58,237,.40);}
+.drawer-btn.on[data-sec="mcq"]    .nav-icon-wrap{background:#db2777;box-shadow:0 3px 12px rgba(219,39,119,.40);}
 .nav-btn{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:4px;padding:5px 2px 4px;border:none;background:transparent;
@@ -263,13 +266,21 @@ body.dark .drawer-btn.on .nav-label{color:#e5e7eb;}
 /* Each button gets its own tile colour */
 .nav-btn[data-sec="home"]    .nav-icon-wrap{background:#e0e7ff;}
 .nav-btn[data-sec="timer"]   .nav-icon-wrap{background:#fef3c7;}
+.nav-btn[data-sec="syl"]     .nav-icon-wrap{background:#dbeafe;}
 .nav-btn[data-sec="arena"]   .nav-icon-wrap{background:#fee2e2;}
+.nav-btn[data-sec="stats"]   .nav-icon-wrap{background:#dcfce7;}
+.nav-btn[data-sec="ai"]      .nav-icon-wrap{background:#f5f3ff;}
 .nav-btn[data-sec="tasks"]   .nav-icon-wrap{background:#fef9c3;}
+.nav-btn[data-sec="mcq"]    .nav-icon-wrap{background:#fce7f3;}
 /* Active state — deeper colour + glow */
 .nav-btn.on[data-sec="home"]   .nav-icon-wrap{background:#4f46e5;box-shadow:0 3px 12px rgba(79,70,229,0.40);}
 .nav-btn.on[data-sec="timer"]  .nav-icon-wrap{background:#d97706;box-shadow:0 3px 12px rgba(217,119,6,0.40);}
+.nav-btn.on[data-sec="syl"]    .nav-icon-wrap{background:#2563eb;box-shadow:0 3px 12px rgba(37,99,235,0.40);}
 .nav-btn.on[data-sec="arena"]  .nav-icon-wrap{background:#dc2626;box-shadow:0 3px 12px rgba(220,38,38,0.40);}
+.nav-btn.on[data-sec="stats"]  .nav-icon-wrap{background:#16a34a;box-shadow:0 3px 12px rgba(22,163,74,0.40);}
+.nav-btn.on[data-sec="ai"]     .nav-icon-wrap{background:#7c3aed;box-shadow:0 3px 12px rgba(124,58,237,0.40);}
 .nav-btn.on[data-sec="tasks"]  .nav-icon-wrap{background:#ca8a04;box-shadow:0 3px 12px rgba(202,138,4,0.40);}
+.nav-btn.on[data-sec="mcq"]  .nav-icon-wrap{background:#db2777;box-shadow:0 3px 12px rgba(219,39,119,0.40);}
 /* Label */
 .nav-label{
   font-size:9px;font-weight:700;letter-spacing:.2px;
@@ -364,7 +375,30 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 .wbf{width:100%;border-radius:6px;transition:height .5s;}
 .wbd{font-size:9px;font-weight:700;color:var(--text3);}
 .wbh{font-size:9px;font-weight:600;color:var(--text2);}
-;}
+
+/* SYLLABUS */
+.syl-stab{flex:1;padding:10px 6px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;text-align:center;font-family:'Inter',sans-serif;}
+#stab-ph.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+#stab-ch.on{background:var(--orange);color:#fff;border-color:var(--orange);}
+#stab-ma.on{background:var(--green);color:#fff;border-color:var(--green);}
+.prog-bg{background:var(--border);border-radius:99px;height:8px;overflow:hidden;margin-bottom:6px;}
+.prog-fill{height:100%;border-radius:99px;transition:width .5s;}
+.syl-ch-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;border:1.5px solid var(--border);margin-bottom:6px;background:#fff;user-select:none;}
+.syl-ch-item.dph{background:var(--bluelt);border-color:#c7d2fe;}
+.syl-ch-item.dch{background:var(--orangelt);border-color:#fed7aa;}
+.syl-ch-item.dma{background:var(--greenlt);border-color:#bbf7d0;}
+.syl-tick{width:22px;height:22px;border-radius:6px;border:2px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;}
+.syl-ch-item.dph .syl-tick{background:var(--blue);border-color:var(--blue);color:#fff;}
+.syl-ch-item.dch .syl-tick{background:var(--orange);border-color:var(--orange);color:#fff;}
+.syl-ch-item.dma .syl-tick{background:var(--green);border-color:var(--green);color:#fff;}
+.syl-ch-item.dph .syl-ch-name,.syl-ch-item.dch .syl-ch-name,.syl-ch-item.dma .syl-ch-name{text-decoration:line-through;color:var(--text3);}
+.syl-ch-num{font-size:11px;font-weight:800;color:var(--text3);min-width:20px;}
+.syl-ch-name{font-size:14px;font-weight:600;flex:1;}
+.sub-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.sub-bar-lbl{font-size:11px;font-weight:700;min-width:68px;}
+.sub-bar-bg{flex:1;background:var(--border);border-radius:99px;height:7px;overflow:hidden;}
+.sub-bar-fill{height:100%;border-radius:99px;transition:width .5s;}
+.sub-bar-pct{font-size:11px;font-weight:700;min-width:34px;text-align:right;}
 
 /* ARENA */
 .cfg-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px;}
@@ -433,6 +467,36 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 .motiv{border-radius:10px;padding:12px;text-align:center;font-size:14px;font-weight:700;background:var(--greenlt);border:1px solid #bbf7d0;color:var(--green);margin-top:8px;display:none;}
 .motiv.on{display:block;}
 
+/* ARENA CHAPTER STATS */
+.acs-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.acs-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.acs-fbtn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.acs-fbtn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+.acs-row{display:flex;align-items:center;gap:8px;padding:10px 11px;border-radius:9px;margin-bottom:5px;background:var(--bg);border:1px solid var(--border);}
+.acs-rank{font-size:12px;font-weight:800;color:var(--text3);min-width:20px;}
+.acs-ch{flex:1;font-size:13px;font-weight:600;color:var(--text);}
+.acs-sub-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.acs-count{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;text-align:center;min-width:52px;}
+.acs-count-val{font-size:16px;font-weight:900;color:var(--blue);line-height:1;}
+.acs-count-lbl{font-size:9px;color:var(--text3);font-weight:600;margin-top:1px;}
+.acs-empty{text-align:center;color:var(--text3);font-size:13px;padding:24px 0;line-height:1.8;}
+.acs-clear-btn{font-size:11px;color:var(--red);background:transparent;border:1px solid #fca5a5;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;}
+
+/* AI CHAT */
+.ai-tabs{display:flex;border-bottom:2px solid var(--border);}
+.ai-tab{flex:1;padding:11px 6px;border:none;background:transparent;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'Inter',sans-serif;}
+.ai-tab.on{color:var(--blue);border-bottom-color:var(--blue);}
+.chat-win{height:350px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.cmsg{display:flex;}.cmsg.u{justify-content:flex-end;}.cmsg.b{justify-content:flex-start;}
+.cbub{max-width:84%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.55;word-break:break-word;white-space:pre-wrap;}
+.cbub.u{background:var(--blue);color:#fff;border-radius:14px 14px 4px 14px;}
+.cbub.b{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:14px 14px 14px 4px;}
+.cbub.ty{color:var(--text3);font-size:12px;font-style:italic;}
+.chat-inp{display:flex;gap:8px;padding:12px;background:var(--bg);border-top:1px solid var(--border);align-items:flex-end;}
+#chatTxt{flex:1;background:#fff;border:1.5px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;font-size:14px;resize:none;min-height:42px;max-height:110px;outline:none;font-family:'Inter',sans-serif;}
+#chatTxt:focus{border-color:var(--blue);}
+#chatSendBtn{padding:10px 16px;background:var(--blue);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;min-height:42px;font-family:'Inter',sans-serif;}
+#chatSendBtn:disabled{opacity:.5;}
 
 /* PLANNER */
 .plan-stab{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;text-align:center;font-family:'Inter',sans-serif;transition:all .2s;}
@@ -459,12 +523,74 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
+/* ── POMODORO ── */
+.pom-toggle{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:12px;}
+.pom-switch{position:relative;width:44px;height:24px;cursor:pointer;}
+.pom-switch input{opacity:0;width:0;height:0;}
+.pom-slider{position:absolute;inset:0;background:rgba(255,255,255,.2);border-radius:24px;transition:.3s;}
+.pom-slider:before{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;left:3px;top:3px;transition:.3s;}
+.pom-switch input:checked+.pom-slider{background:#fff;}
+.pom-switch input:checked+.pom-slider:before{transform:translateX(20px);background:var(--blue);}
+.pom-label{font-size:12px;opacity:.85;font-weight:700;}
+.pom-phase{font-size:11px;font-weight:800;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:8px;}
+.pom-phase.study{background:rgba(255,255,255,.15);color:#fff;}
+.pom-phase.brk{background:#10b981;color:#fff;}
+
+/* ── DAILY CHECKLIST ── */
+.chk-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;margin-bottom:8px;border:1.5px solid var(--border);background:#fff;cursor:pointer;user-select:none;transition:all .2s;}
+.chk-item.done-chk{background:var(--greenlt);border-color:#86efac;}
+.chk-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;transition:all .2s;}
+.chk-item.done-chk .chk-box{background:var(--green);border-color:var(--green);color:#fff;}
+.chk-text{flex:1;font-size:14px;font-weight:600;}
+.chk-item.done-chk .chk-text{text-decoration:line-through;color:var(--text3);}
+
+/* ── MILESTONE BADGES ── */
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.bdg{border-radius:12px;padding:12px 8px;text-align:center;border:2px solid var(--border);transition:all .3s;position:relative;overflow:hidden;}
+.bdg.earned{border-color:transparent;box-shadow:0 4px 12px rgba(0,0,0,.1);}
+.bdg.locked{opacity:.45;filter:grayscale(.6);}
+.bdg-ico{font-size:26px;margin-bottom:4px;}
+.bdg-name{font-size:10px;font-weight:800;line-height:1.3;}
+.bdg-sub{font-size:9px;color:var(--text3);margin-top:2px;}
+
+/* ── WEAK SPOT HEATMAP ── */
+.hm-cell{border-radius:8px;padding:8px 10px;margin-bottom:5px;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;}
+.hm-bar{position:absolute;left:0;top:0;bottom:0;border-radius:8px;transition:width .6s;}
+.hm-label{font-size:12px;font-weight:700;flex:1;position:relative;z-index:1;}
+.hm-sub-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;position:relative;z-index:1;}
+.hm-acc{font-size:13px;font-weight:900;position:relative;z-index:1;min-width:36px;text-align:right;}
+
 /* ── MISTAKE LOG ── */
 .err-item{background:var(--redlt);border:1px solid #fca5a5;border-radius:10px;padding:12px;margin-bottom:8px;}
 .err-q{font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px;}
 .err-note{width:100%;border:1.5px solid #fca5a5;border-radius:8px;padding:8px 10px;font-size:13px;background:#fff;color:var(--text);resize:none;font-family:'Inter',sans-serif;outline:none;min-height:60px;}
 .err-note:focus{border-color:var(--red);}
 .err-save-btn{margin-top:6px;padding:6px 14px;background:var(--red);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* ── FLASHCARDS ── */
+.fc-scene{perspective:1000px;height:180px;margin:0 auto 16px;max-width:340px;cursor:pointer;}
+.fc-card{width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;position:relative;border-radius:16px;}
+.fc-card.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+.fc-front{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;box-shadow:0 8px 24px rgba(79,70,229,.3);}
+.fc-back{background:#fff;border:2px solid var(--border);transform:rotateY(180deg);box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.fc-hint{font-size:10px;opacity:.6;font-weight:700;letter-spacing:1px;margin-bottom:8px;}
+.fc-q{font-size:16px;font-weight:800;text-align:center;line-height:1.4;}
+.fc-a{font-size:15px;font-weight:700;color:var(--blue);text-align:center;line-height:1.5;}
+.fc-nav{display:flex;gap:8px;justify-content:center;align-items:center;}
+.fc-nav-btn{padding:8px 18px;border-radius:8px;border:2px solid var(--border);background:#fff;color:var(--text);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.fc-counter{font-size:13px;font-weight:700;color:var(--text2);}
+.fc-sub-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.fc-sub-btn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.fc-sub-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* ── LEADERBOARD ── */
+.lb-row{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;margin-bottom:6px;background:var(--bg);border:1px solid var(--border);}
+.lb-row.me{background:var(--bluelt);border-color:#c7d2fe;}
+.lb-rank{font-size:15px;font-weight:900;min-width:30px;}
+.lb-name{flex:1;font-size:13px;font-weight:700;}
+.lb-score{font-size:16px;font-weight:900;color:var(--blue);}
+.lb-acc{font-size:11px;color:var(--text2);font-weight:600;}
 
 /* ── SPACED REPETITION ── */
 .sr-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;border:1.5px solid var(--border);background:#fff;}
@@ -476,75 +602,53 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 /* ── DOUBLE CONFIRM MODAL ── */
 .dconfirm-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;}
 .dconfirm-overlay.open{display:flex;}
-.dconfirm-box{background:(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
+.dconfirm-box{background:var(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
 .dconfirm-icon{font-size:44px;margin-bottom:10px;}
-.dconfirm-title{font-size:17px;font-weight:900;color:(--text);margin-bottom:6px;}
-.dconfirm-msg{font-size:13px;color:(--text2);line-height:1.6;margin-bottom:22px;}
+.dconfirm-title{font-size:17px;font-weight:900;color:var(--text);margin-bottom:6px;}
+.dconfirm-msg{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:22px;}
 .dconfirm-step{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--text3);margin-bottom:16px;text-transform:uppercase;}
 .dconfirm-btns{display:flex;gap:10px;}
-.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid (--border);background:transparent;color:(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 .dconfirm-ok.step2{background:#7f1d1d;animation:shake .3s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
 
-
-/* ── DEEP WORK OVERLAY ── */
-.dw-overlay{display:none;position:fixed;inset:0;z-index:600;background:linear-gradient(135deg,#0d0d1a,#1e1b4b);flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+/* ── DEEP WORK MODE ── */
+body.deep-work #topbar{opacity:.3;pointer-events:none;}
+body.deep-work .nav-btn:not(.on){opacity:.2;}
+.dw-overlay{display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.85);align-items:center;justify-content:center;flex-direction:column;gap:20px;}
 body.deep-work .dw-overlay{display:flex;}
-.dw-time{font-size:64px;font-weight:900;color:#fff;letter-spacing:4px;font-variant-numeric:tabular-nums;}
-.dw-msg{font-size:14px;color:rgba(255,255,255,.7);font-weight:600;text-align:center;padding:0 24px;}
-.dw-exit{padding:12px 28px;border-radius:12px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;}
+.dw-time{font-size:72px;font-weight:900;color:#fff;letter-spacing:6px;font-variant-numeric:tabular-nums;}
+.dw-msg{font-size:16px;color:rgba(255,255,255,.7);font-weight:600;text-align:center;}
+.dw-exit{padding:10px 24px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+/* ── PW VIDEO MODAL ── */
+.pw-modal{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.92);flex-direction:column;align-items:stretch;}
+.pw-modal.open{display:flex;}
+.pw-modal-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#1a1a2e;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;}
+.pw-modal-title{flex:1;color:#fff;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pw-close-btn{background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pw-video-wrap{flex:1;background:#000;position:relative;overflow:hidden;min-height:200px;}
+.pw-video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.pw-panel{background:#1a1a2e;padding:14px 16px;flex-shrink:0;max-height:42vh;overflow-y:auto;}
+.pw-search-bar{display:flex;gap:8px;margin-bottom:12px;}
+.pw-search-inp{flex:1;padding:9px 12px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;}
+.pw-search-inp::placeholder{color:rgba(255,255,255,.35);}
+.pw-search-inp:focus{border-color:#4f46e5;}
+.pw-search-btn{padding:9px 14px;border-radius:8px;border:none;background:#4f46e5;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;}
+.pw-playlist-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
+.pw-vid-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;margin-bottom:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:background .15s;}
+.pw-vid-item.playing{background:rgba(79,70,229,.35);border-color:#4f46e5;}
+.pw-vid-info{flex:1;overflow:hidden;}
+.pw-vid-title{font-size:12px;font-weight:700;color:#fff;line-height:1.4;}
+.pw-vid-meta{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;}
+.pw-vid-play{color:#4f46e5;font-size:20px;flex-shrink:0;}
+.pw-save-btn{width:100%;padding:9px;border-radius:8px;border:none;background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:10px;}
+.lec-ch-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;border:1.5px solid var(--border);margin-bottom:6px;background:#fff;}
+.lec-ch-name{flex:1;font-size:13px;font-weight:600;}
+.lec-watch-btn{padding:6px 12px;border-radius:7px;border:none;background:linear-gradient(90deg,#ff0000,#cc0000);color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;font-family:'Inter',sans-serif;}
+.lec-watch-btn.saved{background:linear-gradient(90deg,#4f46e5,#7c3aed);}
+.lec-sub-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
 
-/* ── SYLLABUS ITEMS (still used by chapter planner) ── */
-.syl-ch-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;border:1.5px solid var(--border);background:#fff;cursor:pointer;user-select:none;}
-.syl-ch-item.dph{border-color:#c7d2fe;background:var(--bluelt);}
-.syl-ch-item.dch{border-color:#fed7aa;background:var(--orangelt);}
-.syl-ch-item.dma{border-color:#bbf7d0;background:var(--greenlt);}
-.syl-tick{width:20px;height:20px;border-radius:6px;border:2px solid var(--text3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
-.syl-ch-item.dph .syl-tick{background:var(--blue);border-color:var(--blue);color:#fff;}
-.syl-ch-item.dch .syl-tick{background:var(--orange);border-color:var(--orange);color:#fff;}
-.syl-ch-item.dma .syl-tick{background:var(--green);border-color:var(--green);color:#fff;}
-.syl-ch-num{font-size:11px;font-weight:700;color:var(--text3);min-width:22px;}
-.syl-ch-name{font-size:13px;font-weight:600;flex:1;}
-body.dark .syl-ch-item{background:#1a1a24;border-color:#2a2a3a;}
-body.dark .syl-ch-item.dph{background:#1e1b4b;border-color:#3730a3;}
-body.dark .syl-ch-item.dch{background:#431407;border-color:#9a3412;}
-body.dark .syl-ch-item.dma{background:#052e16;border-color:#166534;}
-
-/* ── SUBJECT PROGRESS BARS ── */
-.sub-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.sub-bar-lbl{font-size:11px;font-weight:700;min-width:80px;}
-.sub-bar-bg{flex:1;height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
-.sub-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
-.sub-bar-pct{font-size:11px;font-weight:800;min-width:32px;text-align:right;}
-
-/* ── BADGES ── */
-.badge-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.bdg{border-radius:var(--r2);padding:12px;text-align:center;border:1px solid var(--border);}
-.bdg.earned{border-color:#fde68a;}
-.bdg.locked{opacity:.5;}
-.bdg-ico{font-size:24px;margin-bottom:4px;}
-.bdg-name{font-size:12px;font-weight:800;color:var(--text);}
-.bdg-sub{font-size:10px;color:var(--text2);margin-top:2px;}
-
-/* ── ARENA CHAPTER STATS ── */
-.acs-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.acs-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.acs-fbtn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
-.acs-fbtn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-.acs-clear-btn{padding:5px 10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--red);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.acs-row{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;margin-bottom:5px;background:var(--bg);border:1px solid var(--border);}
-.acs-count{min-width:44px;text-align:center;font-size:16px;font-weight:900;color:var(--blue);background:#fff;border:1px solid var(--border);border-radius:7px;padding:3px 5px;}
-body.dark .acs-fbtn{background:#111118;border-color:#2a2a3a;color:var(--text2);}
-body.dark .acs-fbtn.on{background:var(--blue);color:#fff;}
-body.dark .acs-row{background:#111118;border-color:#2a2a3a;}
-body.dark .acs-count{background:#1a1a24;border-color:#2a2a3a;}
-body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
-
-/* ── POMODORO ── */
-.pom-phase{display:none;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-top:6px;}
-.pom-phase.study{background:#dbeafe;color:#1d4ed8;}
-.pom-phase.brk{background:#dcfce7;color:var(--green);}
 </style>
 </head>
 <body>
@@ -557,6 +661,31 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
 </div>
 
 
+<!-- PW VIDEO MODAL -->
+<div class="pw-modal" id="pwModal">
+  <div class="pw-modal-header">
+    <div style="font-size:18px;">▶️</div>
+    <div class="pw-modal-title" id="pwModalTitle">Physics Wallah Lecture</div>
+    <button class="pw-close-btn" onclick="closePWModal()">✕</button>
+  </div>
+  <div class="pw-video-wrap">
+    <iframe id="pwIframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  </div>
+  <div class="pw-panel">
+    <!-- Custom link input -->
+    <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;">📎 Custom YouTube Link Paste Karo (optional)</div>
+    <div class="pw-search-bar">
+      <input class="pw-search-inp" id="pwCustomInp" placeholder="youtube.com/watch?v=... ya youtu.be/..." oninput="pwLivePreview(this.value)">
+      <button class="pw-search-btn" onclick="pwLoadCustom()">▶ Load</button>
+    </div>
+    <button class="pw-save-btn" onclick="pwSaveLink()">💾 Is Chapter ke liye Save Karo</button>
+    <!-- Related PW videos list -->
+    <div id="pwRelatedLabel" class="pw-playlist-label" style="margin-top:14px;">🔴 PW RELATED VIDEOS (YouTube mein khulenge)</div>
+    <div id="pwRelatedList"></div>
+    <!-- Open YouTube search fallback -->
+    <button onclick="pwOpenYTSearch()" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.7);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;">🔍 YouTube pe PW Search Karo</button>
+  </div>
+</div>
 
 <!-- LOADING SCREEN — shown while Firebase checks auth state -->
 <div id="loadingScreen" style="position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);">
@@ -604,7 +733,7 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
   <div class="tb-right">
     <div class="streak-badge" id="streakBadge">⭐ 0</div>
     <button class="dm-btn" id="notifBellBtn" onclick="openNotifSettings()" title="Notifications set karo" style="font-size:16px;">🔔</button>
-    <button class="dm-btn" id="dmToggleBtn" onclick="toggleDarkMode()" title="Dark/Light Mode">💀</button>
+    <button class="dm-btn" id="dmToggleBtn" onclick="toggleDarkMode()" title="Dark/Light Mode">🌙</button>
     <button id="logoutBtn" onclick="confirmLogout()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;">🚪 Logout</button>
     <button id="loginFromGuestBtn" onclick="loginFromGuest()" style="display:none;background:var(--blue);border:none;color:#fff;font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;">🔑 Login Karo</button>
   </div>
@@ -704,31 +833,8 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
     </div>
   </div>
 
-  <!-- TIMER SECTION -->
-  <div class="sec" id="sec-timer">
-    <div class="timer-hero">
-      <div style="font-size:11px;opacity:.7;font-weight:700;letter-spacing:1px;">STUDY TIMER</div>
 
-    <!-- CHAPTER PLANNER -->
-    <div class="card">
-      <div class="card-title">📖 Aaj Konse Chapters?</div>
-      <div style="display:flex;gap:6px;margin-bottom:12px;">
-        <button class="plan-stab" id="ptph" onclick="switchPlanSub('physics')" style="background:var(--blue);color:#fff;border-color:var(--blue);">⚡ Physics</button>
-        <button class="plan-stab" id="ptch" onclick="switchPlanSub('chemistry')">🧪 Chem</button>
-        <button class="plan-stab" id="ptma" onclick="switchPlanSub('maths')">📐 Maths</button>
-      </div>
-      <div id="planChapList" style="max-height:250px;overflow-y:auto;"></div>
-      <div id="planSelCount" style="margin-top:8px;text-align:center;font-size:13px;font-weight:600;color:var(--text2);"></div>
-      <div id="planDoneArea" style="display:none;">
-        <div style="margin-top:12px;padding-top:12px;border-top:2px dashed var(--border);">
-          <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;text-align:center;">✏️ Tick karo jab complete ho</div>
-          <div id="planDoneList"></div>
-          <div class="plan-prog-bar"><div class="plan-prog-fill" id="planProgFill" style="width:0%"></div></div>
-          <div id="planDoneCount" style="text-align:center;font-size:12px;font-weight:600;color:var(--green);margin-top:6px;"></div>
-        </div>
-      </div>
-    </div>
-    
+
   <!-- ARENA SECTION -->
   <div class="sec" id="sec-arena">
     <div class="card">
@@ -806,6 +912,30 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
         <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">💾 Mistakes Firestore mein Save Karo</button>
       </div>
       <button onclick="showNav('stats',document.querySelectorAll('.nav-btn')[4])" style="margin-top:12px;width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">📊 Stats mein dekho →</button>
+      <!-- RANK PREDICTOR -->
+      <div id="rankPredictor" style="display:none;margin-top:14px;background:linear-gradient(135deg,#1e1b4b,#4f46e5);border-radius:14px;padding:18px 16px;color:#fff;text-align:center;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;opacity:.75;margin-bottom:4px;">🎯 JEE RANK PREDICTOR</div>
+        <div style="font-size:11px;opacity:.55;margin-bottom:14px;">Is Arena session ke score se estimated</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;">
+          <div style="background:rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;min-width:85px;">
+            <div style="font-size:22px;font-weight:900;line-height:1;" id="predPercentile">-</div>
+            <div style="font-size:9px;opacity:.75;margin-top:4px;font-weight:700;letter-spacing:.5px;">PERCENTILE</div>
+          </div>
+          <div style="background:rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;min-width:85px;">
+            <div style="font-size:22px;font-weight:900;line-height:1;" id="predRank">-</div>
+            <div style="font-size:9px;opacity:.75;margin-top:4px;font-weight:700;letter-spacing:.5px;">EST. RANK</div>
+          </div>
+          <div style="background:rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;min-width:85px;">
+            <div style="font-size:16px;font-weight:900;line-height:1;" id="predCategory">-</div>
+            <div style="font-size:9px;opacity:.75;margin-top:4px;font-weight:700;letter-spacing:.5px;">CATEGORY</div>
+          </div>
+        </div>
+        <div id="predMsg" style="font-size:14px;font-weight:700;line-height:1.55;"></div>
+        <div id="predScaledScore" style="font-size:11px;opacity:.6;margin-top:6px;"></div>
+        <div style="font-size:10px;opacity:.4;margin-top:8px;">*Practice estimate — actual JEE mein vary hoga</div>
+      </div>
+    </div>
+  </div>
 
   <!-- STATS SECTION -->
   <div class="sec" id="sec-stats">
@@ -919,11 +1049,13 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
 
   </div>
 
-    <!-- TASKS SECTION -->
+
+
+  <!-- TASKS SECTION -->
   <div class="sec" id="sec-tasks">
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <div class="card-title" style="margin-bottom:0;">📖 Prayas JEE 2027 — Lectures</div>
+        <div class="card-title" style="margin-bottom:0;">📋 Prayas JEE 2027 Schedule</div>
         <div id="taskCounter" style="font-size:12px;font-weight:700;color:var(--blue);"></div>
       </div>
       <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">Aaj se aage ke saare lectures + tests • Checkbox tick karo jab complete ho</div>
@@ -993,126 +1125,8 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
     </div>
   </div>
 
-  <!-- FLASHCARDS / SYLLABUS SECTION -->
-  <div class="sec" id="sec-syl">
-    <div class="card">
-      <div class="card-title">&#x1F9E0; Flashcards &amp; Syllabus</div>
-      <!-- Mode tabs -->
-      <div style="display:flex;gap:6px;margin-bottom:14px;">
-        <button id="sylModeChap"  onclick="setSylMode('chap',this)"  style="flex:1;padding:8px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F4D6; Chapters</button>
-        <button id="sylModeFlash" onclick="setSylMode('flash',this)" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F9E0; Flash</button>
-        <button id="sylModeLec"   onclick="setSylMode('lec',this)"   style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #f00;background:#fff;color:#c00;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F534; Lec</button>
-      </div>
-      <!-- Chapter view -->
-      <div id="sylChapView"><div id="sylChapList"></div></div>
-      <!-- Flashcard view -->
-      <div id="sylFlashView" style="display:none;">
-        <div style="display:flex;gap:6px;margin-bottom:12px;">
-          <button class="fc-sub-btn on" onclick="setFCSub('physics',this)"   style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x26A1; Physics</button>
-          <button class="fc-sub-btn"    onclick="setFCSub('chemistry',this)" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F9EA; Chem</button>
-          <button class="fc-sub-btn"    onclick="setFCSub('maths',this)"     style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F4D0; Maths</button>
-        </div>
-        <!-- Card -->
-        <div id="fcCard" onclick="flipCard()" style="min-height:160px;background:linear-gradient(135deg,var(--blue),var(--purple,#7c3aed));border-radius:16px;padding:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;margin-bottom:12px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.6);margin-bottom:8px;" id="fcCardHint">TAP TO FLIP</div>
-          <div style="font-size:15px;font-weight:800;color:#fff;line-height:1.5;" id="fcQuestion">Loading...</div>
-          <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;display:none;margin-top:8px;white-space:pre-line;" id="fcAnswer"></div>
-        </div>
-        <div style="text-align:center;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;" id="fcCounter">1 / 1</div>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <button onclick="prevCard()" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x2190; Prev</button>
-          <button onclick="nextCard()" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Next &#x2192;</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-bottom:12px;">
-          <button onclick="markFC('know')"   style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x2705; Pata Hai</button>
-          <button onclick="markFC('review')" style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--orange);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F504; Dobara</button>
-        </div>
-        <div style="font-size:11px;font-weight:600;color:var(--text2);text-align:center;padding:8px;background:var(--bg);border-radius:8px;" id="fcProgress">&#x2705; Pata hai: 0 | &#x1F504; Dobara: 0 | Total: 0</div>
-      </div>
-      <!-- Lecture view -->
-      <div id="sylLecView" style="display:none;">
-        <div style="display:flex;gap:6px;margin-bottom:12px;">
-          <button id="ltab-ph" class="acs-fbtn on" onclick="lecTab('physics')">&#x26A1; Physics</button>
-          <button id="ltab-ch" class="acs-fbtn"    onclick="lecTab('chemistry')">&#x1F9EA; Chem</button>
-          <button id="ltab-ma" class="acs-fbtn"    onclick="lecTab('maths')">&#x1F4D0; Maths</button>
-        </div>
-        <div id="lecChapList"></div>
-      </div>
-    </div>
-  </div>
-
 </div><!-- end .wrap -->
 
-<!-- BOTTOM NAV -->
-<div id="bottomNav" style="display:none">
-  <button class="nav-btn on" data-sec="home"   onclick="showNav('home',this)"><div class="nav-icon-wrap">🏠</div><div class="nav-label">Home</div></button>
-  <button class="nav-btn"    data-sec="timer"  onclick="showNav('timer',this)"><div class="nav-icon-wrap">⏱️</div><div class="nav-label">Timer</div></button>
-  <button class="nav-btn"    data-sec="tasks"  onclick="showNav('tasks',this)"><div class="nav-icon-wrap">📋</div><div class="nav-label">Lectures</div></button>
-  <button class="nav-btn"    data-sec="arena"  onclick="showNav('arena',this)"><div class="nav-icon-wrap">⚔️</div><div class="nav-label">Arena</div></button>
-  <button id="navMoreBtn" onclick="toggleAppDrawer()">
-    <div class="nav-icon-wrap">⋯</div>
-    <div class="nav-label">More</div>
-  </button>
-</div>
-
-<!-- APP DRAWER (slide-up panel with all extra tabs) -->
-<div id="appDrawer">
-  <div id="drawerBackdrop" onclick="closeAppDrawer()"></div>
-  <div id="drawerPanel">
-    <div id="drawerHandle"></div>
-    <div id="drawerTitle">All Sections</div>
-    <div id="drawerGrid">
-      <button class="drawer-btn" data-sec="stats"  onclick="drawerNav('stats',this)"><div class="nav-icon-wrap">📊</div><div class="nav-label">Stats</div></button>
-      <button class="drawer-btn" data-sec="revise" onclick="drawerNav('revise',this)"><div class="nav-icon-wrap">📓</div><div class="nav-label">Revise</div></button>
-      <button class="drawer-btn" data-sec="syl"    onclick="drawerNav('syl',this)"><div class="nav-icon-wrap">🧠</div><div class="nav-label">Flashcards</div></button>
-    </div>
-  </div>
-</div>
-
-<!-- LOGOUT CONFIRM MODAL -->
-<div id="logoutModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:300px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-    <div style="font-size:40px;margin-bottom:12px;">🚪</div>
-    <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px;">Logout karna hai?</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.5;">Tera data cloud mein safe rahega.<br>Wapas login karke access kar sakte ho.</div>
-    <div style="display:flex;gap:10px;">
-      <button onclick="closeLogoutModal()" style="flex:1;padding:12px;border-radius:10px;border:2px solid var(--border);background:#fff;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Cancel</button>
-      <button onclick="doLogout()" style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Logout</button>
-    </div>
-  </div>
-</div>
-
-<!-- NOTIFICATION SETTINGS MODAL -->
-<div id="notifModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.55);align-items:flex-end;justify-content:center;">
-  <div style="background:var(--white);border-radius:24px 24px 0 0;padding:24px 20px 32px;max-width:480px;width:100%;box-shadow:0 -8px 40px rgba(0,0,0,0.25);max-height:90vh;overflow-y:auto;">
-    <div style="width:40px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 20px;"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <div style="font-size:18px;font-weight:900;color:var(--text);">🔔 Daily Reminders</div>
-      <button onclick="closeNotifModal()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px;font-family:'Inter',sans-serif;">✕</button>
-    </div>
-    <div style="font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.5;">Roz tujhe yaad dilayenge — padhai ka time, streak mat todna, aur motivation! 🔥</div>
-    <div id="notifStatus" style="font-size:12px;font-weight:700;color:var(--text2);padding:10px 14px;background:var(--bg);border-radius:10px;border:1.5px solid var(--border);margin-bottom:14px;">🔕 Notifications abhi off hain</div>
-    <button id="notifEnableBtn" onclick="enableNotifications()" style="width:100%;padding:13px;border-radius:12px;border:none;background:var(--blue);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:18px;">🔔 Notifications Enable Karo</button>
-    <div style="font-size:11px;font-weight:800;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">📅 Reminder Schedule</div>
-    <div id="notifScheduleBox"></div>
-    <button onclick="sendTestNotification()" style="width:100%;margin-top:16px;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">🧪 Test Notification Bhejo</button>
-    <div style="margin-top:14px;padding:10px 12px;background:var(--bluelt);border-radius:10px;font-size:11px;color:var(--blue);line-height:1.6;"><b>💡 Tip:</b> Pehli baar browser permissions allow karni padegi. Uske baad notifications background mein bhi aayengi!</div>
-  </div>
-</div>
-
-<!-- DOUBLE CONFIRM MODAL -->
-<div class="dconfirm-overlay" id="dconfirmOverlay">
-  <div class="dconfirm-box">
-    <div class="dconfirm-icon" id="dconfirmIcon">🗑️</div>
-    <div class="dconfirm-step" id="dconfirmStep">STEP 1 OF 2</div>
-    <div class="dconfirm-title" id="dconfirmTitle">Reset karna hai?</div>
-    <div class="dconfirm-msg" id="dconfirmMsg">Yeh action undo nahi hoga!</div>
-    <div class="dconfirm-btns">
-      <button class="dconfirm-cancel" onclick="dconfirmCancel()">Cancel</button>
-      <button class="dconfirm-ok" id="dconfirmOkBtn" onclick="dconfirmNext()">Haan, Reset Karo</button>
-    </div>
-  </div>
-</div>
 
 <!-- FIREBASE -->
 <script type="module">
@@ -1380,11 +1394,13 @@ var _currentNavBtn = null;
 // Section titles & icons for the global back bar
 var _SEC_META = {
   timer:  { icon:'⏱️', title:'Study Timer' },
+  syl:    { icon:'📚', title:'Syllabus' },
   arena:  { icon:'⚔️', title:'Arena' },
   stats:  { icon:'📊', title:'Stats & Mocks' },
   revise: { icon:'📓', title:'Revision Tracker' },
-  tasks:  { icon:'📋', title:'Lectures' },
-  syl:    { icon:'🧠', title:'Flashcards & Syllabus' }
+  tasks:  { icon:'📋', title:'Tasks' },
+  ai:     { icon:'🤖', title:'AI Tutor' },
+  mcq:    { icon:'📄', title:'MCQ Generator' }
 };
 
 function _setNavVisible(visible, sectionName){
@@ -1442,9 +1458,9 @@ function showNav(name, btn, skipHistory){
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('on');});
   var sec=document.getElementById('sec-'+name);
   if(sec) sec.classList.add('on');
-  if(btn) btn.classList.add('on');
+  btn.classList.add('on');
   // If it's a main nav button, close drawer and deactivate more btn
-  var drawerSecs = ['stats','revise','syl'];
+  var drawerSecs = ['stats','revise','tasks','ai','mcq'];
   if(drawerSecs.indexOf(name)===-1){
     closeAppDrawer && closeAppDrawer();
     var mb=document.getElementById('navMoreBtn');
@@ -1478,12 +1494,12 @@ function showNav(name, btn, skipHistory){
   if(!skipHistory){
     history.pushState({section: name, prev: prevSection}, '', '#'+name);
   }
+  if(name==='syl'){renderSylChapList();updProg();}
   if(name==='timer'){renderStudyUI();renderPlanChapList();}
   if(name==='stats'){renderStats();renderArenaChapterStats();renderHeatmap();renderErrorBook();renderBadges();refreshLeaderboard();renderDailyArenaStats();}
   if(name==='revise'){renderRevTracker();}
   if(name==='home'){renderChecklist();renderBadges();renderSpacedRepReminders();}
   if(name==='tasks'){renderTasks();}
-  if(name==='syl'){if(typeof loadFC==='function') loadFC();}
 }
 
 // Handle Android/browser back button via popstate
@@ -1624,23 +1640,69 @@ function renderWeekGraph(){
   });
 }
 
-// SYLLABUS FUNCTIONS (stubs — section removed but data still used for Arena/Revision)
-function buildSyl(){ updProg(); }
-function updProg(){
-  var tot=0,dn=0;
-  Object.keys(SYL).forEach(function(sk){
-    var st=SYL[sk].chapters.length;
-    for(var i=0;i<st;i++){tot++;if(done[sk+i])dn++;}
+// ═══════════════════════════════════════
+// SYLLABUS
+// ═══════════════════════════════════════
+function sylTab(sub){
+  curSylSub=sub;
+  ['physics','chemistry','maths'].forEach(function(s){
+    var b=document.getElementById('stab-'+(s==='physics'?'ph':s==='chemistry'?'ch':'ma'));
+    if(b) b.classList.toggle('on',s===sub);
   });
+  renderSylChapList();
 }
+function renderSylChapList(){
+  var container=document.getElementById('sylChapList'); if(!container)return;
+  var sk=curSylSub;
+  var dc=sk==='physics'?'dph':sk==='chemistry'?'dch':'dma';
+  var html='';
+  SYL[sk].chapters.forEach(function(ch,i){
+    var key=sk+i, isDone=!!done[key];
+    html+='<div class="syl-ch-item'+(isDone?' '+dc:'')+'" onclick="togCh(\''+sk+'\','+i+')">'
+      +'<div class="syl-tick">'+(isDone?'&#10003;':'')+'</div>'
+      +'<div class="syl-ch-num">'+(i+1)+'</div>'
+      +'<div class="syl-ch-name">'+ch+'</div>'
+      +'</div>';
+  });
+  container.innerHTML=html;
+}
+function buildSyl(){ updProg(); renderSylChapList(); }
 function togCh(sk,i){
   var key=sk+i; done[key]=!done[key];
+  // Spaced repetition: record when chapter was completed
   if(done[key]){ spacedRep[key]={doneDate:today(),intervals:[3,7,15,30],nextIdx:0}; }
   else { delete spacedRep[key]; }
-  saveLocal();
+  renderSylChapList(); updProg(); saveLocal();
   window.FS.saveSyl(done);
   if(!window._isGuest) window.FS.saveSpacedRep(spacedRep);
   renderSpacedRepReminders();
+}
+function updProg(){
+  var tot=0,dn=0,sub={};
+  Object.keys(SYL).forEach(function(sk){
+    var sd=0,st=SYL[sk].chapters.length;
+    for(var i=0;i<st;i++){tot++;if(done[sk+i]){dn++;sd++;}}
+    sub[sk]={dn:sd,tot:st};
+  });
+  var pct=tot?Math.round(dn/tot*100):0;
+  var ep=document.getElementById('sylPct'); if(ep) ep.textContent=pct+'%';
+  var eb=document.getElementById('sylBar'); if(eb) eb.style.width=pct+'%';
+  var ec=document.getElementById('sylCnt'); if(ec) ec.textContent=dn+'/'+tot;
+  var sbars=document.getElementById('sylSubBars');
+  if(sbars){
+    var cols={physics:'var(--blue)',chemistry:'var(--orange)',maths:'var(--green)'};
+    var labs={physics:'⚡ Physics',chemistry:'🧪 Chemistry',maths:'📐 Maths'};
+    var html='';
+    Object.keys(SYL).forEach(function(sk){
+      var d2=sub[sk],p2v=d2.tot?Math.round(d2.dn/d2.tot*100):0;
+      html+='<div class="sub-bar-row">'
+        +'<div class="sub-bar-lbl" style="color:'+cols[sk]+'">'+labs[sk]+'</div>'
+        +'<div class="sub-bar-bg"><div class="sub-bar-fill" style="width:'+p2v+'%;background:'+cols[sk]+'"></div></div>'
+        +'<div class="sub-bar-pct" style="color:'+cols[sk]+'">'+p2v+'%</div>'
+        +'</div>';
+    });
+    sbars.innerHTML=html;
+  }
 }
 
 // ═══════════════════════════════════════
@@ -2381,6 +2443,79 @@ function renderSubjectStats(){
   el.innerHTML=overallHtml+cardsHtml;
 }
 
+// ═══════════════════════════════════════
+// ⚔️ ARENA CHAPTER STATS  ← NEW FEATURE
+// ═══════════════════════════════════════
+var ACS_SCOLOR = {physics:'#eef2ff', chemistry:'#fff7ed', maths:'#dcfce7'};
+var ACS_TCOLOR = {physics:'#4f46e5', chemistry:'#ea580c', maths:'#16a34a'};
+var ACS_EMOJI  = {physics:'⚡', chemistry:'🧪', maths:'📐'};
+
+// Called after every Arena result — merges this session's data into global stats
+function updateArenaChapterStats(chapData){
+  Object.keys(chapData).forEach(function(ck){
+    if(!arenaChapterStats[ck]){
+      arenaChapterStats[ck] = {sub: chapData[ck].sub, ch: chapData[ck].ch, attempted:0, corr:0, wrong:0, skip:0};
+    }
+    arenaChapterStats[ck].attempted += chapData[ck].attempted;
+    arenaChapterStats[ck].corr     += (chapData[ck].corr  || 0);
+    arenaChapterStats[ck].wrong    += (chapData[ck].wrong || 0);
+    arenaChapterStats[ck].skip     += (chapData[ck].skip  || 0);
+  });
+  saveLocal();
+  if(window.FS && window._uid) window.FS.saveArenaChapterStats(arenaChapterStats);
+  renderArenaChapterStats();
+  renderHeatmap();
+  renderSubjectStats();
+}
+
+// Render the stats card in the Stats section
+function renderArenaChapterStats(){
+  var el = document.getElementById('arenaChapList');
+  if(!el) return;
+
+  // Get keys and apply subject filter
+  var keys = Object.keys(arenaChapterStats);
+  if(acsFilter !== 'all'){
+    keys = keys.filter(function(k){ return arenaChapterStats[k].sub === acsFilter; });
+  }
+
+  // Sort: most attempted first
+  keys.sort(function(a,b){
+    return arenaChapterStats[b].attempted - arenaChapterStats[a].attempted;
+  });
+
+  if(!keys.length){
+    el.innerHTML = '<div class="acs-empty">'
+      + '⚔️ Abhi koi data nahi<br>'
+      + '<span style="font-size:11px;">Arena mein test do — chapter stats yahan dikhenge!</span>'
+      + '</div>';
+    return;
+  }
+
+  var html = '';
+  keys.forEach(function(ck, idx){
+    var s = arenaChapterStats[ck];
+    var rank = idx + 1;
+    var rankColor = rank === 1 ? '#f59e0b' : rank === 2 ? '#94a3b8' : rank === 3 ? '#cd7c2f' : 'var(--text3)';
+    var acc = s.attempted > 0 ? Math.round((s.corr||0)/s.attempted*100) : 0;
+    html += '<div class="acs-row" style="flex-wrap:wrap;gap:4px;">'
+      + '<div style="display:flex;align-items:center;gap:8px;width:100%;">'
+      +   '<div class="acs-rank" style="color:'+rankColor+'">'+(rank<=3?['🥇','🥈','🥉'][rank-1]:rank)+'</div>'
+      +   '<div class="acs-ch">'+s.ch+'</div>'
+      +   '<span class="acs-sub-tag" style="background:'+ACS_SCOLOR[s.sub]+';color:'+ACS_TCOLOR[s.sub]+'">'+ ACS_EMOJI[s.sub] +'</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:5px;width:100%;margin-top:4px;">'
+      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--blue)">'+s.attempted+'</div><div class="acs-count-lbl">TOTAL</div></div>'
+      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--green)">'+(s.corr||0)+'</div><div class="acs-count-lbl">CORRECT</div></div>'
+      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--red)">'+(s.wrong||0)+'</div><div class="acs-count-lbl">WRONG</div></div>'
+      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--text2)">'+(s.skip||0)+'</div><div class="acs-count-lbl">SKIP</div></div>'
+      +   '<div class="acs-count" style="flex:1;"><div class="acs-count-val" style="color:var(--purple)">'+acc+'%</div><div class="acs-count-lbl">ACC</div></div>'
+      + '</div>'
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
 // Filter by subject
 function setACSFilter(f, btn){
   acsFilter = f;
@@ -2409,6 +2544,80 @@ function clearArenaChapterStats(){
     }
   });
 }
+
+// ═══════════════════════════════════════
+// AI CHAT
+// ═══════════════════════════════════════
+var WURL='https://jeegemini.manojd9414.workers.dev';
+var SYS={role:'system',content:'Tu ek expert JEE teacher hai. Physics, Chemistry aur Maths ke questions step-by-step explain kar. Hinglish mein baat kar. Bahut clear aur concise reh.'};
+var aiCur='gemini',aiHist={gemini:[SYS],grok:[SYS],chatgpt:[SYS]},aiLoad=false;
+var AI_LABELS={gemini:'GEMINI 2.0 FLASH',grok:'GROK 3',chatgpt:'GPT-4o'};
+
+function switchAI(name){
+  aiCur=name;
+  document.querySelectorAll('.ai-tab').forEach(function(b){b.classList.remove('on');});
+  var t=document.getElementById('at'+name);if(t)t.classList.add('on');
+  var lbl=document.getElementById('aiLabel');if(lbl)lbl.textContent=AI_LABELS[name];
+  renderChat();
+}
+function renderChat(){
+  var win=document.getElementById('chatWin');win.innerHTML='';
+  var hist=aiHist[aiCur];
+  if(hist.length<=1){addBub('b','\uD83D\uDC4B JEE ka koi bhi sawaal pucho \u2014 Physics, Chemistry ya Maths!');return;}
+  hist.forEach(function(m){if(m.role!=='system')addBub(m.role==='user'?'u':'b',m.content);});
+}
+function addBub(side,text){
+  var win=document.getElementById('chatWin');
+  var wrap=document.createElement('div');wrap.className='cmsg '+side;
+  var bub=document.createElement('div');bub.className='cbub '+side;bub.textContent=text;
+  wrap.appendChild(bub);win.appendChild(wrap);win.scrollTop=win.scrollHeight;
+}
+function chatSend(){
+  if(aiLoad)return;
+  var ta=document.getElementById('chatTxt');
+  var txt=ta.value.trim();if(!txt)return;
+  ta.value='';ta.style.height='42px';
+  addBub('u',txt);
+  aiHist[aiCur].push({role:'user',content:txt});
+  aiLoad=true;
+  var btn=document.getElementById('chatSendBtn');btn.disabled=true;btn.textContent='...';
+  var win=document.getElementById('chatWin');
+  var tw=document.createElement('div');tw.className='cmsg b';tw.id='typBub';
+  var tb2=document.createElement('div');tb2.className='cbub b ty';tb2.textContent='typing...';
+  tw.appendChild(tb2);win.appendChild(tw);win.scrollTop=win.scrollHeight;
+  var contents=[
+    {role:'user',parts:[{text:'You are an expert JEE teacher. Explain step by step in Hinglish.'}]},
+    {role:'model',parts:[{text:'Bilkul! Pucho koi bhi JEE sawaal!'}]}
+  ];
+  aiHist[aiCur].forEach(function(m){
+    if(m.role!=='system')contents.push({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]});
+  });
+  fetch(WURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gemini-2.0-flash',contents:contents,generationConfig:{temperature:0.7,maxOutputTokens:2048}})})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var reply=data.candidates&&data.candidates[0]&&data.candidates[0].content?data.candidates[0].content.parts[0].text:('\u274C Error: '+(data.error?data.error.message:'Unknown'));
+    aiHist[aiCur].push({role:'assistant',content:reply});
+    var tb3=document.getElementById('typBub');if(tb3)tb3.remove();
+    addBub('b',reply);
+  })
+  .catch(function(err){var tb3=document.getElementById('typBub');if(tb3)tb3.remove();addBub('b','\u274C Error: '+err.message);})
+  .finally(function(){aiLoad=false;btn.disabled=false;btn.textContent='Send \u25B6';});
+}
+function clearChat(){
+  dconfirmShow({
+    icon:'🤖',
+    title:'Chat Clear?',
+    msg:'"'+['Gemini','Grok','ChatGPT'][['gemini','grok','chatgpt'].indexOf(aiCur)]+'" ki poori conversation delete ho jaayegi.',
+    title2:'Pakka clear karna hai?',
+    msg2:'Chat history wapas nahi aayegi — bilkul undo nahi hoga!',
+    okText:'Haan, Clear Karo',
+    okText2:'CONFIRM — Haan Chat Delete Karo',
+    onConfirm: function(){aiHist[aiCur]=[SYS];renderChat();}
+  });
+}
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chatSend();}}
+function chatResize(el){el.style.height='42px';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+renderChat();
 
 // ═══════════════════════════════════════
 // 🍅 POMODORO TIMER
@@ -3247,6 +3456,27 @@ function dconfirmNext(){
 }
 function dconfirmCancel(){
   document.getElementById('dconfirmOverlay').classList.remove('open');
+  _dconfirmStep = 1;
+  _dconfirmCb = null;
+}
+
+// DARK MODE
+var _darkMode=false;
+function initDarkMode(){try{var s=localStorage.getItem('jee_dark_mode');if(s==='1'){_darkMode=true;document.body.classList.add('dark');var b=document.getElementById('dmToggleBtn');if(b)b.textContent='\u2600\ufe0f';}}catch(e){}}
+function toggleDarkMode(){_darkMode=!_darkMode;document.body.classList.toggle('dark',_darkMode);var b=document.getElementById('dmToggleBtn');if(b)b.textContent=_darkMode?'\u2600\ufe0f':'\ud83c\udf19';try{localStorage.setItem('jee_dark_mode',_darkMode?'1':'0');}catch(e){}}
+initDarkMode();
+
+// LOGOUT
+// ═══════════════════════════════════════
+function confirmLogout(){
+  document.getElementById('logoutModal').style.display='flex';
+}
+function closeLogoutModal(){
+  document.getElementById('logoutModal').style.display='none';
+}
+function doLogout(){
+  closeLogoutModal();
+  window._doLogoutFn && window._doLogoutFn();
 }
 
 // ═══════════════════════════════════════
@@ -4828,33 +5058,213 @@ function drawerNav(name, btn){
   window.mcqFileChosen=function(){};
   window.mcqHandleDrop=function(e){e.preventDefault();};
 
+  window.mcqHandleDrop = function(e){
+    e.preventDefault();
+    document.getElementById('mcqUploadLabel').style.borderColor='var(--border)';
+    document.getElementById('mcqUploadLabel').style.background='var(--bg)';
+    var file = e.dataTransfer.files[0];
+    if(!file || file.type !== 'application/pdf'){ alert('Sirf PDF drop karo!'); return; }
+    if(file.size > 10*1024*1024){ alert('File 10MB se badi hai!'); return; }
+    _readPDF(file);
+  };
 
+  function _readPDF(file){
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      _pdfBase64 = ev.target.result.split(',')[1];
+      document.getElementById('mcqUploadIcon').textContent = '✅';
+      document.getElementById('mcqUploadText').textContent = file.name;
+      var btn = document.getElementById('mcqGenBtn');
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+    };
+    reader.readAsDataURL(file);
+  }
 
+  window.mcqGenerate = async function(){
+    if(!_pdfBase64){ alert('Pehle PDF upload karo!'); return; }
+    var count = document.getElementById('mcqCount').value;
+    var diff  = document.getElementById('mcqDiff').value;
+    var lang  = document.getElementById('mcqLang').value;
 
-// ── DARK MODE ──
-function toggleDarkMode(){
-  document.body.classList.toggle('dark');
-  try{ localStorage.setItem('jee_dark', document.body.classList.contains('dark')?'1':'0'); }catch(e){}
-  var btn = document.getElementById('dmToggleBtn');
-  if(btn) btn.textContent = document.body.classList.contains('dark') ? '☀️' : '💀';
-}
-(function(){
-  try{ if(localStorage.getItem('jee_dark')==='1'){ document.body.classList.add('dark'); var b=document.getElementById('dmToggleBtn'); if(b)b.textContent='☀️'; } }catch(e){}
+    // Show loading
+    document.getElementById('mcqLoading').style.display='block';
+    document.getElementById('mcqResults').style.display='none';
+    document.getElementById('mcqGenBtn').disabled=true;
+    document.getElementById('mcqGenBtn').style.opacity='.5';
+    _mcqList=[]; _userAnswers={}; _submitted=false;
+
+    var loadMsgs = [
+      'PDF padha ja raha hai... 📖',
+      'Topics dhundhe ja rahe hain... 🔍',
+      'MCQs ban rahe hain... ✍️',
+      'Options shuffle ho rahe hain... 🔀',
+      'Last check ho raha hai... ✅'
+    ];
+    var li=0;
+    var loadIv = setInterval(function(){
+      li=(li+1)%loadMsgs.length;
+      var el=document.getElementById('mcqLoadText');
+      if(el) el.textContent=loadMsgs[li];
+    }, 2000);
+
+    var langInstr = lang==='hinglish' ? 'Use Hinglish (mix of Hindi and English) for questions and options.'
+                  : lang==='hindi'    ? 'Use pure Hindi (Devanagari) for questions and options.'
+                  : 'Use English for questions and options.';
+    var diffMap = {easy:'easy/basic conceptual',medium:'medium JEE Mains level',hard:'hard JEE Advanced level'};
+
+    var prompt = 'You are a JEE exam expert. Analyze the uploaded question paper PDF and generate exactly '+count+' high-quality MCQs based on its content.\n\n'+
+      'Rules:\n'+
+      '- Difficulty: '+diffMap[diff]+'\n'+
+      '- '+langInstr+'\n'+
+      '- Each MCQ must have exactly 4 options (A, B, C, D)\n'+
+      '- One correct answer per question\n'+
+      '- Include a brief explanation for the correct answer\n'+
+      '- Base questions on the actual content/topics in the PDF\n\n'+
+      'Respond ONLY with a valid JSON array, no markdown, no backticks, no extra text:\n'+
+      '[{"q":"Question text","options":["A. option1","B. option2","C. option3","D. option4"],"correct":0,"explanation":"Why this is correct"},...]\n'+
+      '"correct" is the 0-based index of the correct option.';
+
+    try {
+      var resp = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model:'claude-sonnet-4-20250514',
+          max_tokens:4000,
+          messages:[{
+            role:'user',
+            content:[
+              {type:'document',source:{type:'base64',media_type:'application/pdf',data:_pdfBase64}},
+              {type:'text',text:prompt}
+            ]
+          }]
+        })
+      });
+      clearInterval(loadIv);
+      var data = await resp.json();
+      if(data.error){ throw new Error(data.error.message||'API Error'); }
+      var raw = data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+      // Clean JSON
+      var clean = raw.replace(/```json|```/g,'').trim();
+      // Extract JSON array
+      var start = clean.indexOf('['), end = clean.lastIndexOf(']');
+      if(start===-1||end===-1) throw new Error('JSON nahi mila response mein');
+      _mcqList = JSON.parse(clean.slice(start,end+1));
+      if(!Array.isArray(_mcqList)||_mcqList.length===0) throw new Error('MCQ list empty hai');
+      _renderMCQs();
+    } catch(err){
+      clearInterval(loadIv);
+      document.getElementById('mcqLoading').style.display='none';
+      var btn=document.getElementById('mcqGenBtn');
+      btn.disabled=false; btn.style.opacity='1'; btn.style.cursor='pointer';
+      alert('Error: '+err.message+'\nPhir try karo!');
+    }
+  };
+
+  function _renderMCQs(){
+    document.getElementById('mcqLoading').style.display='none';
+    document.getElementById('mcqScoreBar').style.display='none';
+    document.getElementById('mcqSubmitBtn').style.display='block';
+    var list = document.getElementById('mcqQuestionList');
+    list.innerHTML='';
+    _mcqList.forEach(function(q,qi){
+      var labels=['A','B','C','D'];
+      var optsHtml = q.options.map(function(opt,oi){
+        // Strip leading "A. " etc if present
+        var txt = opt.replace(/^[A-D][.)]\s*/,'');
+        return '<button class="mcq-opt" onclick="mcqSelect('+qi+','+oi+',this)" id="mcqOpt_'+qi+'_'+oi+'">'
+          +'<span class="mcq-opt-label" id="mcqLbl_'+qi+'_'+oi+'">'+labels[oi]+'</span>'
+          +txt
+          +'</button>';
+      }).join('');
+      var card = '<div class="mcq-q-card" id="mcqCard_'+qi+'">'
+        +'<div class="mcq-q-num">Q '+(qi+1)+' of '+_mcqList.length+'</div>'
+        +'<div class="mcq-q-text">'+q.q+'</div>'
+        +optsHtml
+        +(q.explanation?'<div class="mcq-exp" id="mcqExp_'+qi+'">💡 '+q.explanation+'</div>':'')
+        +'</div>';
+      list.innerHTML+=card;
+    });
+    document.getElementById('mcqResults').style.display='block';
+    // Scroll to results
+    document.getElementById('mcqResults').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  window.mcqSelect = function(qi, oi, btn){
+    if(_submitted) return;
+    // Remove previous selection for this question
+    var labels=['A','B','C','D'];
+    for(var i=0;i<4;i++){
+      var ob=document.getElementById('mcqOpt_'+qi+'_'+i);
+      var lb=document.getElementById('mcqLbl_'+qi+'_'+i);
+      if(ob){ ob.classList.remove('sel'); }
+      if(lb){ lb.style.background=''; lb.style.color=''; lb.style.borderColor=''; }
+    }
+    btn.classList.add('sel');
+    var lbl=document.getElementById('mcqLbl_'+qi+'_'+oi);
+    if(lbl){ lbl.style.background='var(--blue)'; lbl.style.color='#fff'; lbl.style.borderColor='var(--blue)'; }
+    _userAnswers[qi]=oi;
+  };
+
+  window.mcqSubmit = function(){
+    if(_submitted) return;
+    var notAnswered=[];
+    for(var i=0;i<_mcqList.length;i++){
+      if(_userAnswers[i]===undefined) notAnswered.push(i+1);
+    }
+    if(notAnswered.length>0){
+      if(!confirm('Q '+notAnswered.join(', ')+' chhoot gaye hain. Phir bhi submit karo?')) return;
+    }
+    _submitted=true;
+    document.getElementById('mcqSubmitBtn').style.display='none';
+    var correct=0;
+    _mcqList.forEach(function(q,qi){
+      var userAns = _userAnswers[qi];
+      var corrAns = q.correct;
+      // Show correct answer
+      var corrBtn=document.getElementById('mcqOpt_'+qi+'_'+corrAns);
+      var corrLbl=document.getElementById('mcqLbl_'+qi+'_'+corrAns);
+      if(corrBtn){ corrBtn.classList.remove('sel'); corrBtn.classList.add('correct'); }
+      if(corrLbl){ corrLbl.style.background='var(--green)'; corrLbl.style.color='#fff'; corrLbl.style.borderColor='var(--green)'; }
+      if(userAns!==undefined && userAns!==corrAns){
+        var wrongBtn=document.getElementById('mcqOpt_'+qi+'_'+userAns);
+        var wrongLbl=document.getElementById('mcqLbl_'+qi+'_'+userAns);
+        if(wrongBtn){ wrongBtn.classList.remove('sel'); wrongBtn.classList.add('wrong'); }
+        if(wrongLbl){ wrongLbl.style.background='var(--red)'; wrongLbl.style.color='#fff'; wrongLbl.style.borderColor='var(--red)'; }
+      }
+      if(userAns===corrAns) correct++;
+      // Show explanation
+      var expEl=document.getElementById('mcqExp_'+qi);
+      if(expEl) expEl.classList.add('on');
+    });
+    // Show score
+    var pct=Math.round(correct/_mcqList.length*100);
+    document.getElementById('mcqScoreVal').textContent=correct+'/'+_mcqList.length;
+    var msg = pct>=80?'🔥 Zabardast! Tu JEE crack karega!':pct>=60?'👍 Achha hai! Thoda aur practice karo.':pct>=40?'📚 Mehnat chahiye bhai. Dobara padhle!':'💪 Koi baat nahi! Galtiyan seekhne ke liye hoti hain.';
+    document.getElementById('mcqScoreMsg').textContent=msg;
+    document.getElementById('mcqScoreBar').style.display='block';
+    document.getElementById('mcqScoreBar').scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.mcqReset = function(){
+    _pdfBase64=null; _mcqList=[]; _userAnswers={}; _submitted=false;
+    document.getElementById('mcqUploadIcon').textContent='📄';
+    document.getElementById('mcqUploadText').textContent='PDF yahan drop karo ya tap karke choose karo';
+    document.getElementById('mcqFileInput').value='';
+    document.getElementById('mcqResults').style.display='none';
+    document.getElementById('mcqLoading').style.display='none';
+    document.getElementById('mcqScoreBar').style.display='none';
+    var btn=document.getElementById('mcqGenBtn');
+    btn.disabled=true; btn.style.opacity='.5'; btn.style.cursor='not-allowed';
+  };
+
+  window.mcqRetry = function(){
+    _userAnswers={}; _submitted=false;
+    mcqGenerate();
+  };
 })();
-
-// ── LOGOUT ──
-function confirmLogout(){
-  var m = document.getElementById('logoutModal');
-  if(m) m.style.display='flex';
-}
-function closeLogoutModal(){
-  var m = document.getElementById('logoutModal');
-  if(m) m.style.display='none';
-}
-function doLogout(){
-  closeLogoutModal();
-  if(window._doLogoutFn) window._doLogoutFn();
-}
 
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
@@ -4867,4 +5277,29 @@ window.addEventListener('beforeunload', function(){ saveTimerState(); saveLocal(
 </script>
 
 </body>
-</html>
+</html><!-- BOTTOM NAV -->
+<div id="bottomNav" style="display:none">
+  <button class="nav-btn on" data-sec="home"   onclick="showNav('home',this)"><div class="nav-icon-wrap">🏠</div><div class="nav-label">Home</div></button>
+  <button class="nav-btn"    data-sec="arena"  onclick="showNav('arena',this)"><div class="nav-icon-wrap">⚔️</div><div class="nav-label">Arena</div></button>
+  <button id="navMoreBtn" onclick="toggleAppDrawer()">
+    <div class="nav-icon-wrap">⋯</div>
+    <div class="nav-label">More</div>
+  </button>
+</div>
+
+<!-- APP DRAWER (slide-up panel with all extra tabs) -->
+<div id="appDrawer">
+  <div id="drawerBackdrop" onclick="closeAppDrawer()"></div>
+  <div id="drawerPanel">
+    <div id="drawerHandle"></div>
+    <div id="drawerTitle">All Sections</div>
+    <div id="drawerGrid">
+      <button class="drawer-btn" data-sec="stats"  onclick="drawerNav('stats',this)"><div class="nav-icon-wrap">📊</div><div class="nav-label">Stats</div></button>
+      <button class="drawer-btn" data-sec="revise" onclick="drawerNav('revise',this)"><div class="nav-icon-wrap">📓</div><div class="nav-label">Revise</div></button>
+      <button class="drawer-btn" data-sec="tasks"  onclick="drawerNav('tasks',this)"><div class="nav-icon-wrap">📋</div><div class="nav-label">Tasks</div></button>
+    </div>
+  </div>
+</div>
+
+
+
