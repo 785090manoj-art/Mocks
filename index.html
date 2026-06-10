@@ -158,10 +158,9 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 #loginScreen{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);overflow-y:auto;padding:20px 0;}
 #loginScreen[style*="display:none"]{pointer-events:none!important;}
 #loadingScreen[style*="display:none"]{pointer-events:none!important;}
-/* Flashcard flip */
-#fcCard{transition:background .25s;}
 #fcCard.flipped #fcQuestion{display:none;}
 #fcCard.flipped #fcAnswer{display:block!important;}
+#fcCard.flipped #fcCardHint{display:none;}
 .login-card{background:#fff;border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,0.25);margin:auto;}
 .login-logo{font-size:56px;margin-bottom:10px;}
 .login-title{font-size:24px;font-weight:900;color:var(--blue);margin-bottom:4px;}
@@ -251,7 +250,6 @@ body.dark .drawer-btn.on .nav-label{color:#e5e7eb;}
   transition:all .15s;touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;
   border-radius:12px;
-  position:relative;z-index:201;
 }
 .nav-btn:active{transform:scale(0.93);}
 /* Icon tile — the coloured square */
@@ -366,6 +364,7 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 .wbf{width:100%;border-radius:6px;transition:height .5s;}
 .wbd{font-size:9px;font-weight:700;color:var(--text3);}
 .wbh{font-size:9px;font-weight:600;color:var(--text2);}
+;}
 
 /* ARENA */
 .cfg-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px;}
@@ -477,14 +476,14 @@ body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 /* ── DOUBLE CONFIRM MODAL ── */
 .dconfirm-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;}
 .dconfirm-overlay.open{display:flex;}
-.dconfirm-box{background:var(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
+.dconfirm-box{background:(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
 .dconfirm-icon{font-size:44px;margin-bottom:10px;}
-.dconfirm-title{font-size:17px;font-weight:900;color:var(--text);margin-bottom:6px;}
-.dconfirm-msg{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:22px;}
+.dconfirm-title{font-size:17px;font-weight:900;color:(--text);margin-bottom:6px;}
+.dconfirm-msg{font-size:13px;color:(--text2);line-height:1.6;margin-bottom:22px;}
 .dconfirm-step{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--text3);margin-bottom:16px;text-transform:uppercase;}
 .dconfirm-btns{display:flex;gap:10px;}
-.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid (--border);background:transparent;color:(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 .dconfirm-ok.step2{background:#7f1d1d;animation:shake .3s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
 
@@ -707,86 +706,29 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
 
   <!-- TIMER SECTION -->
   <div class="sec" id="sec-timer">
-
-    <!-- TIMER HERO -->
     <div class="timer-hero">
       <div style="font-size:11px;opacity:.7;font-weight:700;letter-spacing:1px;">STUDY TIMER</div>
-      <div class="timer-display" id="studyDisp">00:00:00</div>
-      <div class="timer-sub" id="studySubLabel">Subject chunno aur start karo...</div>
-      <div class="sub-selector">
-        <button class="sub-btn on" id="sbph" onclick="selSub('physics')">&#x26A1; Physics</button>
-        <button class="sub-btn" id="sbch" onclick="selSub('chemistry')">&#x1F9EA; Chem</button>
-        <button class="sub-btn" id="sbma" onclick="selSub('maths')">&#x1F4D0; Maths</button>
-      </div>
-      <div class="timer-btns">
-        <button class="t-btn start" id="studyStartBtn" onclick="togStudyTimer()">&#x25B6; Start</button>
-        <button class="t-btn reset-btn" onclick="rstStudyTimer()">&#x21BA; Reset</button>
-        <button class="t-btn reset-btn" onclick="enterDeepWork()" title="Deep Work Mode">&#x1F3AF; Focus</button>
-      </div>
-      <!-- Pomodoro -->
-      <div style="margin-top:12px;display:flex;align-items:center;justify-content:center;gap:10px;">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:rgba(255,255,255,.8);font-weight:600;">
-          <input type="checkbox" id="pomToggle" onchange="togglePomodoro()" style="width:16px;height:16px;cursor:pointer;">
-          &#x1F345; Pomodoro (25+5)
-        </label>
-        <span id="pomInfo" style="font-size:11px;color:rgba(255,255,255,.6);font-weight:600;">OFF</span>
-      </div>
-      <div id="pomPhaseLabel" class="pom-phase" style="display:none;margin-top:6px;"></div>
-    </div>
-
-    <!-- DAILY GOAL -->
-    <div class="card">
-      <div class="card-title">&#x1F3AF; Aaj Ka Goal</div>
-      <div class="goal-bar-bg"><div class="goal-bar-fill" id="goalBar" style="width:0%"></div></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="font-size:13px;font-weight:700;color:var(--text);" id="goalValDisp">0h 0m / 8h</div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <input type="number" class="goal-inp" id="goalInp" value="8" min="1" max="24" style="width:70px;">
-        <span style="font-size:13px;font-weight:600;color:var(--text2);">hours daily goal</span>
-        <button class="gen-btn" onclick="saveGoal()">Save</button>
-      </div>
-    </div>
-
-    <!-- SUBJECT TIME TODAY -->
-    <div class="card">
-      <div class="card-title">&#x1F4DA; Aaj Kitna Padha?</div>
-      <div class="sub-time-grid">
-        <div class="stc ph"><div class="stc-icon">&#x26A1;</div><div class="stc-name">Physics</div><div class="stc-val" id="ph-time">0h 0m</div></div>
-        <div class="stc ch"><div class="stc-icon">&#x1F9EA;</div><div class="stc-name">Chemistry</div><div class="stc-val" id="ch-time">0h 0m</div></div>
-        <div class="stc ma"><div class="stc-icon">&#x1F4D0;</div><div class="stc-name">Maths</div><div class="stc-val" id="ma-time">0h 0m</div></div>
-      </div>
-    </div>
-
-    <!-- WEEKLY GRAPH -->
-    <div class="card">
-      <div class="card-title">&#x1F4C5; Weekly Study</div>
-      <div class="week-graph" id="weekGraph"></div>
-      <div style="font-size:10px;color:var(--text3);text-align:center;font-weight:600;">Last 7 days</div>
-    </div>
 
     <!-- CHAPTER PLANNER -->
     <div class="card">
-      <div class="card-title">&#x1F4D6; Aaj Konse Chapters?</div>
+      <div class="card-title">📖 Aaj Konse Chapters?</div>
       <div style="display:flex;gap:6px;margin-bottom:12px;">
-        <button class="plan-stab" id="ptph" onclick="switchPlanSub('physics')" style="background:var(--blue);color:#fff;border-color:var(--blue);">&#x26A1; Physics</button>
-        <button class="plan-stab" id="ptch" onclick="switchPlanSub('chemistry')">&#x1F9EA; Chem</button>
-        <button class="plan-stab" id="ptma" onclick="switchPlanSub('maths')">&#x1F4D0; Maths</button>
+        <button class="plan-stab" id="ptph" onclick="switchPlanSub('physics')" style="background:var(--blue);color:#fff;border-color:var(--blue);">⚡ Physics</button>
+        <button class="plan-stab" id="ptch" onclick="switchPlanSub('chemistry')">🧪 Chem</button>
+        <button class="plan-stab" id="ptma" onclick="switchPlanSub('maths')">📐 Maths</button>
       </div>
       <div id="planChapList" style="max-height:250px;overflow-y:auto;"></div>
       <div id="planSelCount" style="margin-top:8px;text-align:center;font-size:13px;font-weight:600;color:var(--text2);"></div>
       <div id="planDoneArea" style="display:none;">
         <div style="margin-top:12px;padding-top:12px;border-top:2px dashed var(--border);">
-          <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;text-align:center;">&#x270F;&#xFE0F; Tick karo jab complete ho</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;text-align:center;">✏️ Tick karo jab complete ho</div>
           <div id="planDoneList"></div>
           <div class="plan-prog-bar"><div class="plan-prog-fill" id="planProgFill" style="width:0%"></div></div>
           <div id="planDoneCount" style="text-align:center;font-size:12px;font-weight:600;color:var(--green);margin-top:6px;"></div>
         </div>
       </div>
     </div>
-
-  </div><!-- end sec-timer -->
-
+    
   <!-- ARENA SECTION -->
   <div class="sec" id="sec-arena">
     <div class="card">
@@ -857,34 +799,13 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
         <div class="res-box"><div class="res-val" style="color:var(--purple)" id="rAcc">0%</div><div class="res-lbl">ACCURACY</div></div>
       </div>
       <div id="ansList" style="text-align:left;"></div>
-      <!-- RANK PREDICTOR -->
-      <div id="rankPredictor" style="display:none;margin-top:14px;background:linear-gradient(135deg,var(--bluelt),var(--purplelt));border:1.5px solid #c7d2fe;border-radius:12px;padding:14px;">
-        <div style="font-size:12px;font-weight:800;color:var(--blue);letter-spacing:.8px;margin-bottom:10px;">&#x1F4CA; RANK PREDICTOR (JEE Main)</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-          <div style="background:#fff;border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:18px;font-weight:900;color:var(--blue);" id="predPercentile">—</div>
-            <div style="font-size:9px;font-weight:700;color:var(--text3);">PERCENTILE</div>
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:18px;font-weight:900;color:var(--purple);" id="predRank">—</div>
-            <div style="font-size:9px;font-weight:700;color:var(--text3);">EST. RANK</div>
-          </div>
-        </div>
-        <div style="background:#fff;border-radius:8px;padding:8px;text-align:center;margin-bottom:8px;">
-          <div style="font-size:14px;font-weight:800;color:var(--green);" id="predCategory">—</div>
-          <div style="font-size:11px;color:var(--text2);margin-top:3px;" id="predMsg"></div>
-        </div>
-        <div style="font-size:10px;color:var(--text3);text-align:center;" id="predScaledScore"></div>
-      </div>
       <!-- MISTAKE LOG (Error Book) -->
       <div id="mistakeLogSection" style="display:none;margin-top:14px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:10px;">&#x1F4D2; Error Book — Wrong Sawal Note Karo</div>
+        <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:10px;">📒 Error Book — Wrong Sawal Note Karo</div>
         <div id="mistakeLogItems"></div>
-        <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">&#x1F4BE; Mistakes Firestore mein Save Karo</button>
+        <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">💾 Mistakes Firestore mein Save Karo</button>
       </div>
-      <button onclick="showNav('stats',document.querySelector('.drawer-btn[data-sec=stats]')||document.querySelector('.nav-btn[data-sec=stats]'))" style="margin-top:12px;width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F4CA; Stats mein dekho &#x2192;</button>
-    </div><!-- end res-card -->
-  </div><!-- end sec-arena -->
+      <button onclick="showNav('stats',document.querySelectorAll('.nav-btn')[4])" style="margin-top:12px;width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">📊 Stats mein dekho →</button>
 
   <!-- STATS SECTION -->
   <div class="sec" id="sec-stats">
@@ -996,63 +917,7 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
       <div id="leaderboardList"><div style="text-align:center;color:var(--text3);padding:16px;font-size:13px;">Loading...</div></div>
     </div>
 
-    <!-- 📄 MOCK TEST BANK -->
-    <div class="card" id="mockBankView">
-      <div class="card-title">&#x1F4C4; Mock Test Bank</div>
-      <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">HTML mock file upload karo aur in-app test do!</div>
-      <!-- Upload area -->
-      <label id="mockHtmlLabel" for="mockHtmlInput" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px;border:2px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--bg);margin-bottom:12px;transition:all .2s;"
-        ondragover="event.preventDefault();this.style.borderColor='var(--blue)';this.style.background='var(--bluelt)';"
-        ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--bg)';"
-        ondrop="event.preventDefault();this.style.borderColor='var(--border)';this.style.background='var(--bg)';if(event.dataTransfer.files[0]){var inp=document.getElementById('mockHtmlInput');var dt=new DataTransfer();dt.items.add(event.dataTransfer.files[0]);inp.files=dt.files;mockHtmlChosen(inp);}">
-        <div style="font-size:32px;" id="mockHtmlIcon">&#x1F4C4;</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text2);text-align:center;" id="mockHtmlText">HTML test file yahan drop karo ya tap karo</div>
-        <input type="file" id="mockHtmlInput" accept=".html,.htm" style="display:none;" onchange="mockHtmlChosen(this)">
-      </label>
-      <input type="text" id="mockTestName" placeholder="Test ka naam (optional)..." style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;margin-bottom:10px;">
-      <button id="mockStartBtn" onclick="mockStartTest()" disabled style="width:100%;padding:13px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:14px;font-weight:700;cursor:not-allowed;font-family:'Inter',sans-serif;opacity:.5;">&#x25B6; Start Test</button>
-      <!-- History -->
-      <div style="margin-top:16px;">
-        <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">&#x1F4CA; Past Results</div>
-        <div id="mockHistoryList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:10px;">&#x23F3; Loading...</div></div>
-      </div>
-    </div>
-
-    <!-- 📝 MOCK TEST VIEW (in-progress) -->
-    <div id="mockTestView" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:10px 14px;background:var(--white);border-radius:12px;border:1.5px solid var(--border);">
-        <div style="font-size:14px;font-weight:800;color:var(--text);" id="mockActiveTitle">Mock Test</div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:13px;font-weight:700;color:var(--orange);" id="mockTimer">00:00</div>
-          <button onclick="mockAbort()" style="padding:5px 10px;border-radius:7px;border:1.5px solid var(--red);background:transparent;color:var(--red);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Quit</button>
-        </div>
-      </div>
-      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-align:center;" id="mockQProgress">0 / 0 answered</div>
-      <div id="mockQuestionList"></div>
-      <button onclick="mockSubmitTest()" style="width:100%;padding:13px;border-radius:10px;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:12px;">&#x1F512; Submit Test</button>
-    </div>
-
-    <!-- ✅ MOCK RESULT VIEW -->
-    <div id="mockResultView" style="display:none;">
-      <div class="card" style="border:2px solid var(--green);">
-        <div style="font-size:15px;font-weight:800;color:var(--green);margin-bottom:4px;" id="mockResultTitle">Result</div>
-        <div style="font-size:28px;font-weight:900;color:var(--blue);margin-bottom:12px;" id="mockResultScore">0/0</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
-          <div style="text-align:center;background:var(--greenlt);border-radius:8px;padding:8px;"><div style="font-size:20px;font-weight:900;color:var(--green);" id="mrCorr">0</div><div style="font-size:9px;font-weight:700;color:var(--text3);">CORRECT</div></div>
-          <div style="text-align:center;background:var(--redlt);border-radius:8px;padding:8px;"><div style="font-size:20px;font-weight:900;color:var(--red);" id="mrWrong">0</div><div style="font-size:9px;font-weight:700;color:var(--text3);">WRONG</div></div>
-          <div style="text-align:center;background:var(--bg);border-radius:8px;padding:8px;"><div style="font-size:20px;font-weight:900;color:var(--text2);" id="mrSkip">0</div><div style="font-size:9px;font-weight:700;color:var(--text3);">SKIPPED</div></div>
-          <div style="text-align:center;background:var(--bluelt);border-radius:8px;padding:8px;"><div style="font-size:20px;font-weight:900;color:var(--blue);" id="mrAcc">0%</div><div style="font-size:9px;font-weight:700;color:var(--text3);">ACCURACY</div></div>
-        </div>
-        <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;" id="mrMsg"></div>
-        <div style="font-size:12px;color:var(--text2);margin-bottom:12px;" id="mrTime"></div>
-        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;" id="mrSaveStatus"></div>
-        <button onclick="mockGoBack()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:10px;">&#x2190; Back to Bank</button>
-        <div style="font-size:12px;font-weight:800;color:var(--text2);margin-bottom:8px;">&#x1F50D; Review</div>
-        <div id="mockReviewList"></div>
-      </div>
-    </div>
-
-  </div><!-- end sec-stats -->
+  </div>
 
     <!-- TASKS SECTION -->
   <div class="sec" id="sec-tasks">
@@ -1131,58 +996,45 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
   <!-- FLASHCARDS / SYLLABUS SECTION -->
   <div class="sec" id="sec-syl">
     <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div class="card-title" style="margin-bottom:0;">&#x1F4DA; Syllabus &amp; Flashcards</div>
-      </div>
+      <div class="card-title">&#x1F9E0; Flashcards &amp; Syllabus</div>
       <!-- Mode tabs -->
       <div style="display:flex;gap:6px;margin-bottom:14px;">
-        <button id="sylModeChap" onclick="setSylMode('chap',this)" style="flex:1;padding:8px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F4D6; Chapters</button>
-        <button id="sylModeFlash" onclick="setSylMode('flash',this)" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F9E0; Flashcards</button>
-        <button id="sylModeLec" onclick="setSylMode('lec',this)" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #ff0000;background:#fff;color:#cc0000;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F534; Lectures</button>
+        <button id="sylModeChap"  onclick="setSylMode('chap',this)"  style="flex:1;padding:8px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F4D6; Chapters</button>
+        <button id="sylModeFlash" onclick="setSylMode('flash',this)" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F9E0; Flash</button>
+        <button id="sylModeLec"   onclick="setSylMode('lec',this)"   style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #f00;background:#fff;color:#c00;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F534; Lec</button>
       </div>
-
-      <!-- Chapter View -->
-      <div id="sylChapView">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Chapters ka completion track karo</div>
-        <div id="sylChapList"></div>
-      </div>
-
-      <!-- Flashcard View -->
+      <!-- Chapter view -->
+      <div id="sylChapView"><div id="sylChapList"></div></div>
+      <!-- Flashcard view -->
       <div id="sylFlashView" style="display:none;">
-        <!-- Subject selector -->
-        <div style="display:flex;gap:6px;margin-bottom:14px;">
-          <button class="fc-sub-btn on" onclick="setFCSub('physics',this)" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x26A1; Physics</button>
-          <button class="fc-sub-btn" onclick="setFCSub('chemistry',this)" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F9EA; Chem</button>
-          <button class="fc-sub-btn" onclick="setFCSub('maths',this)" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F4D0; Maths</button>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+          <button class="fc-sub-btn on" onclick="setFCSub('physics',this)"   style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x26A1; Physics</button>
+          <button class="fc-sub-btn"    onclick="setFCSub('chemistry',this)" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F9EA; Chem</button>
+          <button class="fc-sub-btn"    onclick="setFCSub('maths',this)"     style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F4D0; Maths</button>
         </div>
-        <!-- Flip card -->
-        <div id="fcCard" onclick="flipCard()" style="min-height:160px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:16px;padding:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;margin-bottom:12px;position:relative;overflow:hidden;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.6);margin-bottom:8px;">TAP TO FLIP</div>
+        <!-- Card -->
+        <div id="fcCard" onclick="flipCard()" style="min-height:160px;background:linear-gradient(135deg,var(--blue),var(--purple,#7c3aed));border-radius:16px;padding:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;margin-bottom:12px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.6);margin-bottom:8px;" id="fcCardHint">TAP TO FLIP</div>
           <div style="font-size:15px;font-weight:800;color:#fff;line-height:1.5;" id="fcQuestion">Loading...</div>
           <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;display:none;margin-top:8px;white-space:pre-line;" id="fcAnswer"></div>
         </div>
-        <!-- Counter -->
         <div style="text-align:center;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;" id="fcCounter">1 / 1</div>
-        <!-- Nav buttons -->
         <div style="display:flex;gap:8px;margin-bottom:10px;">
           <button onclick="prevCard()" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x2190; Prev</button>
           <button onclick="nextCard()" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Next &#x2192;</button>
         </div>
-        <!-- Know / Review buttons -->
         <div style="display:flex;gap:8px;margin-bottom:12px;">
-          <button onclick="markFC('know')" style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x2705; Pata Hai</button>
+          <button onclick="markFC('know')"   style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x2705; Pata Hai</button>
           <button onclick="markFC('review')" style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--orange);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">&#x1F504; Dobara</button>
         </div>
-        <!-- Progress -->
         <div style="font-size:11px;font-weight:600;color:var(--text2);text-align:center;padding:8px;background:var(--bg);border-radius:8px;" id="fcProgress">&#x2705; Pata hai: 0 | &#x1F504; Dobara: 0 | Total: 0</div>
       </div>
-
-      <!-- Lecture View -->
+      <!-- Lecture view -->
       <div id="sylLecView" style="display:none;">
         <div style="display:flex;gap:6px;margin-bottom:12px;">
           <button id="ltab-ph" class="acs-fbtn on" onclick="lecTab('physics')">&#x26A1; Physics</button>
-          <button id="ltab-ch" class="acs-fbtn" onclick="lecTab('chemistry')">&#x1F9EA; Chem</button>
-          <button id="ltab-ma" class="acs-fbtn" onclick="lecTab('maths')">&#x1F4D0; Maths</button>
+          <button id="ltab-ch" class="acs-fbtn"    onclick="lecTab('chemistry')">&#x1F9EA; Chem</button>
+          <button id="ltab-ma" class="acs-fbtn"    onclick="lecTab('maths')">&#x1F4D0; Maths</button>
         </div>
         <div id="lecChapList"></div>
       </div>
@@ -1404,7 +1256,7 @@ window.FS = {
 onAuthStateChanged(auth, async function(user){
   // Hide loading screen always
   var loadingScr = document.getElementById('loadingScreen');
-  if(loadingScr){ loadingScr.style.display='none'; loadingScr.style.pointerEvents='none'; }
+  if(loadingScr) loadingScr.style.display='none';
 
   if(user){
     window._uid = user.uid;
@@ -1531,8 +1383,8 @@ var _SEC_META = {
   arena:  { icon:'⚔️', title:'Arena' },
   stats:  { icon:'📊', title:'Stats & Mocks' },
   revise: { icon:'📓', title:'Revision Tracker' },
-  tasks:  { icon:'📋', title:'Tasks' },
-  tasks:  { icon:'📋', title:'Lectures' }
+  tasks:  { icon:'📋', title:'Lectures' },
+  syl:    { icon:'🧠', title:'Flashcards & Syllabus' }
 };
 
 function _setNavVisible(visible, sectionName){
@@ -1590,9 +1442,9 @@ function showNav(name, btn, skipHistory){
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('on');});
   var sec=document.getElementById('sec-'+name);
   if(sec) sec.classList.add('on');
-  btn.classList.add('on');
+  if(btn) btn.classList.add('on');
   // If it's a main nav button, close drawer and deactivate more btn
-  var drawerSecs = ['stats','revise'];
+  var drawerSecs = ['stats','revise','syl'];
   if(drawerSecs.indexOf(name)===-1){
     closeAppDrawer && closeAppDrawer();
     var mb=document.getElementById('navMoreBtn');
@@ -1631,6 +1483,7 @@ function showNav(name, btn, skipHistory){
   if(name==='revise'){renderRevTracker();}
   if(name==='home'){renderChecklist();renderBadges();renderSpacedRepReminders();}
   if(name==='tasks'){renderTasks();}
+  if(name==='syl'){if(typeof loadFC==='function') loadFC();}
 }
 
 // Handle Android/browser back button via popstate
