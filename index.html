@@ -532,6 +532,23 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
   </div>
 </div>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+// Fallback: agar Firebase 8 seconds mein load na ho toh loading screen hat jaaye
+setTimeout(function(){
+  var ls = document.getElementById('loadingScreen');
+  var login = document.getElementById('loginScreen');
+  if(ls && ls.style.display !== 'none'){
+    ls.style.display='none';
+    ls.style.pointerEvents='none';
+    if(login && !window._isGuest){
+      login.style.display='flex';
+      login.style.pointerEvents='auto';
+      var err = document.getElementById('loginErr');
+      if(err){ err.style.display='block'; err.textContent='Connection slow hai — phir try karo ya Guest mode use karo'; }
+    }
+  }
+}, 8000);
+</script>
 
 <!-- LOGIN SCREEN -->
 <div id="loginScreen" style="display:none;pointer-events:none;">
@@ -1049,7 +1066,9 @@ window.doLogin = async function(){
   }
 };
 
-getRedirectResult(auth).catch(function(){});
+getRedirectResult(auth).catch(function(e){ 
+  console.warn('Redirect result error:', e);
+});
 
 // ── GUEST MODE ──
 window.guestLogin = function(){
