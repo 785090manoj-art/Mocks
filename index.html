@@ -223,9 +223,10 @@ body.dark body.dark body.dark .nav-btn{
 .nav-icon-wrap{
   width:46px;height:46px;border-radius:14px;
   display:flex;align-items:center;justify-content:center;
-  font-size:22px;transition:all .18s;
+  font-size:22px;line-height:1;transition:all .18s;
   background:#e8e8f0;
   box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
 }
 /* Each button gets its own tile colour */
 .nav-btn[data-sec="home"]    .nav-icon-wrap{background:#e0e7ff;}
@@ -533,7 +534,7 @@ body.dark .acs-clear-btn{background:#1a1a24;border-color:#2a2a3a;}
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <!-- LOGIN SCREEN -->
-<div id="loginScreen" style="display:none;">
+<div id="loginScreen" style="display:none;pointer-events:none;">
   <div class="login-card">
     <div class="login-logo">🎯</div>
     <div class="login-title">JEE 99ile Tracker</div>
@@ -1297,8 +1298,7 @@ function _setNavVisible(visible, sectionName){
 function navGoBack(){
   var prev = history.state && history.state.prev ? history.state.prev : 'home';
   var navBtn = document.querySelector('.nav-btn[data-sec="'+prev+'"]');
-  var drawerBtn = document.querySelector('  if(navBtn){ showNav(prev, navBtn, false); }
-  else if(drawerBtn){ drawerNav(prev, drawerBtn); }
+  if(navBtn){ showNav(prev, navBtn, false); }
   else {
     var homeBtn = document.querySelector('.nav-btn[data-sec="home"]');
     if(homeBtn) showNav('home', homeBtn, false);
@@ -4385,10 +4385,6 @@ if('serviceWorker' in navigator){
 // APP DRAWER (More button slide-up panel)
 // ═══════════════════════════════════════
 function drawerNav(name, btn){
-  closeAppDrawer();
-  // Deactivate main nav buttons
-  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('on');});
-  // Mark more button as active since this section is in the drawer
   showNav(name, btn, false);
 }
 
