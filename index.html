@@ -48,6 +48,7 @@ body.dark .tasks-more-btn{background:#1a1a24;border-color:#2a2a3a;}
 body.dark .dconfirm-box{background:#1a1a24;}
 body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
 body.dark input[type="text"],body.dark input[type="number"]{background:#111118;color:var(--text);border-color:#2a2a3a;}
+body.dark input[type="date"]{background:#111118;color:var(--text);border-color:#2a2a3a;}
 
 @keyframes spin{to{transform:rotate(360deg)}}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overscroll-behavior:none;}
@@ -315,6 +316,21 @@ body.dark .nav-icon-wrap{background:#1e1e2e;}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
+/* ARENA SUB-TABS */
+.arena-tab-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.arena-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 8px;border-radius:var(--r2);border:2px solid var(--border);background:#fff;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;}
+body.dark .arena-tab{background:#111118;border-color:#2a2a3a;}
+.arena-tab .at-icon{font-size:26px;}
+.arena-tab .at-label{font-size:12px;font-weight:800;color:var(--text2);}
+.arena-tab .at-sub{font-size:10px;font-weight:600;color:var(--text3);}
+.arena-tab.on-practice{background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:#f87171;}
+.arena-tab.on-practice .at-label{color:var(--red);}
+.arena-tab.on-mock{background:linear-gradient(135deg,var(--bluelt),#c7d2fe);border-color:#818cf8;}
+.arena-tab.on-mock .at-label{color:var(--blue);}
+body.dark .arena-tab.on-practice{background:linear-gradient(135deg,#450a0a,#7f1d1d);border-color:#f87171;}
+body.dark .arena-tab.on-mock{background:linear-gradient(135deg,#1e1b4b,#312e81);border-color:#818cf8;}
+.arena-sub{display:none;}.arena-sub.on{display:block;}
+
 /* MOCK LOG */
 .mock-type-btn{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
 .mock-type-btn.on.main{background:#4f46e5;color:#fff;border-color:#4f46e5;}
@@ -541,130 +557,151 @@ body.dark .mock-avg-pill{background:#111118;}
 
   <!-- ARENA -->
   <div class="sec" id="sec-arena">
-    <div class="card">
-      <div class="card-title">⚔️ Practice Arena</div>
-      <div class="at-disp" id="tDisp">00:00</div>
-      <div class="at-btns">
-        <button class="at-btn go" id="tBtn" onclick="togTimer()">START</button>
-        <button class="at-btn rs" onclick="rstTimer()">RESET</button>
-      </div>
-      <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:12px;">
-        <div class="cfg-row">
-          <div class="cfg-grp" style="flex:2;min-width:130px;"><label class="cfg-lbl">SUBJECT</label>
-            <select class="cfg-sel" id="cSub" onchange="loadChaps()">
-              <option value="all">All Subjects</option>
-              <option value="physics">Physics</option>
-              <option value="chemistry">Chemistry</option>
-              <option value="maths">Mathematics</option>
-            </select>
-          </div>
-          <div class="cfg-grp" style="flex:2;min-width:130px;"><label class="cfg-lbl">CHAPTER</label>
-            <select class="cfg-sel" id="cChap"><option value="all">All Chapters</option></select>
-          </div>
+
+    <!-- ARENA TAB SELECTOR -->
+    <div class="arena-tab-bar">
+      <button class="arena-tab" id="arenaTabPractice" onclick="switchArenaTab('practice')">
+        <div class="at-icon">⚔️</div>
+        <div class="at-label">Practice</div>
+        <div class="at-sub">Sawal solve karo</div>
+      </button>
+      <button class="arena-tab" id="arenaTabMock" onclick="switchArenaTab('mock')">
+        <div class="at-icon">📋</div>
+        <div class="at-label">Mock History</div>
+        <div class="at-sub">Scores track karo</div>
+      </button>
+    </div>
+
+    <!-- ── SUB: PRACTICE ── -->
+    <div class="arena-sub" id="arenaSub-practice">
+      <div class="card">
+        <div class="card-title">⚔️ Practice Arena</div>
+        <div class="at-disp" id="tDisp">00:00</div>
+        <div class="at-btns">
+          <button class="at-btn go" id="tBtn" onclick="togTimer()">START</button>
+          <button class="at-btn rs" onclick="rstTimer()">RESET</button>
         </div>
-        <div class="cfg-row">
-          <div class="cfg-grp" style="min-width:100%;flex-basis:100%">
-            <label class="cfg-lbl">QUESTIONS</label>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-              <button type="button" class="qs-opt-btn" onclick="selArenaQs(5,this)">5</button>
-              <button type="button" class="qs-opt-btn" onclick="selArenaQs(10,this)">10</button>
-              <button type="button" class="qs-opt-btn on" onclick="selArenaQs(15,this)">15</button>
-              <button type="button" class="qs-opt-btn" onclick="selArenaQs(20,this)">20</button>
-              <button type="button" class="qs-opt-btn" onclick="selArenaQs(25,this)">25</button>
+        <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:12px;">
+          <div class="cfg-row">
+            <div class="cfg-grp" style="flex:2;min-width:130px;"><label class="cfg-lbl">SUBJECT</label>
+              <select class="cfg-sel" id="cSub" onchange="loadChaps()">
+                <option value="all">All Subjects</option>
+                <option value="physics">Physics</option>
+                <option value="chemistry">Chemistry</option>
+                <option value="maths">Mathematics</option>
+              </select>
             </div>
-            <input type="hidden" id="cTotal" value="15">
-          </div>
-          <div class="cfg-grp"><label class="cfg-lbl">TIME (min)</label><input type="number" class="cfg-in" id="cTime" value="30" min="5" max="180"></div>
-          <button class="gen-btn" onclick="genQ()">⚡ Go</button>
-        </div>
-      </div>
-      <div class="stat-pills" id="statsBar" style="display:none">
-        <div class="spill">Total:<b id="sTot">0</b></div>
-        <div class="spill">Done:<b id="sAtt">0</b></div>
-        <div class="spill">Left:<b id="sLft">0</b></div>
-        <div class="spill">MCQ:<b id="sMcq">0</b></div>
-        <div class="spill">NUM:<b id="sNum">0</b></div>
-      </div>
-      <table class="qtbl">
-        <thead><tr><th style="width:46px">Q#</th><th style="width:140px">Chapter</th><th>Answer</th></tr></thead>
-        <tbody id="qBody"></tbody>
-      </table>
-      <button class="sub-btn2" onclick="submitAns()">🔒 Submit Answers</button>
-    </div>
-    <div class="card" id="step2" style="display:none;border:2px solid #fed7aa;">
-      <div style="font-size:15px;font-weight:800;color:var(--orange);margin-bottom:12px;text-align:center;">📋 Correct Answers Daalo</div>
-      <table class="qtbl">
-        <thead><tr><th style="width:46px">Q#</th><th style="width:120px">Chapter</th><th style="width:90px">Tumhara</th><th>Sahi</th></tr></thead>
-        <tbody id="corrBody"></tbody>
-      </table>
-      <button class="res-btn-g" onclick="showResult()">📊 Result Dekho</button>
-    </div>
-    <div class="res-card" id="resCard">
-      <div style="font-size:15px;font-weight:800;color:var(--green);margin-bottom:12px;text-align:center;">🎯 Result Analysis</div>
-      <div class="res-grid">
-        <div class="res-box"><div class="res-val" style="color:var(--blue)" id="rScore">0</div><div class="res-lbl">SCORE</div></div>
-        <div class="res-box"><div class="res-val" style="color:var(--green)" id="rCorr">0</div><div class="res-lbl">CORRECT</div></div>
-        <div class="res-box"><div class="res-val" style="color:var(--red)" id="rWrong">0</div><div class="res-lbl">WRONG</div></div>
-        <div class="res-box"><div class="res-val" style="color:var(--text2)" id="rSkip">0</div><div class="res-lbl">SKIPPED</div></div>
-        <div class="res-box"><div class="res-val" style="color:var(--purple)" id="rAcc">0%</div><div class="res-lbl">ACCURACY</div></div>
-      </div>
-      <div id="rankPredictor" style="display:none;" class="rp-box">
-        <div class="rp-lbl">📊 RANK PREDICTOR (JEE MAIN)</div>
-        <div class="rp-pct" id="predPercentile">—</div>
-        <div class="rp-lbl">PERCENTILE</div>
-        <div class="rp-meta">
-          <div class="rp-meta-box">Rank: <b id="predRank">—</b></div>
-          <div class="rp-meta-box">Category: <b id="predCategory">—</b></div>
-        </div>
-        <div style="font-size:10px;opacity:.6;" id="predScaledScore"></div>
-        <div class="rp-msg" id="predMsg"></div>
-      </div>
-      <div id="ansList" style="text-align:left;margin-top:12px;"></div>
-      <div id="mistakeLogSection" style="display:none;margin-top:14px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:10px;">📒 Galat Sawal — Note Karo</div>
-        <div id="mistakeLogItems"></div>
-        <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">💾 Mistakes Save Karo</button>
-      </div>
-    </div>
-
-    <!-- MOCK LOG -->
-    <div class="card" style="margin-top:4px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <div class="card-title" style="margin-bottom:0;">📋 Mock Test Log</div>
-        <div id="mockAvgPill" style="display:none;" class="mock-avg-pill"><span id="mockAvgVal">—</span> <span style="font-size:10px;color:var(--text2);font-weight:600;">avg</span></div>
-      </div>
-
-      <!-- ADD MOCK FORM -->
-      <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:14px;">
-        <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">➕ NAYA MOCK ADD KARO</div>
-        <div style="margin-bottom:8px;">
-          <div class="cfg-lbl" style="margin-bottom:4px;">MOCK KA NAAM</div>
-          <input type="text" id="mockNameInp" placeholder="e.g. AITS-14, Allen Mock 3..." style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
-        </div>
-        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-          <div style="flex:1;min-width:120px;">
-            <div class="cfg-lbl" style="margin-bottom:4px;">TYPE</div>
-            <div style="display:flex;gap:6px;">
-              <button type="button" class="mock-type-btn on main" id="mockTypeMain" onclick="setMockType('main')">JEE Main</button>
-              <button type="button" class="mock-type-btn adv" id="mockTypeAdv" onclick="setMockType('adv')">Advanced</button>
+            <div class="cfg-grp" style="flex:2;min-width:130px;"><label class="cfg-lbl">CHAPTER</label>
+              <select class="cfg-sel" id="cChap"><option value="all">All Chapters</option></select>
             </div>
           </div>
-          <div style="flex:1;min-width:100px;">
-            <div class="cfg-lbl" style="margin-bottom:4px;">DATE</div>
-            <input type="date" id="mockDateInp" style="width:100%;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
+          <div class="cfg-row">
+            <div class="cfg-grp" style="min-width:100%;flex-basis:100%">
+              <label class="cfg-lbl">QUESTIONS</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+                <button type="button" class="qs-opt-btn" onclick="selArenaQs(5,this)">5</button>
+                <button type="button" class="qs-opt-btn" onclick="selArenaQs(10,this)">10</button>
+                <button type="button" class="qs-opt-btn on" onclick="selArenaQs(15,this)">15</button>
+                <button type="button" class="qs-opt-btn" onclick="selArenaQs(20,this)">20</button>
+                <button type="button" class="qs-opt-btn" onclick="selArenaQs(25,this)">25</button>
+              </div>
+              <input type="hidden" id="cTotal" value="15">
+            </div>
+            <div class="cfg-grp"><label class="cfg-lbl">TIME (min)</label><input type="number" class="cfg-in" id="cTime" value="30" min="5" max="180"></div>
+            <button class="gen-btn" onclick="genQ()">⚡ Go</button>
           </div>
         </div>
-        <div style="margin-bottom:10px;">
-          <div class="cfg-lbl" style="margin-bottom:4px;">SCORE <span id="mockMaxLabel" style="color:var(--text3);font-weight:600;">(out of 300)</span></div>
-          <input type="number" id="mockScoreInp" placeholder="e.g. 187" min="0" max="360" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:#fff;">
+        <div class="stat-pills" id="statsBar" style="display:none">
+          <div class="spill">Total:<b id="sTot">0</b></div>
+          <div class="spill">Done:<b id="sAtt">0</b></div>
+          <div class="spill">Left:<b id="sLft">0</b></div>
+          <div class="spill">MCQ:<b id="sMcq">0</b></div>
+          <div class="spill">NUM:<b id="sNum">0</b></div>
         </div>
-        <button onclick="addManualMock()" class="gen-btn" style="width:100%;padding:12px;">📥 Mock Save Karo</button>
+        <table class="qtbl">
+          <thead><tr><th style="width:46px">Q#</th><th style="width:140px">Chapter</th><th>Answer</th></tr></thead>
+          <tbody id="qBody"></tbody>
+        </table>
+        <button class="sub-btn2" onclick="submitAns()">🔒 Submit Answers</button>
       </div>
+      <div class="card" id="step2" style="display:none;border:2px solid #fed7aa;">
+        <div style="font-size:15px;font-weight:800;color:var(--orange);margin-bottom:12px;text-align:center;">📋 Correct Answers Daalo</div>
+        <table class="qtbl">
+          <thead><tr><th style="width:46px">Q#</th><th style="width:120px">Chapter</th><th style="width:90px">Tumhara</th><th>Sahi</th></tr></thead>
+          <tbody id="corrBody"></tbody>
+        </table>
+        <button class="res-btn-g" onclick="showResult()">📊 Result Dekho</button>
+      </div>
+      <div class="res-card" id="resCard">
+        <div style="font-size:15px;font-weight:800;color:var(--green);margin-bottom:12px;text-align:center;">🎯 Result Analysis</div>
+        <div class="res-grid">
+          <div class="res-box"><div class="res-val" style="color:var(--blue)" id="rScore">0</div><div class="res-lbl">SCORE</div></div>
+          <div class="res-box"><div class="res-val" style="color:var(--green)" id="rCorr">0</div><div class="res-lbl">CORRECT</div></div>
+          <div class="res-box"><div class="res-val" style="color:var(--red)" id="rWrong">0</div><div class="res-lbl">WRONG</div></div>
+          <div class="res-box"><div class="res-val" style="color:var(--text2)" id="rSkip">0</div><div class="res-lbl">SKIPPED</div></div>
+          <div class="res-box"><div class="res-val" style="color:var(--purple)" id="rAcc">0%</div><div class="res-lbl">ACCURACY</div></div>
+        </div>
+        <div id="rankPredictor" style="display:none;" class="rp-box">
+          <div class="rp-lbl">📊 RANK PREDICTOR (JEE MAIN)</div>
+          <div class="rp-pct" id="predPercentile">—</div>
+          <div class="rp-lbl">PERCENTILE</div>
+          <div class="rp-meta">
+            <div class="rp-meta-box">Rank: <b id="predRank">—</b></div>
+            <div class="rp-meta-box">Category: <b id="predCategory">—</b></div>
+          </div>
+          <div style="font-size:10px;opacity:.6;" id="predScaledScore"></div>
+          <div class="rp-msg" id="predMsg"></div>
+        </div>
+        <div id="ansList" style="text-align:left;margin-top:12px;"></div>
+        <div id="mistakeLogSection" style="display:none;margin-top:14px;text-align:left;">
+          <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:10px;">📒 Galat Sawal — Note Karo</div>
+          <div id="mistakeLogItems"></div>
+          <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">💾 Mistakes Save Karo</button>
+        </div>
+      </div>
+    </div><!-- end arenaSub-practice -->
 
-      <!-- MOCK LIST -->
-      <div id="mockLogList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi mock nahi mila. Upar add karo! 👆</div></div>
-    </div>
-  </div>
+    <!-- ── SUB: MOCK HISTORY ── -->
+    <div class="arena-sub" id="arenaSub-mock">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="card-title" style="margin-bottom:0;">📋 Mock History</div>
+          <div id="mockAvgPill" style="display:none;" class="mock-avg-pill"><span id="mockAvgVal">—</span> <span style="font-size:10px;color:var(--text2);font-weight:600;">avg</span></div>
+        </div>
+
+        <!-- ADD MOCK FORM -->
+        <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">➕ NAYA MOCK ADD KARO</div>
+          <div style="margin-bottom:8px;">
+            <div class="cfg-lbl" style="margin-bottom:4px;">MOCK KA NAAM</div>
+            <input type="text" id="mockNameInp" placeholder="e.g. AITS-14, Allen Mock 3..." style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:120px;">
+              <div class="cfg-lbl" style="margin-bottom:4px;">TYPE</div>
+              <div style="display:flex;gap:6px;">
+                <button type="button" class="mock-type-btn on main" id="mockTypeMain" onclick="setMockType('main')">JEE Main</button>
+                <button type="button" class="mock-type-btn adv" id="mockTypeAdv" onclick="setMockType('adv')">Advanced</button>
+              </div>
+            </div>
+            <div style="flex:1;min-width:100px;">
+              <div class="cfg-lbl" style="margin-bottom:4px;">DATE</div>
+              <input type="date" id="mockDateInp" style="width:100%;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
+            </div>
+          </div>
+          <div style="margin-bottom:10px;">
+            <div class="cfg-lbl" style="margin-bottom:4px;">SCORE <span id="mockMaxLabel" style="color:var(--text3);font-weight:600;">(out of 300)</span></div>
+            <input type="number" id="mockScoreInp" placeholder="e.g. 187" min="0" max="360" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:#fff;">
+          </div>
+          <button onclick="addManualMock()" class="gen-btn" style="width:100%;padding:12px;">📥 Mock Save Karo</button>
+        </div>
+
+        <!-- MOCK LIST -->
+        <div id="mockLogList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi mock nahi mila. Upar add karo! 👆</div></div>
+      </div>
+    </div><!-- end arenaSub-mock -->
+
+  </div><!-- end sec-arena -->
 
   <!-- REVISION -->
   <div class="sec" id="sec-revise">
@@ -896,6 +933,18 @@ function tick(){
 }
 setInterval(tick,1000);tick();
 
+// ═══ ARENA TABS ═══
+var _arenaTab='practice';
+function switchArenaTab(tab){
+  _arenaTab=tab;
+  document.querySelectorAll('.arena-sub').forEach(function(s){s.classList.remove('on');});
+  var sub=document.getElementById('arenaSub-'+tab);if(sub)sub.classList.add('on');
+  var tp=document.getElementById('arenaTabPractice'),tm=document.getElementById('arenaTabMock');
+  if(tp){tp.className='arena-tab'+(tab==='practice'?' on-practice':'');}
+  if(tm){tm.className='arena-tab'+(tab==='mock'?' on-mock':'');}
+  if(tab==='mock')renderMockLog();
+}
+
 // ═══ NAV ═══
 var _curSec='home';
 var _META={tasks:{icon:'📋',title:'Lectures'},arena:{icon:'⚔️',title:'Arena'},revise:{icon:'📓',title:'Revision Tracker'}};
@@ -920,6 +969,7 @@ function showNav(name,btn,skipHistory){
   if(name==='revise')renderRevTracker();
   if(name==='home'){renderChecklist();renderBadges();renderSpacedRepReminders();}
   if(name==='tasks')renderTasks();
+  if(name==='arena')switchArenaTab(_arenaTab||'practice');
 }
 function navGoBack(){
   var prev=history.state&&history.state.prev?history.state.prev:'home';
