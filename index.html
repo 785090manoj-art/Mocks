@@ -314,6 +314,30 @@ body.dark .nav-icon-wrap{background:#1e1e2e;}
 #syncToast.warn{background:var(--orange);}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* MOCK LOG */
+.mock-type-btn{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.mock-type-btn.on.main{background:#4f46e5;color:#fff;border-color:#4f46e5;}
+.mock-type-btn.on.adv{background:#7c3aed;color:#fff;border-color:#7c3aed;}
+body.dark .mock-type-btn{background:#111118;border-color:#2a2a3a;color:var(--text2);}
+body.dark .mock-type-btn.on.main{background:#4f46e5;color:#fff;}
+body.dark .mock-type-btn.on.adv{background:#7c3aed;color:#fff;}
+.mock-entry{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:#fff;margin-bottom:8px;}
+body.dark .mock-entry{background:#1a1a24;border-color:#2a2a3a;}
+.mock-entry-left{flex:1;min-width:0;}
+.mock-entry-name{font-size:14px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mock-entry-date{font-size:11px;color:var(--text3);margin-top:2px;font-weight:600;}
+.mock-entry-type{font-size:10px;font-weight:800;padding:2px 8px;border-radius:5px;flex-shrink:0;}
+.mock-type-main{background:var(--bluelt);color:var(--blue);}
+.mock-type-adv{background:var(--purplelt);color:var(--purple);}
+.mock-score-box{text-align:center;flex-shrink:0;}
+.mock-score-val{font-size:22px;font-weight:900;}
+.mock-score-max{font-size:10px;color:var(--text3);font-weight:700;}
+.mock-score-main .mock-score-val{color:var(--blue);}
+.mock-score-adv .mock-score-val{color:var(--purple);}
+.mock-del-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--redlt);background:var(--redlt);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Inter',sans-serif;}
+.mock-avg-pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--text);}
+body.dark .mock-avg-pill{background:#111118;}
 </style>
 </head>
 <body>
@@ -602,6 +626,44 @@ body.dark .nav-icon-wrap{background:#1e1e2e;}
         <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">💾 Mistakes Save Karo</button>
       </div>
     </div>
+
+    <!-- MOCK LOG -->
+    <div class="card" style="margin-top:4px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div class="card-title" style="margin-bottom:0;">📋 Mock Test Log</div>
+        <div id="mockAvgPill" style="display:none;" class="mock-avg-pill"><span id="mockAvgVal">—</span> <span style="font-size:10px;color:var(--text2);font-weight:600;">avg</span></div>
+      </div>
+
+      <!-- ADD MOCK FORM -->
+      <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">➕ NAYA MOCK ADD KARO</div>
+        <div style="margin-bottom:8px;">
+          <div class="cfg-lbl" style="margin-bottom:4px;">MOCK KA NAAM</div>
+          <input type="text" id="mockNameInp" placeholder="e.g. AITS-14, Allen Mock 3..." style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:120px;">
+            <div class="cfg-lbl" style="margin-bottom:4px;">TYPE</div>
+            <div style="display:flex;gap:6px;">
+              <button type="button" class="mock-type-btn on main" id="mockTypeMain" onclick="setMockType('main')">JEE Main</button>
+              <button type="button" class="mock-type-btn adv" id="mockTypeAdv" onclick="setMockType('adv')">Advanced</button>
+            </div>
+          </div>
+          <div style="flex:1;min-width:100px;">
+            <div class="cfg-lbl" style="margin-bottom:4px;">DATE</div>
+            <input type="date" id="mockDateInp" style="width:100%;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
+          </div>
+        </div>
+        <div style="margin-bottom:10px;">
+          <div class="cfg-lbl" style="margin-bottom:4px;">SCORE <span id="mockMaxLabel" style="color:var(--text3);font-weight:600;">(out of 300)</span></div>
+          <input type="number" id="mockScoreInp" placeholder="e.g. 187" min="0" max="360" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:#fff;">
+        </div>
+        <button onclick="addManualMock()" class="gen-btn" style="width:100%;padding:12px;">📥 Mock Save Karo</button>
+      </div>
+
+      <!-- MOCK LIST -->
+      <div id="mockLogList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi mock nahi mila. Upar add karo! 👆</div></div>
+    </div>
   </div>
 
   <!-- REVISION -->
@@ -672,7 +734,7 @@ body.dark .nav-icon-wrap{background:#1e1e2e;}
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, getDoc, setDoc, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 var app = initializeApp({
   apiKey:"AIzaSyDWIKEUfsdplqu7f6YQKPZ19SUbDTFeFeQ",
@@ -739,7 +801,9 @@ window.FS = {
   async saveTasksDone(d){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'data','tasksDone'),{state:JSON.stringify(d),updatedAt:serverTimestamp()},{merge:true});}catch(e){} },
   async loadTasksDone(){ var uid=window._uid; if(!uid)return{}; try{var s=await getDoc(doc(db,'users',uid,'data','tasksDone')); if(s.exists()&&s.data().state)return JSON.parse(s.data().state); return{};}catch(e){return{};} },
   async saveMocks(m){ var uid=window._uid; if(!uid)return; try{await addDoc(collection(db,'users',uid,'mocks'),Object.assign({},m,{createdAt:serverTimestamp()}));}catch(e){} },
-  async loadMocks(){ var uid=window._uid; if(!uid)return[]; try{var snap=await getDocs(collection(db,'users',uid,'mocks')); var list=[]; snap.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));}); list.sort(function(a,b){return a.date<b.date?1:-1;}); return list;} catch(e){return[];} }
+  async loadMocks(){ var uid=window._uid; if(!uid)return[]; try{var snap=await getDocs(collection(db,'users',uid,'mocks')); var list=[]; snap.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));}); list.sort(function(a,b){return a.date<b.date?1:-1;}); return list;} catch(e){return[];} },
+  async saveMockEntry(m){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'mocks',String(m.id)),Object.assign({},m,{updatedAt:serverTimestamp()}));}catch(e){} },
+  async deleteMockEntry(id){ var uid=window._uid; if(!uid)return; try{await deleteDoc(doc(db,'users',uid,'mocks',String(id)));}catch(e){} }
 };
 
 onAuthStateChanged(auth, async function(user){
@@ -880,7 +944,7 @@ window.initApp=async function(){
     var gi=document.getElementById('goalInp');if(gi)gi.value=dailyGoalHrs;
     try{var td=localStorage.getItem('jee_tasks_done');if(td)tasksDoneState=JSON.parse(td);}catch(e){}
     window.showStatus('guest');
-    renderStudyUI();updateStreakBadge();renderChecklist();renderBadges();renderSpacedRepReminders();loadChaps();loadTimerState();
+    renderStudyUI();updateStreakBadge();renderChecklist();renderBadges();renderSpacedRepReminders();loadChaps();loadTimerState();renderMockLog();
     return;
   }
   try{done=await window.FS.loadSyl();}catch(e){}
@@ -893,7 +957,7 @@ window.initApp=async function(){
   try{var fsd=await window.FS.loadTasksDone();if(fsd&&Object.keys(fsd).length>0){tasksDoneState=fsd;try{localStorage.setItem('jee_tasks_done',JSON.stringify(tasksDoneState));}catch(e){}}}catch(e){try{var ld=localStorage.getItem('jee_tasks_done');if(ld)tasksDoneState=JSON.parse(ld);}catch(e){}}
   var gi2=document.getElementById('goalInp');if(gi2)gi2.value=dailyGoalHrs;
   window.showStatus('synced');
-  renderStudyUI();updateStreakBadge();renderChecklist();renderBadges();renderSpacedRepReminders();loadChaps();loadTimerState();
+  renderStudyUI();updateStreakBadge();renderChecklist();renderBadges();renderSpacedRepReminders();loadChaps();loadTimerState();renderMockLog();
 };
 function saveLocal(){
   var uid=window._isGuest?'guest':(window._uid||null);if(!uid)return;
@@ -1312,6 +1376,85 @@ function renderTasks(){
 </script>
 
 <script>
+// ═══ MOCK LOG ═══
+var _mockType='main';
+
+function setMockType(type){
+  _mockType=type;
+  document.getElementById('mockTypeMain').className='mock-type-btn'+(type==='main'?' on main':' main');
+  document.getElementById('mockTypeAdv').className='mock-type-btn'+(type==='adv'?' on adv':' adv');
+  document.getElementById('mockMaxLabel').textContent=type==='main'?'(out of 300)':'(out of 360)';
+}
+
+function addManualMock(){
+  var name=document.getElementById('mockNameInp').value.trim();
+  var score=document.getElementById('mockScoreInp').value.trim();
+  var date=document.getElementById('mockDateInp').value||today();
+  if(!name){alert('Mock ka naam likhao!');return;}
+  if(score===''||isNaN(parseInt(score))){alert('Score daalo!');return;}
+  var maxScore=_mockType==='main'?300:360;
+  var s=parseInt(score);
+  if(s<0||s>maxScore){alert('Score 0 se '+maxScore+' ke beech hona chahiye!');return;}
+  var mock={id:'m_'+Date.now(),date:date,name:name,type:_mockType,score:s,maxScore:maxScore,manual:true};
+  mocks.unshift(mock);
+  saveLocal();
+  if(!window._isGuest&&window.FS&&window.FS.saveMockEntry)window.FS.saveMockEntry(mock);
+  document.getElementById('mockNameInp').value='';
+  document.getElementById('mockScoreInp').value='';
+  document.getElementById('mockDateInp').value='';
+  renderMockLog();
+  window.showStatus('saved');
+}
+
+function deleteMock(id){
+  dconfirmShow({icon:'📋',title:'Mock Delete?',msg:'Yeh mock permanently delete ho jaayega.',title2:'Pakka delete?',msg2:'Hamesha ke liye chala jaayega!',okText:'Delete',okText2:'CONFIRM Delete',
+    onConfirm:function(){
+      mocks=mocks.filter(function(m){return m.id!==id;});
+      saveLocal();
+      if(!window._isGuest&&window.FS&&window.FS.deleteMockEntry)window.FS.deleteMockEntry(id);
+      renderMockLog();
+      window.showStatus('saved');
+    }
+  });
+}
+
+function renderMockLog(){
+  var el=document.getElementById('mockLogList');if(!el)return;
+  var manualMocks=mocks.filter(function(m){return m.manual;});
+  var avgPill=document.getElementById('mockAvgPill'),avgVal=document.getElementById('mockAvgVal');
+  if(manualMocks.length>0&&avgPill&&avgVal){
+    var total=manualMocks.reduce(function(s,m){return s+(m.score||0);},0);
+    avgPill.style.display='flex';
+    avgVal.textContent=Math.round(total/manualMocks.length);
+  } else if(avgPill){avgPill.style.display='none';}
+  if(!manualMocks.length){el.innerHTML='<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi mock nahi mila. Upar add karo! 👆</div>';return;}
+  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var html='';
+  manualMocks.forEach(function(m){
+    var d=new Date(m.date+'T00:00:00');
+    var dateStr=d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
+    var max=m.maxScore||(m.type==='adv'?360:300);
+    var isAdv=m.type==='adv';
+    var pct=Math.round((m.score/max)*100);
+    html+='<div class="mock-entry">'
+      +'<div class="mock-entry-left">'
+        +'<div class="mock-entry-name">'+(m.name||'Practice Test')+'</div>'
+        +'<div style="display:flex;align-items:center;gap:6px;margin-top:3px;">'
+          +'<span class="mock-entry-type '+(isAdv?'mock-type-adv':'mock-type-main')+'">'+(isAdv?'ADV':'MAIN')+'</span>'
+          +'<span class="mock-entry-date">'+dateStr+'</span>'
+        +'</div>'
+        +'<div style="margin-top:5px;background:var(--border);border-radius:99px;height:5px;overflow:hidden;"><div style="height:100%;border-radius:99px;background:'+(isAdv?'var(--purple)':'var(--blue)')+'  ;width:'+pct+'%;transition:width .4s;"></div></div>'
+      +'</div>'
+      +'<div class="mock-score-box '+(isAdv?'mock-score-adv':'mock-score-main')+'">'
+        +'<div class="mock-score-val">'+m.score+'</div>'
+        +'<div class="mock-score-max">/'+max+'</div>'
+      +'</div>'
+      +'<button class="mock-del-btn" onclick="deleteMock(\''+m.id+'\')">🗑</button>'
+    +'</div>';
+  });
+  el.innerHTML=html;
+}
+
 // ═══ REVISION TRACKER ═══
 var revState={},revSub='physics';
 
