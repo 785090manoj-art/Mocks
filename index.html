@@ -248,6 +248,29 @@ body.dark .nav-icon-wrap{background:#1e1e2e;}
 .acs-fbtn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 .acs-fbtn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
 
+/* DPP */
+.dpp-sub-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.dpp-sub-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+body.dark .dpp-sub-btn{background:#111118;border-color:#2a2a3a;color:var(--text2);}
+body.dark .dpp-sub-btn.on{background:var(--blue);color:#fff;}
+.dpp-entry{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--r2);border:1.5px solid var(--border);background:#fff;margin-bottom:8px;}
+body.dark .dpp-entry{background:#1a1a24;border-color:#2a2a3a;}
+.dpp-num-badge{min-width:36px;height:36px;border-radius:10px;background:var(--purplelt);border:1.5px solid #ddd6fe;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--purple);flex-shrink:0;}
+.dpp-entry-body{flex:1;min-width:0;}
+.dpp-entry-chapter{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dpp-entry-meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;}
+.dpp-sub-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.dpp-sub-tag.p{background:var(--bluelt);color:var(--blue);}
+.dpp-sub-tag.c{background:var(--orangelt);color:var(--orange);}
+.dpp-sub-tag.m{background:var(--greenlt);color:var(--green);}
+.dpp-entry-date{font-size:10px;color:var(--text3);font-weight:600;}
+.dpp-pcm-row{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.dpp-pcm-chip{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;}
+.dpp-score-box{background:var(--purplelt);border:1.5px solid #ddd6fe;border-radius:10px;padding:8px 10px;text-align:center;min-width:60px;flex-shrink:0;}
+.dpp-score-val{font-size:18px;font-weight:900;color:var(--purple);line-height:1;}
+.dpp-score-pct{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
+.dpp-del-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--redlt);background:var(--redlt);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
 /* RANK PREDICTOR */
 .rp-box{border-radius:var(--r2);padding:14px;margin-top:12px;text-align:center;background:linear-gradient(135deg,#1e1b4b,#4f46e5);color:#fff;}
 .rp-pct{font-size:40px;font-weight:900;letter-spacing:2px;}
@@ -329,6 +352,10 @@ body.dark .arena-tab{background:#111118;border-color:#2a2a3a;}
 .arena-tab.on-mock .at-label{color:var(--blue);}
 body.dark .arena-tab.on-practice{background:linear-gradient(135deg,#450a0a,#7f1d1d);border-color:#f87171;}
 body.dark .arena-tab.on-mock{background:linear-gradient(135deg,#1e1b4b,#312e81);border-color:#818cf8;}
+.arena-tab-bar{grid-template-columns:1fr 1fr 1fr;}
+.arena-tab.on-dpp{background:linear-gradient(135deg,var(--purplelt),#ddd6fe);border-color:#a78bfa;}
+.arena-tab.on-dpp .at-label{color:var(--purple);}
+body.dark .arena-tab.on-dpp{background:linear-gradient(135deg,#2e1065,#4c1d95);border-color:#a78bfa;}
 .arena-sub{display:none;}.arena-sub.on{display:block;}
 
 /* MOCK LOG */
@@ -570,6 +597,11 @@ body.dark .mock-avg-pill{background:#111118;}
         <div class="at-label">Mock History</div>
         <div class="at-sub">Scores track karo</div>
       </button>
+      <button class="arena-tab" id="arenaTabDpp" onclick="switchArenaTab('dpp')">
+        <div class="at-icon">🦴</div>
+        <div class="at-label">DPP</div>
+        <div class="at-sub">Daily Practice</div>
+      </button>
     </div>
 
     <!-- ── SUB: PRACTICE ── -->
@@ -700,6 +732,76 @@ body.dark .mock-avg-pill{background:#111118;}
         <div id="mockLogList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi mock nahi mila. Upar add karo! 👆</div></div>
       </div>
     </div><!-- end arenaSub-mock -->
+
+    <!-- ── SUB: DPP ── -->
+    <div class="arena-sub" id="arenaSub-dpp" style="display:none;">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="card-title" style="margin-bottom:0;">🦴 DPP Tracker</div>
+          <div id="dppAvgPill" style="display:none;background:var(--purplelt);border:1px solid #ddd6fe;border-radius:20px;padding:4px 10px;font-size:13px;font-weight:700;color:var(--purple);"><span id="dppAvgVal">—</span> <span style="font-size:10px;color:var(--text2);font-weight:600;">avg%</span></div>
+        </div>
+
+        <!-- SUBJECT FILTER -->
+        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
+          <button class="acs-fbtn on" id="dppFilterAll" onclick="setDppFilter('all',this)">📚 All</button>
+          <button class="acs-fbtn" id="dppFilterP" onclick="setDppFilter('physics',this)">⚡ Physics</button>
+          <button class="acs-fbtn" id="dppFilterC" onclick="setDppFilter('chemistry',this)">🧪 Chem</button>
+          <button class="acs-fbtn" id="dppFilterM" onclick="setDppFilter('maths',this)">📐 Maths</button>
+        </div>
+
+        <!-- ADD DPP FORM -->
+        <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">➕ NAYA DPP ADD KARO</div>
+
+          <!-- Subject select -->
+          <div style="margin-bottom:8px;">
+            <div class="cfg-lbl" style="margin-bottom:6px;">SUBJECT</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="dpp-sub-btn on" id="dppSubP" onclick="setDppSub('physics',this)">⚡ Physics</button>
+              <button type="button" class="dpp-sub-btn" id="dppSubC" onclick="setDppSub('chemistry',this)">🧪 Chemistry</button>
+              <button type="button" class="dpp-sub-btn" id="dppSubM" onclick="setDppSub('maths',this)">📐 Maths</button>
+            </div>
+          </div>
+
+          <!-- Chapter -->
+          <div style="margin-bottom:8px;">
+            <div class="cfg-lbl" style="margin-bottom:4px;">CHAPTER</div>
+            <input type="text" id="dppChapterInp" placeholder="e.g. Kinematics, Thermodynamics..." style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
+          </div>
+
+          <!-- Score PCM -->
+          <div style="margin-bottom:8px;">
+            <div class="cfg-lbl" style="margin-bottom:6px;">SCORE</div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="number" id="dppScoreInp" placeholder="Score" min="0" style="flex:1;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:#fff;text-align:center;">
+              <span style="font-size:16px;font-weight:700;color:var(--text2);">/</span>
+              <input type="number" id="dppMaxInp" placeholder="Max" min="1" value="100" style="flex:1;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--text2);background:#fff;text-align:center;">
+            </div>
+          </div>
+
+          <!-- P C M breakdown optional -->
+          <div style="margin-bottom:10px;">
+            <div class="cfg-lbl" style="margin-bottom:4px;">PCM BREAKDOWN <span style="color:var(--text3);font-size:10px;font-weight:500;">(optional)</span></div>
+            <div style="display:flex;gap:6px;">
+              <input type="number" id="dppPhy" placeholder="P" min="0" style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid #c7d2fe;font-size:13px;font-weight:700;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:var(--bluelt);text-align:center;">
+              <input type="number" id="dppChem" placeholder="C" min="0" style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid #fed7aa;font-size:13px;font-weight:700;outline:none;font-family:'Inter',sans-serif;color:var(--orange);background:var(--orangelt);text-align:center;">
+              <input type="number" id="dppMath" placeholder="M" min="0" style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid #bbf7d0;font-size:13px;font-weight:700;outline:none;font-family:'Inter',sans-serif;color:var(--green);background:var(--greenlt);text-align:center;">
+            </div>
+          </div>
+
+          <!-- Date -->
+          <div style="margin-bottom:10px;">
+            <div class="cfg-lbl" style="margin-bottom:4px;">DATE</div>
+            <input type="date" id="dppDateInp" style="width:100%;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
+          </div>
+
+          <button onclick="addDpp()" class="gen-btn" style="width:100%;padding:12px;">📥 DPP Save Karo</button>
+        </div>
+
+        <!-- DPP LIST -->
+        <div id="dppLogList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi DPP nahi mili. Upar add karo! 👆</div></div>
+      </div>
+    </div><!-- end arenaSub-dpp -->
 
   </div><!-- end sec-arena -->
 
@@ -937,12 +1039,14 @@ setInterval(tick,1000);tick();
 var _arenaTab='practice';
 function switchArenaTab(tab){
   _arenaTab=tab;
-  document.querySelectorAll('.arena-sub').forEach(function(s){s.classList.remove('on');});
-  var sub=document.getElementById('arenaSub-'+tab);if(sub)sub.classList.add('on');
-  var tp=document.getElementById('arenaTabPractice'),tm=document.getElementById('arenaTabMock');
+  document.querySelectorAll('.arena-sub').forEach(function(s){s.style.display='none';});
+  var sub=document.getElementById('arenaSub-'+tab);if(sub)sub.style.display='block';
+  var tp=document.getElementById('arenaTabPractice'),tm=document.getElementById('arenaTabMock'),td=document.getElementById('arenaTabDpp');
   if(tp){tp.className='arena-tab'+(tab==='practice'?' on-practice':'');}
   if(tm){tm.className='arena-tab'+(tab==='mock'?' on-mock':'');}
+  if(td){td.className='arena-tab'+(tab==='dpp'?' on-dpp':'');}
   if(tab==='mock')renderMockLog();
+  if(tab==='dpp')renderDppLog();
 }
 
 // ═══ NAV ═══
@@ -1505,6 +1609,139 @@ function renderMockLog(){
   el.innerHTML=html;
 }
 
+// ═══ DPP TRACKER ═══
+var dppList=[], _dppSub='physics', _dppFilter='all';
+
+function dppLoad(){try{var raw=localStorage.getItem('jee_dpp');if(raw)dppList=JSON.parse(raw);}catch(e){dppList=[];}}
+function dppSave(){try{localStorage.setItem('jee_dpp',JSON.stringify(dppList));}catch(e){}}
+
+function setDppSub(sub,btn){
+  _dppSub=sub;
+  document.querySelectorAll('.dpp-sub-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+}
+
+function setDppFilter(filter,btn){
+  _dppFilter=filter;
+  document.querySelectorAll('#arenaSub-dpp .acs-fbtn').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  renderDppLog();
+}
+
+function addDpp(){
+  dppLoad();
+  var chapter=document.getElementById('dppChapterInp').value.trim();
+  var score=document.getElementById('dppScoreInp').value.trim();
+  var max=document.getElementById('dppMaxInp').value.trim()||'100';
+  var date=document.getElementById('dppDateInp').value||today();
+  var phy=document.getElementById('dppPhy').value.trim();
+  var chem=document.getElementById('dppChem').value.trim();
+  var math=document.getElementById('dppMath').value.trim();
+  if(!chapter){alert('Chapter ka naam likhao!');return;}
+  if(score===''||isNaN(parseInt(score))){alert('Score daalo!');return;}
+  var s=parseInt(score), m=parseInt(max)||100;
+  if(s<0||s>m){alert('Score 0 se '+m+' ke beech hona chahiye!');return;}
+  // Count DPPs for this subject to auto-number
+  var subDpps=dppList.filter(function(d){return d.sub===_dppSub;});
+  var dppNum=subDpps.length+1;
+  var entry={id:'dpp_'+Date.now(),sub:_dppSub,chapter:chapter,score:s,max:m,date:date,num:dppNum};
+  if(phy!=='')entry.phy=parseInt(phy);
+  if(chem!=='')entry.chem=parseInt(chem);
+  if(math!=='')entry.math=parseInt(math);
+  dppList.unshift(entry);
+  dppSave();
+  // Clear form
+  document.getElementById('dppChapterInp').value='';
+  document.getElementById('dppScoreInp').value='';
+  document.getElementById('dppMaxInp').value='100';
+  document.getElementById('dppDateInp').value='';
+  document.getElementById('dppPhy').value='';
+  document.getElementById('dppChem').value='';
+  document.getElementById('dppMath').value='';
+  renderDppLog();
+  window.showStatus('saved');
+}
+
+function deleteDpp(id){
+  dconfirmShow({icon:'🦴',title:'DPP Delete?',msg:'Yeh DPP entry delete ho jaayegi.',title2:'Pakka delete?',msg2:'Hamesha ke liye chala jaayega!',okText:'Delete',okText2:'CONFIRM Delete',
+    onConfirm:function(){
+      dppLoad();
+      dppList=dppList.filter(function(d){return d.id!==id;});
+      dppSave();
+      renderDppLog();
+      window.showStatus('saved');
+    }
+  });
+}
+
+function renderDppLog(){
+  dppLoad();
+  var el=document.getElementById('dppLogList');if(!el)return;
+  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var subNames={physics:'Physics',chemistry:'Chemistry',maths:'Maths'};
+  var subTagClass={physics:'p',chemistry:'c',maths:'m'};
+  var subEmoji={physics:'⚡',chemistry:'🧪',maths:'📐'};
+
+  // filter
+  var filtered=_dppFilter==='all'?dppList:dppList.filter(function(d){return d.sub===_dppFilter;});
+
+  // avg pill
+  var avgPill=document.getElementById('dppAvgPill'),avgVal=document.getElementById('dppAvgVal');
+  if(filtered.length>0&&avgPill&&avgVal){
+    var totalPct=filtered.reduce(function(s,d){return s+Math.round(d.score/d.max*100);},0);
+    avgPill.style.display='flex';
+    avgVal.textContent=Math.round(totalPct/filtered.length)+'%';
+  } else if(avgPill){avgPill.style.display='none';}
+
+  if(!filtered.length){
+    el.innerHTML='<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi DPP nahi mili. Upar add karo! 👆</div>';
+    return;
+  }
+
+  // Group by subject, number sequentially within each subject
+  var subCount={physics:0,chemistry:0,maths:0};
+  // Build display list sorted by date desc but number by subject order
+  var displayList=[];
+  // re-number in chronological order per subject
+  var bySubChron={physics:[],chemistry:[],maths:[]};
+  dppList.forEach(function(d){if(bySubChron[d.sub])bySubChron[d.sub].push(d.id);});
+
+  var html='';
+  filtered.forEach(function(d){
+    var pct=Math.round(d.score/d.max*100);
+    var dObj=new Date(d.date+'T00:00:00');
+    var dateStr=dObj.getDate()+' '+months[dObj.getMonth()]+' '+dObj.getFullYear();
+    var subList=bySubChron[d.sub]||[];
+    var dppNum=subList.indexOf(d.id)+1;
+    var tagCls=subTagClass[d.sub]||'p';
+    var pctColor=pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--red)';
+
+    // PCM chips
+    var pcmHtml='';
+    if(d.phy!==undefined)pcmHtml+='<span class="dpp-pcm-chip" style="background:var(--bluelt);color:var(--blue);">P:'+d.phy+'</span>';
+    if(d.chem!==undefined)pcmHtml+='<span class="dpp-pcm-chip" style="background:var(--orangelt);color:var(--orange);">C:'+d.chem+'</span>';
+    if(d.math!==undefined)pcmHtml+='<span class="dpp-pcm-chip" style="background:var(--greenlt);color:var(--green);">M:'+d.math+'</span>';
+
+    html+='<div class="dpp-entry">'
+      +'<div class="dpp-num-badge">'+dppNum+'</div>'
+      +'<div class="dpp-entry-body">'
+        +'<div class="dpp-entry-chapter">'+d.chapter+'</div>'
+        +'<div class="dpp-entry-meta">'
+          +'<span class="dpp-sub-tag '+tagCls+'">'+subEmoji[d.sub]+' '+subNames[d.sub]+'</span>'
+          +'<span class="dpp-entry-date">'+dateStr+'</span>'
+        +'</div>'
+        +(pcmHtml?'<div class="dpp-pcm-row">'+pcmHtml+'</div>':'')
+      +'</div>'
+      +'<div class="dpp-score-box">'
+        +'<div class="dpp-score-val" style="color:'+pctColor+';">'+d.score+'/'+d.max+'</div>'
+        +'<div class="dpp-score-pct">'+pct+'%</div>'
+      +'</div>'
+      +'<button class="dpp-del-btn" onclick="deleteDpp(''+d.id+'')">🗑</button>'
+    +'</div>';
+  });
+  el.innerHTML=html;
+}
+
 // ═══ REVISION TRACKER ═══
 var revState={},revSub='physics';
 
@@ -1613,6 +1850,8 @@ window.addEventListener('pagehide',function(){if(studyOn){saveLocal();saveTimerS
 
 // INIT REVISION
 revLoad();
+// INIT DPP
+dppLoad();
 </script>
 </body>
 </html>
