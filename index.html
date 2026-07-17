@@ -2,1856 +2,442 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#4f46e5">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>JEE 99ile Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMR • 75 Question Answer Sheet</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{
-  --bg:#f0f2f5;--white:#fff;--card:#fff;
-  --blue:#4f46e5;--bluelt:#eef2ff;
-  --green:#16a34a;--greenlt:#dcfce7;
-  --orange:#ea580c;--orangelt:#fff7ed;
-  --red:#dc2626;--redlt:#fee2e2;
-  --purple:#7c3aed;--purplelt:#f5f3ff;
-  --text:#111827;--text2:#6b7280;--text3:#9ca3af;
-  --border:#e5e7eb;
-  --shadow:0 1px 3px rgba(0,0,0,0.1);
-  --shadow2:0 4px 16px rgba(0,0,0,0.08);
-  --r:14px;--r2:10px;
-}
-body.dark{
-  --bg:#0f0f13;--white:#1a1a24;--card:#1a1a24;
-  --bluelt:#1e1b4b;--greenlt:#052e16;--orangelt:#431407;
-  --redlt:#450a0a;--purplelt:#2e1065;
-  --text:#e5e7eb;--text2:#9ca3af;--text3:#6b7280;
-  --border:#2a2a3a;
-}
-body.dark #topbar,body.dark #bottomNav{background:#1a1a24;border-color:#2a2a3a;}
-body.dark .card{background:#1a1a24;border-color:#2a2a3a;}
-body.dark .cfg-sel,body.dark .cfg-in,body.dark select{background:#111118;color:var(--text);border-color:#2a2a3a;}
-body.dark .opt{background:#111118;border-color:#2a2a3a;color:var(--text);}
-body.dark .acs-fbtn{background:#111118;border-color:#2a2a3a;color:var(--text2);}
-body.dark .acs-fbtn.on{background:var(--blue);color:#fff;}
-body.dark .chk-item,body.dark .task-item,body.dark .sr-item,body.dark .rev-ch-item{background:#1a1a24;border-color:#2a2a3a;}
-body.dark .rev-stage-btn{background:#111118;border-color:#2a2a3a;color:var(--text3);}
-body.dark .rev-sub-tab{border-color:#2a2a3a;color:var(--text2);}
-body.dark .rev-count-num{background:#2e1065;border-color:#7c3aed;color:#c084fc;}
-body.dark .rev-cnt-btn{background:#111118;border-color:#2a2a3a;color:var(--text3);}
-body.dark .rev-cnt-btn.plus{background:#2e1065;border-color:#7c3aed;color:#c084fc;}
-body.dark .qs-opt-btn{background:#111118;border-color:#2a2a3a;color:var(--text2);}
-body.dark .qs-opt-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-body.dark .tasks-more-btn{background:#1a1a24;border-color:#2a2a3a;}
-body.dark .dconfirm-box{background:#1a1a24;}
-body.dark #globalBackBar{background:#1a1a24;border-color:#2a2a3a;}
-body.dark input[type="text"],body.dark input[type="number"]{background:#111118;color:var(--text);border-color:#2a2a3a;}
-body.dark input[type="date"]{background:#111118;color:var(--text);border-color:#2a2a3a;}
+  :root{
+    --paper:#f2ecd9;
+    --paper-line:#c9bd98;
+    --ink:#1f2a44;
+    --ink-soft:#4a5578;
+    --lead:#2e3b5e;
+    --accent:#b5442e;
+    --green:#2f6b47;
+    --red:#a3312a;
+    --gray:#8a8471;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#e7ddc2;
+    background-image:
+      repeating-linear-gradient(#e7ddc2 0 27px, rgba(0,0,0,0.035) 27px 28px);
+    font-family: 'Courier New', Courier, monospace;
+    color:var(--ink);
+    padding:18px;
+  }
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper);
+    border:2px solid var(--ink);
+    box-shadow:6px 6px 0 rgba(31,42,68,0.25);
+    padding:20px 18px 30px;
+  }
+  .head{
+    text-align:center;
+    border-bottom:3px double var(--ink);
+    padding-bottom:12px;
+    margin-bottom:16px;
+  }
+  .head h1{
+    font-family: Georgia, 'Times New Roman', serif;
+    letter-spacing:2px;
+    font-size:22px;
+    margin:0 0 4px;
+    color:var(--lead);
+  }
+  .head .sub{font-size:11px; color:var(--ink-soft); letter-spacing:1px;}
+  .meta-row{
+    display:flex; gap:10px; flex-wrap:wrap;
+    margin-bottom:16px; font-size:12px;
+  }
+  .meta-row input{
+    font-family:inherit; background:transparent; border:none;
+    border-bottom:1px dashed var(--ink-soft); padding:2px 4px;
+    flex:1; min-width:120px; color:var(--ink);
+  }
+  .meta-row input:focus{outline:none; border-bottom-color:var(--accent);}
+  .tabs{
+    display:flex; gap:6px; margin-bottom:14px;
+  }
+  .tab-btn{
+    flex:1; padding:8px 4px; font-family:inherit; font-size:11px;
+    letter-spacing:1px; text-transform:uppercase;
+    background:#e3d9b8; border:1px solid var(--ink); cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .tab-btn.active{ background:var(--lead); color:var(--paper); font-weight:bold; }
+  .progress{
+    font-size:11px; color:var(--ink-soft); text-align:right; margin-bottom:10px;
+  }
+  .section-label{
+    font-size:11px; letter-spacing:1px; color:var(--accent); margin:14px 0 6px;
+    border-bottom:1px solid var(--paper-line); padding-bottom:3px;
+  }
+  .q-row{
+    display:flex; align-items:center; gap:10px;
+    padding:6px 4px; border-bottom:1px dotted var(--paper-line);
+  }
+  .q-num{
+    width:28px; font-size:12px; font-weight:bold; color:var(--ink-soft); text-align:right;
+  }
+  .bubbles{ display:flex; gap:8px; }
+  .bubble{
+    width:26px; height:26px; border-radius:50%;
+    border:1.6px solid var(--ink); display:flex; align-items:center; justify-content:center;
+    font-size:11px; cursor:pointer; background:transparent; color:var(--ink-soft);
+    transition: all .12s ease;
+  }
+  .bubble:hover{ border-color:var(--accent); }
+  .bubble.filled{
+    background:var(--ink); color:var(--paper); border-color:var(--ink);
+    transform:scale(1.05);
+  }
+  .num-input{
+    width:110px; font-family:inherit; font-size:13px; padding:5px 6px;
+    border:1.6px solid var(--ink); background:#fffdf6; color:var(--ink);
+  }
+  .num-input:focus{ outline:none; border-color:var(--accent); }
+  .num-tag{ font-size:9px; color:var(--gray); letter-spacing:1px; }
+  .footer-bar{
+    margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+  }
+  .btn{
+    font-family:inherit; letter-spacing:1px; text-transform:uppercase; font-size:12px;
+    padding:10px 18px; border:2px solid var(--ink); background:var(--lead); color:var(--paper);
+    cursor:pointer;
+  }
+  .btn.secondary{ background:transparent; color:var(--ink); }
+  .btn:hover{ opacity:0.85; }
+  input[type=file]{
+    font-family:inherit; font-size:12px; color:var(--ink);
+    background:#fffdf6; border:1.6px solid var(--ink); padding:8px;
+    max-width:320px; margin:8px auto 0; display:block;
+  }
 
-@keyframes spin{to{transform:rotate(360deg)}}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overscroll-behavior:none;}
-
-/* LOGIN */
-#loginScreen{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);padding:20px;}
-.login-card{background:#fff;border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
-.login-logo{font-size:56px;margin-bottom:10px;}
-.login-title{font-size:24px;font-weight:900;color:var(--blue);margin-bottom:4px;}
-.login-sub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.6;}
-.g-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;border-radius:12px;border:2px solid var(--border);background:#fff;color:var(--text);font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.g-btn img{width:22px;}
-.login-err{margin-top:12px;font-size:12px;color:var(--red);display:none;padding:10px;background:var(--redlt);border-radius:8px;}
-
-/* TOPBAR */
-#topbar{position:fixed;top:0;left:0;right:0;z-index:200;background:#fff;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);}
-.tb-left{display:flex;align-items:center;gap:10px;}
-.tb-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--blue);}
-.tb-name{font-size:14px;font-weight:700;}
-.tb-badge{font-size:11px;color:var(--text2);}
-.tb-right{display:flex;align-items:center;gap:8px;}
-.streak-badge{background:var(--orangelt);border:1px solid #fed7aa;border-radius:20px;padding:5px 10px;font-size:13px;font-weight:700;color:var(--orange);}
-.dm-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:5px 8px;cursor:pointer;font-size:16px;line-height:1;}
-
-/* WRAP */
-.wrap{max-width:520px;margin:0 auto;padding:70px 14px 130px;}
-
-/* CARDS */
-.card{background:#fff;border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--shadow2);border:1px solid var(--border);}
-.card-title{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;}
-
-/* QUOTE */
-.quote-card{background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:var(--r);padding:16px;margin-bottom:12px;color:#fff;}
-.quote-text{font-size:14px;line-height:1.65;font-style:italic;margin-bottom:8px;}
-.quote-auth{font-size:11px;opacity:.85;font-weight:700;}
-.quote-date{font-size:11px;opacity:.6;margin-top:2px;}
-
-/* COUNTDOWN */
-.cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.cd-box{background:var(--bluelt);border:1px solid #c7d2fe;border-radius:var(--r2);padding:12px;text-align:center;}
-.cd-title{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;margin-bottom:8px;}
-.cd-nums{display:flex;justify-content:center;gap:5px;}
-.cd-num{background:#fff;border-radius:8px;padding:6px 7px;min-width:40px;box-shadow:var(--shadow);}
-.cd-n{font-size:18px;font-weight:900;color:var(--blue);line-height:1;}
-.cd-u{font-size:9px;color:var(--text3);margin-top:2px;font-weight:600;}
-.cd-sel{width:100%;margin-top:8px;padding:6px 8px;border-radius:8px;border:1px solid #c7d2fe;background:#fff;font-size:13px;font-weight:600;color:var(--blue);outline:none;font-family:'Inter',sans-serif;}
-
-/* SECTIONS */
-.sec{display:none!important;}.sec.on{display:block!important;}
-
-/* GLOBAL BACK BAR */
-#globalBackBar{position:sticky;top:62px;z-index:150;background:#fff;border-bottom:1.5px solid var(--border);display:none;align-items:center;gap:10px;padding:10px 14px;margin:-16px -14px 14px -14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
-#globalBackBar.show{display:flex;}
-.gbb-icon{font-size:18px;flex-shrink:0;}
-.gbb-title{font-size:14px;font-weight:800;color:var(--text);flex:1;}
-.gbb-badge{font-size:11px;font-weight:700;color:var(--text2);white-space:nowrap;}
-.rev-back-btn{width:34px;height:34px;border-radius:10px;background:var(--bluelt);border:1.5px solid #c7d2fe;color:var(--blue);font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
-
-/* BOTTOM NAV */
-#bottomNav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#f8f8fc;border-top:1.5px solid #e5e7eb;display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 -4px 24px rgba(0,0,0,0.10);padding:6px 4px calc(6px + env(safe-area-inset-bottom)) 4px;gap:2px;transition:transform .32s cubic-bezier(.4,0,.2,1);}
-body.dark #bottomNav{background:#12121a;border-color:#2a2a3a;}
-.nav-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:5px 2px 4px;border:none;background:transparent;cursor:pointer;font-family:'Inter',sans-serif;border-radius:12px;}
-.nav-icon-wrap{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .18s;background:#e8e8f0;}
-.nav-btn[data-sec="home"]   .nav-icon-wrap{background:#e0e7ff;}
-.nav-btn[data-sec="tasks"]  .nav-icon-wrap{background:#fef9c3;}
-.nav-btn[data-sec="arena"]  .nav-icon-wrap{background:#fee2e2;}
-.nav-btn[data-sec="revise"] .nav-icon-wrap{background:#f5f3ff;}
-.nav-btn.on[data-sec="home"]   .nav-icon-wrap{background:#4f46e5;box-shadow:0 3px 12px rgba(79,70,229,.4);}
-.nav-btn.on[data-sec="tasks"]  .nav-icon-wrap{background:#ca8a04;box-shadow:0 3px 12px rgba(202,138,4,.4);}
-.nav-btn.on[data-sec="arena"]  .nav-icon-wrap{background:#dc2626;box-shadow:0 3px 12px rgba(220,38,38,.4);}
-.nav-btn.on[data-sec="revise"] .nav-icon-wrap{background:#7c3aed;box-shadow:0 3px 12px rgba(124,58,237,.4);}
-.nav-label{font-size:9px;font-weight:700;white-space:nowrap;line-height:1;color:#9ca3af;}
-.nav-btn.on .nav-label{color:#111827;}
-body.dark .nav-label{color:#6b7280;}
-body.dark .nav-btn.on .nav-label{color:#e5e7eb;}
-body.dark .nav-icon-wrap{background:#1e1e2e;}
-
-/* TIMER */
-.timer-display{font-size:52px;font-weight:900;letter-spacing:4px;margin:6px 0;font-variant-numeric:tabular-nums;}
-.sub-selector{display:flex;gap:8px;justify-content:center;margin-bottom:14px;}
-.sub-btn{padding:7px 14px;border-radius:20px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.sub-btn.on{background:#fff;color:var(--blue);}
-.timer-btns{display:flex;gap:10px;justify-content:center;}
-.t-btn{padding:10px 24px;border-radius:10px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.t-btn.start{background:#fff;color:var(--blue);}
-.t-btn.pause{background:#ef4444;color:#fff;}
-.t-btn.reset-btn{background:rgba(255,255,255,.15);color:#fff;}
-
-/* GOAL & GRAPH */
-.goal-bar-bg{background:var(--border);border-radius:99px;height:10px;overflow:hidden;margin-bottom:6px;}
-.goal-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .5s;}
-.sub-time-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
-.stc{border-radius:var(--r2);padding:12px 8px;text-align:center;}
-.stc.ph{background:var(--bluelt);border:1px solid #c7d2fe;}
-.stc.ch{background:var(--orangelt);border:1px solid #fed7aa;}
-.stc.ma{background:var(--greenlt);border:1px solid #bbf7d0;}
-.stc-icon{font-size:18px;margin-bottom:3px;}
-.stc-name{font-size:10px;font-weight:700;color:var(--text2);margin-bottom:3px;}
-.stc-val{font-size:15px;font-weight:900;}
-.stc.ph .stc-val{color:var(--blue);}
-.stc.ch .stc-val{color:var(--orange);}
-.stc.ma .stc-val{color:var(--green);}
-.week-graph{display:flex;align-items:flex-end;gap:5px;height:80px;margin:8px 0 4px;}
-.wbw{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
-.wbb{flex:1;width:100%;background:var(--border);border-radius:6px;overflow:hidden;display:flex;align-items:flex-end;}
-.wbf{width:100%;border-radius:6px;}
-.wbd{font-size:9px;font-weight:700;color:var(--text3);}
-.wbh{font-size:9px;font-weight:600;color:var(--text2);}
-
-/* CHECKLIST */
-.chk-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);background:#fff;margin-bottom:6px;cursor:pointer;user-select:none;}
-.chk-item.done-chk{opacity:.55;}
-.chk-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;}
-.chk-item.done-chk .chk-box{background:var(--green);border-color:var(--green);color:#fff;}
-.chk-text{flex:1;font-size:13px;font-weight:600;}
-.chk-item.done-chk .chk-text{text-decoration:line-through;color:var(--text3);}
-
-/* BADGES */
-.badge-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.bdg{border-radius:var(--r2);padding:12px;text-align:center;border:1px solid var(--border);background:var(--bg);}
-.bdg.earned{border-color:#fde68a;background:linear-gradient(135deg,#fef3c7,#fde68a)!important;}
-.bdg.locked{opacity:.5;}
-.bdg-ico{font-size:24px;margin-bottom:4px;}
-.bdg-name{font-size:12px;font-weight:800;color:var(--text);}
-.bdg-sub{font-size:10px;color:var(--text2);margin-top:2px;}
-
-/* SPACED REP */
-.sr-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;border:1.5px solid var(--border);background:#fff;}
-.sr-due{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;}
-.sr-due.today{background:#fee2e2;color:var(--red);}
-.sr-due.soon{background:#fef9c3;color:#854d0e;}
-
-/* TASKS */
-.task-item{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border-radius:10px;border:1.5px solid var(--border);background:#fff;margin-bottom:6px;cursor:pointer;user-select:none;}
-.task-item.done{opacity:.5;}
-.task-item.done .task-title{text-decoration:line-through;color:var(--text3);}
-.task-chk{width:22px;height:22px;border-radius:6px;border:2px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;margin-top:1px;}
-.task-item.done .task-chk{background:var(--green);border-color:var(--green);color:#fff;}
-.task-body{flex:1;min-width:0;}
-.task-date{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:2px;}
-.task-title{font-size:13px;font-weight:700;line-height:1.4;}
-.task-sub{font-size:11px;margin-top:2px;}
-.task-tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:800;}
-.tag-phy{background:var(--bluelt);color:var(--blue);}
-.tag-pc{background:#fef3c7;color:#d97706;}
-.tag-ioc{background:#f0fdf4;color:#15803d;}
-.tag-oc{background:#fdf4ff;color:#9333ea;}
-.tag-math{background:var(--greenlt);color:var(--green);}
-.tag-test{background:var(--redlt);color:var(--red);}
-.tasks-more-btn{display:block;width:100%;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;text-align:center;}
-
-/* ARENA */
-.cfg-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px;}
-.cfg-grp{display:flex;flex-direction:column;gap:4px;flex:1;min-width:90px;}
-.cfg-lbl{font-size:11px;font-weight:600;color:var(--text2);}
-.cfg-sel,.cfg-in{padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text);font-size:14px;font-weight:600;width:100%;outline:none;font-family:'Inter',sans-serif;}
-.gen-btn{padding:10px 16px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;}
-.at-disp{font-size:42px;font-weight:900;color:var(--blue);letter-spacing:3px;text-align:center;}
-.at-btns{display:flex;gap:8px;justify-content:center;margin-top:6px;margin-bottom:12px;}
-.at-btn{padding:7px 18px;border-radius:8px;border:2px solid;font-size:12px;font-weight:700;cursor:pointer;background:transparent;font-family:'Inter',sans-serif;}
-.at-btn.go{border-color:var(--green);color:var(--green);}
-.at-btn.rs{border-color:var(--text3);color:var(--text3);}
-.stat-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.spill{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 9px;font-size:12px;font-weight:600;}
-.spill b{color:var(--blue);}
-.qtbl{width:100%;border-collapse:collapse;}
-.qtbl th{padding:8px 5px;text-align:left;font-size:11px;font-weight:700;color:var(--text2);border-bottom:2px solid var(--border);}
-.qtbl td{padding:10px 5px;border-bottom:1px solid var(--border);vertical-align:top;}
-.qn-inp{width:44px;background:var(--bluelt);border:1.5px solid #c7d2fe;color:var(--blue);font-size:14px;font-weight:800;text-align:center;border-radius:7px;padding:4px 2px;outline:none;font-family:'Inter',sans-serif;}
-.ch-lbl{font-size:13px;font-weight:700;}
-.sub-lbl2{font-size:11px;color:var(--text2);}
-.badge-tag{display:inline-block;margin-top:3px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;}
-.bm{background:var(--bluelt);color:var(--blue);}
-.bn{background:var(--orangelt);color:var(--orange);}
-.opts{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px;}
-.opt{width:42px;height:40px;border-radius:8px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--text2);cursor:pointer;background:#fff;font-family:'Inter',sans-serif;user-select:none;}
-.opt.sel{border-color:var(--blue);color:#fff;background:var(--blue);}
-.opt.csel{border-color:var(--green);color:#fff;background:var(--green);}
-.or-div{display:flex;align-items:center;gap:6px;margin:5px 0;}
-.or-div .ln{flex:1;height:1px;background:var(--border);}
-.or-div span{font-size:10px;color:var(--text3);font-weight:600;}
-.num-in{background:var(--bg);border:2px solid var(--border);color:var(--orange);padding:8px 10px;border-radius:8px;font-size:14px;width:130px;text-align:center;outline:none;font-family:'Inter',sans-serif;}
-.sub-btn2{display:block;width:100%;padding:13px;background:var(--blue);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:14px;}
-.res-btn-g{display:block;width:100%;padding:13px;background:var(--green);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:14px;}
-.res-card{display:none;background:#fff;border:2px solid #bbf7d0;border-radius:var(--r);padding:16px;margin-top:12px;}
-.res-card.on{display:block;}
-.res-grid{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
-.res-box{background:var(--bg);border-radius:10px;padding:10px 12px;min-width:72px;text-align:center;}
-.res-val{font-size:26px;font-weight:900;}
-.res-lbl{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
-.ans-row{display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:8px;margin-bottom:3px;font-size:13px;}
-.ans-row.ok{background:var(--greenlt);border:1px solid #86efac;}
-.ans-row.no{background:var(--redlt);border:1px solid #fca5a5;}
-.ans-row.sk{background:var(--bg);border:1px solid var(--border);}
-.qs-opt-btn{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.qs-opt-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-.acs-fbtn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.acs-fbtn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-
-/* DPP */
-.dpp-sub-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.dpp-sub-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-body.dark .dpp-sub-btn{background:#111118;border-color:#2a2a3a;color:var(--text2);}
-body.dark .dpp-sub-btn.on{background:var(--blue);color:#fff;}
-.dpp-entry{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--r2);border:1.5px solid var(--border);background:#fff;margin-bottom:8px;}
-body.dark .dpp-entry{background:#1a1a24;border-color:#2a2a3a;}
-.dpp-num-badge{min-width:36px;height:36px;border-radius:10px;background:var(--purplelt);border:1.5px solid #ddd6fe;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--purple);flex-shrink:0;}
-.dpp-entry-body{flex:1;min-width:0;}
-.dpp-entry-chapter{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.dpp-entry-meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;}
-.dpp-sub-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
-.dpp-sub-tag.p{background:var(--bluelt);color:var(--blue);}
-.dpp-sub-tag.c{background:var(--orangelt);color:var(--orange);}
-.dpp-sub-tag.m{background:var(--greenlt);color:var(--green);}
-.dpp-entry-date{font-size:10px;color:var(--text3);font-weight:600;}
-.dpp-pcm-row{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
-.dpp-pcm-chip{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;}
-.dpp-score-box{background:var(--purplelt);border:1.5px solid #ddd6fe;border-radius:10px;padding:8px 10px;text-align:center;min-width:60px;flex-shrink:0;}
-.dpp-score-val{font-size:18px;font-weight:900;color:var(--purple);line-height:1;}
-.dpp-score-pct{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
-.dpp-del-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--redlt);background:var(--redlt);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-
-/* RANK PREDICTOR */
-.rp-box{border-radius:var(--r2);padding:14px;margin-top:12px;text-align:center;background:linear-gradient(135deg,#1e1b4b,#4f46e5);color:#fff;}
-.rp-pct{font-size:40px;font-weight:900;letter-spacing:2px;}
-.rp-lbl{font-size:10px;opacity:.7;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
-.rp-meta{display:flex;gap:10px;justify-content:center;margin:10px 0 8px;}
-.rp-meta-box{background:rgba(255,255,255,.15);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;}
-.rp-msg{font-size:13px;font-weight:700;opacity:.9;margin-top:8px;line-height:1.5;}
-
-/* MISTAKE LOG */
-.err-item{background:var(--redlt);border:1px solid #fca5a5;border-radius:10px;padding:12px;margin-bottom:8px;}
-.err-q{font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px;}
-.err-note{width:100%;border:1.5px solid #fca5a5;border-radius:8px;padding:8px 10px;font-size:13px;background:#fff;color:var(--text);resize:none;font-family:'Inter',sans-serif;outline:none;min-height:60px;}
-
-/* REVISION */
-.rev-sub-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.rev-sub-tab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.rev-sub-tab.on{background:var(--blue);color:#fff;border-color:var(--blue);}
-.rev-prog-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.rev-prog-label{font-size:11px;font-weight:700;color:var(--text2);min-width:80px;}
-.rev-prog-bg{flex:1;background:var(--border);border-radius:99px;height:8px;overflow:hidden;}
-.rev-prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .4s;}
-.rev-prog-pct{font-size:11px;font-weight:800;color:var(--blue);min-width:30px;text-align:right;}
-.rev-ch-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;border:1.5px solid var(--border);background:#fff;margin-bottom:6px;}
-.rev-ch-name{flex:1;font-size:13px;font-weight:700;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.rev-stages{display:flex;gap:5px;flex-shrink:0;}
-.rev-stage-btn{width:30px;height:30px;border-radius:7px;border:1.5px solid var(--border);background:#fff;font-size:10px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;color:var(--text3);}
-.rev-stage-btn.s1.on{background:#dbeafe;border-color:#3b82f6;color:#1d4ed8;}
-.rev-stage-btn.s2.on{background:#fef9c3;border-color:#ca8a04;color:#854d0e;}
-.rev-stage-btn.s3.on{background:var(--greenlt);border-color:var(--green);color:var(--green);}
-.rev-count-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;}
-.rev-count-label{font-size:8px;font-weight:800;color:var(--text3);letter-spacing:.3px;text-transform:uppercase;}
-.rev-count-row{display:flex;align-items:center;gap:3px;}
-.rev-count-num{min-width:22px;height:22px;border-radius:6px;background:var(--purplelt);color:var(--purple);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;border:1.5px solid #ddd6fe;}
-.rev-count-num.hot{background:#fdf4ff;color:#9333ea;border-color:#e879f9;}
-.rev-cnt-btn{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border);background:#fff;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3);font-family:'Inter',sans-serif;padding:0;}
-.rev-cnt-btn.plus{border-color:#c084fc;color:#9333ea;background:#fdf4ff;}
-.rev-cnt-btn.minus{font-size:12px;}
-.rev-legend{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
-.rev-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--text2);}
-.rev-leg-dot{width:10px;height:10px;border-radius:3px;}
-
-/* POMODORO */
-.pom-phase{display:none;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-top:6px;}
-.pom-phase.study{background:#dbeafe;color:#1d4ed8;}
-.pom-phase.brk{background:#dcfce7;color:var(--green);}
-
-/* DOUBLE CONFIRM */
-.dconfirm-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;}
-.dconfirm-overlay.open{display:flex;}
-.dconfirm-box{background:var(--card);border-radius:20px;padding:28px 22px;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;}
-.dconfirm-icon{font-size:44px;margin-bottom:10px;}
-.dconfirm-title{font-size:17px;font-weight:900;color:var(--text);margin-bottom:6px;}
-.dconfirm-msg{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:22px;}
-.dconfirm-step{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--text3);margin-bottom:16px;text-transform:uppercase;}
-.dconfirm-btns{display:flex;gap:10px;}
-.dconfirm-cancel{flex:1;padding:12px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-.dconfirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
-.dconfirm-ok.step2{background:#7f1d1d;animation:shake .3s ease;}
-
-/* TOAST */
-#syncToast{position:fixed;top:68px;left:50%;transform:translateX(-50%) translateY(-10px);z-index:300;background:var(--green);color:#fff;font-size:12px;font-weight:700;padding:8px 18px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
-#syncToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-#syncToast.err{background:var(--red);}
-#syncToast.warn{background:var(--orange);}
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-
-/* ARENA SUB-TABS */
-.arena-tab-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.arena-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 8px;border-radius:var(--r2);border:2px solid var(--border);background:#fff;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;}
-body.dark .arena-tab{background:#111118;border-color:#2a2a3a;}
-.arena-tab .at-icon{font-size:26px;}
-.arena-tab .at-label{font-size:12px;font-weight:800;color:var(--text2);}
-.arena-tab .at-sub{font-size:10px;font-weight:600;color:var(--text3);}
-.arena-tab.on-practice{background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:#f87171;}
-.arena-tab.on-practice .at-label{color:var(--red);}
-.arena-tab.on-mock{background:linear-gradient(135deg,var(--bluelt),#c7d2fe);border-color:#818cf8;}
-.arena-tab.on-mock .at-label{color:var(--blue);}
-body.dark .arena-tab.on-practice{background:linear-gradient(135deg,#450a0a,#7f1d1d);border-color:#f87171;}
-body.dark .arena-tab.on-mock{background:linear-gradient(135deg,#1e1b4b,#312e81);border-color:#818cf8;}
-.arena-tab-bar{grid-template-columns:1fr 1fr 1fr;}
-.arena-tab.on-dpp{background:linear-gradient(135deg,var(--purplelt),#ddd6fe);border-color:#a78bfa;}
-.arena-tab.on-dpp .at-label{color:var(--purple);}
-body.dark .arena-tab.on-dpp{background:linear-gradient(135deg,#2e1065,#4c1d95);border-color:#a78bfa;}
-.arena-sub{display:none;}.arena-sub.on{display:block;}
-
-/* MOCK LOG */
-.mock-type-btn{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:#fff;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
-.mock-type-btn.on.main{background:#4f46e5;color:#fff;border-color:#4f46e5;}
-.mock-type-btn.on.adv{background:#7c3aed;color:#fff;border-color:#7c3aed;}
-body.dark .mock-type-btn{background:#111118;border-color:#2a2a3a;color:var(--text2);}
-body.dark .mock-type-btn.on.main{background:#4f46e5;color:#fff;}
-body.dark .mock-type-btn.on.adv{background:#7c3aed;color:#fff;}
-.mock-entry{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:#fff;margin-bottom:8px;}
-body.dark .mock-entry{background:#1a1a24;border-color:#2a2a3a;}
-.mock-entry-left{flex:1;min-width:0;}
-.mock-entry-name{font-size:14px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.mock-entry-date{font-size:11px;color:var(--text3);margin-top:2px;font-weight:600;}
-.mock-entry-type{font-size:10px;font-weight:800;padding:2px 8px;border-radius:5px;flex-shrink:0;}
-.mock-type-main{background:var(--bluelt);color:var(--blue);}
-.mock-type-adv{background:var(--purplelt);color:var(--purple);}
-.mock-score-box{text-align:center;flex-shrink:0;}
-.mock-score-val{font-size:22px;font-weight:900;}
-.mock-score-max{font-size:10px;color:var(--text3);font-weight:700;}
-.mock-score-main .mock-score-val{color:var(--blue);}
-.mock-score-adv .mock-score-val{color:var(--purple);}
-.mock-del-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--redlt);background:var(--redlt);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Inter',sans-serif;}
-.mock-avg-pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--text);}
-body.dark .mock-avg-pill{background:#111118;}
+  /* Result screen */
+  .result-wrap{ display:none; }
+  .result-wrap.show{ display:block; }
+  .sheet.result-mode .paper-content{ display:none; }
+  .score-hero{
+    text-align:center; padding:18px 0 10px; border-bottom:3px double var(--ink); margin-bottom:16px;
+  }
+  .score-hero .big{
+    font-family:Georgia, serif; font-size:48px; color:var(--lead); line-height:1;
+  }
+  .score-hero .out-of{ font-size:13px; color:var(--ink-soft); }
+  .subj-table{ width:100%; border-collapse:collapse; font-size:12px; margin-bottom:16px; }
+  .subj-table th, .subj-table td{
+    border:1px solid var(--paper-line); padding:6px 8px; text-align:center;
+  }
+  .subj-table th{ background:#e3d9b8; }
+  .legend{ display:flex; gap:14px; font-size:11px; justify-content:center; margin-bottom:14px; color:var(--ink-soft); }
+  .legend span.dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:4px; }
+  .review-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(52px,1fr)); gap:4px; margin-bottom:10px;
+  }
+  .review-cell{
+    text-align:center; font-size:10px; padding:5px 2px; border:1px solid var(--paper-line);
+  }
+  .review-cell.correct{ background:#d7ead9; color:var(--green); }
+  .review-cell.wrong{ background:#f2d6d2; color:var(--red); }
+  .review-cell.skip{ background:#eee7d3; color:var(--gray); }
+  .hint{ font-size:11px; color:var(--ink-soft); text-align:center; margin-top:8px; }
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
-<div id="loadingScreen" style="position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4f46e5,#7c3aed);">
-  <div style="text-align:center;color:#fff;">
-    <div style="font-size:56px;margin-bottom:16px;">🎯</div>
-    <div style="font-size:20px;font-weight:900;margin-bottom:8px;">JEE 99ile Tracker</div>
-    <div style="font-size:13px;opacity:.7;margin-bottom:24px;">Loading...</div>
-    <div style="width:40px;height:40px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto;"></div>
+<div class="sheet" id="sheet">
+  <div class="head">
+    <h1>OMR ANSWER SHEET</h1>
+    <div class="sub">75 QUESTIONS · 20 + 5 PATTERN · 3 SUBJECTS</div>
   </div>
-</div>
-<script>setTimeout(function(){var ls=document.getElementById('loadingScreen');if(ls&&ls.style.display!=='none'){ls.style.display='none';if(!window._isGuest){var l=document.getElementById('loginScreen');if(l)l.style.display='flex';}}},8000);</script>
 
-<!-- LOGIN -->
-<div id="loginScreen" style="display:none;">
-  <div class="login-card">
-    <div class="login-logo">🎯</div>
-    <div class="login-title">JEE 99ile Tracker</div>
-    <div class="login-sub">Google se login karo.<br>Data hamesha safe rahega ☁️</div>
-    <button class="g-btn" id="loginBtn" onclick="doLogin()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Google se Login Karo
-    </button>
-    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;">
-      <div style="flex:1;height:1px;background:var(--border);"></div>
-      <span style="font-size:12px;color:var(--text3);font-weight:600;">YA</span>
-      <div style="flex:1;height:1px;background:var(--border);"></div>
+  <div class="paper-content" id="paperContent">
+    <div class="meta-row">
+      <input type="text" id="candName" placeholder="Name">
+      <input type="text" id="testName" placeholder="Test / Mock name">
+      <input type="date" id="testDate">
     </div>
-    <button class="g-btn" style="margin-top:14px;border-color:#e5e7eb;color:var(--text2);" onclick="guestLogin()">👀 Bina Login Dekho (Guest)</button>
-    <div style="font-size:11px;color:var(--text3);margin-top:8px;">Guest mode mein data sirf is device pe save hoga</div>
-    <div class="login-err" id="loginErr"></div>
-  </div>
-</div>
 
-<div id="syncToast"></div>
+    <div class="tabs" id="tabs"></div>
+    <div class="progress" id="progressText"></div>
+    <div id="qContainer"></div>
 
-<!-- TOPBAR -->
-<div id="topbar" style="display:none">
-  <div class="tb-left">
-    <img class="tb-avatar" id="userAvatar" src="" alt="">
-    <div><div class="tb-name" id="userName">JEE Aspirant</div><div class="tb-badge">IIT Bombay 🎯</div></div>
-  </div>
-  <div class="tb-right">
-    <div class="streak-badge" id="streakBadge">⭐ 0</div>
-    <button class="dm-btn" onclick="toggleDarkMode()">💀</button>
-    <button id="logoutBtn" onclick="confirmLogout()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;">🚪</button>
-    <button id="loginFromGuestBtn" onclick="loginFromGuest()" style="display:none;background:var(--blue);border:none;color:#fff;font-size:12px;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;">🔑 Login</button>
-  </div>
-</div>
+    <div class="footer-bar">
+      <button class="btn secondary" id="clearBtn">Clear all</button>
+    </div>
+    <div class="hint">Bubble in an option for Q1–20 type questions. Type the value for numerical questions. Then upload a .txt answer key below to see your result.</div>
 
-<!-- MAIN -->
-<div class="wrap" id="mainApp" style="display:none">
-
-  <div id="globalBackBar">
-    <button class="rev-back-btn" onclick="navGoBack()">←</button>
-    <div class="gbb-icon" id="globalBackIcon">🏠</div>
-    <div class="gbb-title" id="globalBackTitle">Home</div>
-    <div class="gbb-badge" id="globalBackBadge"></div>
-  </div>
-
-  <!-- QUOTE -->
-  <div class="quote-card">
-    <div class="quote-text" id="qtext"></div>
-    <div class="quote-auth" id="qauth"></div>
-    <div class="quote-date" id="qdate"></div>
-  </div>
-
-  <!-- BANNER -->
-  <div style="border-radius:14px;overflow:hidden;margin-bottom:12px;height:110px;box-shadow:var(--shadow2);">
-    <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e1b4b,#4f46e5);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;">
-      <div style="color:#f5c842;font-size:10px;font-weight:700;letter-spacing:2px;">🎯 TARGET</div>
-      <div style="color:#fff;font-size:20px;font-weight:900;">IIT Bombay / Delhi</div>
-      <div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:2px;">Har din ek kadam aur karib 🚀</div>
+    <div id="uploadZone" style="text-align:center; margin-top:16px; border-top:2px dashed var(--ink-soft); padding-top:14px;">
+      <p style="font-size:13px; color:var(--ink); font-weight:bold; letter-spacing:1px;">STEP 2 — UPLOAD ANSWER KEY</p>
+      <p style="font-size:12px; color:var(--ink-soft);">Answer key format — one per line: <code>1,A</code> or <code>21,4.5</code> (comma, space, dot or bracket all work)</p>
+      <input type="file" id="keyFile" accept=".txt">
+      <div id="fileNameShown" style="font-size:11px;margin-top:6px;color:var(--ink-soft);"></div>
     </div>
   </div>
 
-  <!-- COUNTDOWN -->
-  <div class="card">
-    <div class="card-title">⏳ Countdown to JEE</div>
-    <div class="cd-grid">
-      <div class="cd-box">
-        <div class="cd-title" id="mainSessionLabel">JEE MAIN 2027</div>
-        <div class="cd-nums">
-          <div class="cd-num"><div class="cd-n" id="md">00</div><div class="cd-u">D</div></div>
-          <div class="cd-num"><div class="cd-n" id="mh">00</div><div class="cd-u">H</div></div>
-          <div class="cd-num"><div class="cd-n" id="mm">00</div><div class="cd-u">M</div></div>
-          <div class="cd-num"><div class="cd-n" id="ms">00</div><div class="cd-u">S</div></div>
-        </div>
-        <select class="cd-sel" id="mainDateSel" onchange="selMainDate(this.value)">
-          <optgroup label="── Session 1 ──">
-            <option value="jan-22">22 Jan 2027</option><option value="jan-23">23 Jan 2027</option>
-            <option value="jan-24">24 Jan 2027</option><option value="jan-25">25 Jan 2027</option>
-            <option value="jan-26">26 Jan 2027</option><option value="jan-27">27 Jan 2027</option>
-            <option value="jan-28">28 Jan 2027</option><option value="jan-29">29 Jan 2027</option><option value="jan-30">30 Jan 2027</option>
-          </optgroup>
-          <optgroup label="── Session 2 ──"><option value="apr-27" selected>27 Apr 2027</option></optgroup>
-        </select>
-      </div>
-      <div class="cd-box" style="background:var(--purplelt);border-color:#ddd6fe;">
-        <div class="cd-title" style="color:var(--purple)">JEE ADVANCED</div>
-        <div class="cd-nums">
-          <div class="cd-num"><div class="cd-n" id="ad" style="color:var(--purple)">00</div><div class="cd-u">D</div></div>
-          <div class="cd-num"><div class="cd-n" id="ah" style="color:var(--purple)">00</div><div class="cd-u">H</div></div>
-          <div class="cd-num"><div class="cd-n" id="am" style="color:var(--purple)">00</div><div class="cd-u">M</div></div>
-          <div class="cd-num"><div class="cd-n" id="as2" style="color:var(--purple)">00</div><div class="cd-u">S</div></div>
-        </div>
-        <div style="font-size:10px;color:var(--purple);margin-top:8px;font-weight:700;">📅 ~Jun 2027 (TBA)</div>
-      </div>
+  <div class="result-wrap" id="resultWrap">
+    <div class="score-hero">
+      <div class="big" id="scoreBig">0</div>
+      <div class="out-of" id="scoreOutOf">out of 300</div>
     </div>
-  </div>
-
-  <!-- HOME -->
-  <div class="sec on" id="sec-home">
-    <div class="card" style="background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;text-align:center;">
-      <div class="card-title" style="color:rgba(255,255,255,.7);">⏱ Study Timer</div>
-      <div class="timer-display" id="studyDisp">00:00:00</div>
-      <div style="font-size:12px;opacity:.7;margin-bottom:14px;" id="studySubLabel">Subject select karo ↓</div>
-      <div class="sub-selector">
-        <button class="sub-btn on" id="sbph" onclick="selSub('physics')">⚡ Physics</button>
-        <button class="sub-btn" id="sbch" onclick="selSub('chemistry')">🧪 Chem</button>
-        <button class="sub-btn" id="sbma" onclick="selSub('maths')">📐 Maths</button>
-      </div>
-      <div class="timer-btns">
-        <button class="t-btn start" id="studyStartBtn" onclick="togStudyTimer()">▶ Start</button>
-        <button class="t-btn reset-btn" onclick="rstStudyTimer()">↺ Reset</button>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;font-size:12px;color:rgba(255,255,255,.8);">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="pomToggle" onchange="togglePomodoro()"> 🍅 Pomodoro (25+5)</label>
-        <span id="pomInfo" style="font-size:11px;opacity:.7;">OFF</span>
-      </div>
-      <div style="text-align:center;margin-top:4px;"><span class="pom-phase" id="pomPhaseLabel"></span></div>
+    <table class="subj-table">
+      <thead><tr><th>Subject</th><th>Correct</th><th>Wrong</th><th>Skipped</th><th>Score</th></tr></thead>
+      <tbody id="subjTableBody"></tbody>
+    </table>
+    <div class="legend">
+      <span><span class="dot" style="background:#2f6b47"></span>Correct</span>
+      <span><span class="dot" style="background:#a3312a"></span>Wrong</span>
+      <span><span class="dot" style="background:#8a8471"></span>Skipped</span>
     </div>
-
-    <div class="card">
-      <div class="card-title">📊 Aaj Ki Progress</div>
-      <div class="goal-bar-bg"><div class="goal-bar-fill" id="goalBar" style="width:0%"></div></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <span id="goalValDisp" style="font-size:13px;font-weight:700;color:var(--blue);">0h / 8h</span>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <span style="font-size:11px;color:var(--text2);">Goal:</span>
-          <input type="number" id="goalInp" value="8" min="1" max="16" style="width:60px;padding:5px 8px;border-radius:8px;border:1.5px solid var(--border);font-size:14px;font-weight:600;outline:none;font-family:'Inter',sans-serif;" onchange="saveGoal()">
-          <span style="font-size:11px;color:var(--text2);">hrs</span>
-        </div>
-      </div>
-      <div class="sub-time-grid">
-        <div class="stc ph"><div class="stc-icon">⚡</div><div class="stc-name">Physics</div><div class="stc-val" id="ph-time">0h 0m</div></div>
-        <div class="stc ch"><div class="stc-icon">🧪</div><div class="stc-name">Chemistry</div><div class="stc-val" id="ch-time">0h 0m</div></div>
-        <div class="stc ma"><div class="stc-icon">📐</div><div class="stc-name">Maths</div><div class="stc-val" id="ma-time">0h 0m</div></div>
-      </div>
-      <div style="font-size:11px;font-weight:700;color:var(--text2);margin:12px 0 4px;">📅 Last 7 Days</div>
-      <div class="week-graph" id="weekGraph"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">✅ Aaj Ka Mission</div>
-      <div id="checklistItems"></div>
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        <input type="text" id="newTaskInp" placeholder="Nayi task likhao..." style="flex:1;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;" onkeydown="if(event.key==='Enter')addChecklistItem()">
-        <button onclick="addChecklistItem()" class="gen-btn">+ Add</button>
-      </div>
-    </div>
-
-    <div class="card"><div class="card-title">🏆 Milestones & Badges</div><div class="badge-grid" id="badgeGrid"></div></div>
-
-    <div class="card" id="srCard" style="display:none;">
-      <div class="card-title">🔁 Revision Reminders (Spaced Rep)</div>
-      <div id="srList"></div>
-    </div>
-  </div>
-
-  <!-- TASKS -->
-  <div class="sec" id="sec-tasks">
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <div class="card-title" style="margin-bottom:0;">📖 Prayas JEE 2027 — Lectures</div>
-        <div id="taskCounter" style="font-size:12px;font-weight:700;color:var(--blue);"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">Aaj se aage ke lectures + tests • Tick karo jab complete ho</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;" id="taskFilters">
-        <button class="acs-fbtn on" onclick="setTaskFilter('all',this)">All</button>
-        <button class="acs-fbtn" onclick="setTaskFilter('P',this)">⚡ Physics</button>
-        <button class="acs-fbtn" onclick="setTaskFilter('PC',this)">🔬 P.Chem</button>
-        <button class="acs-fbtn" onclick="setTaskFilter('IC',this)">⚗️ I.Chem</button>
-        <button class="acs-fbtn" onclick="setTaskFilter('OC',this)">🌿 O.Chem</button>
-        <button class="acs-fbtn" onclick="setTaskFilter('M',this)">📐 Maths</button>
-        <button class="acs-fbtn" onclick="setTaskFilter('TEST',this)">📝 Tests</button>
-      </div>
-      <div id="tasksList"></div>
-      <button class="tasks-more-btn" id="tasksMoreBtn" style="display:none;" onclick="showMoreTasks()">↓ See More</button>
-    </div>
-    <div class="card" id="completedBox" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div class="card-title" style="margin-bottom:0;">✅ Completed</div>
-        <div id="completedCounter" style="font-size:12px;font-weight:700;color:var(--green);"></div>
-      </div>
-      <div id="completedList"></div>
-      <button class="tasks-more-btn" id="completedMoreBtn" style="display:none;margin-top:4px;" onclick="showMoreCompleted()">↓ See More</button>
-    </div>
-  </div>
-
-  <!-- ARENA -->
-  <div class="sec" id="sec-arena">
-
-    <!-- ARENA TAB SELECTOR -->
-    <div class="arena-tab-bar">
-      <button class="arena-tab" id="arenaTabPractice" onclick="switchArenaTab('practice')">
-        <div class="at-icon">⚔️</div>
-        <div class="at-label">Practice</div>
-        <div class="at-sub">Sawal solve karo</div>
-      </button>
-      <button class="arena-tab" id="arenaTabMock" onclick="switchArenaTab('mock')">
-        <div class="at-icon">📋</div>
-        <div class="at-label">Mock History</div>
-        <div class="at-sub">Scores track karo</div>
-      </button>
-      <button class="arena-tab" id="arenaTabDpp" onclick="switchArenaTab('dpp')">
-        <div class="at-icon">🦴</div>
-        <div class="at-label">DPP</div>
-        <div class="at-sub">Daily Practice</div>
-      </button>
-    </div>
-
-    <!-- ── SUB: PRACTICE ── -->
-    <div class="arena-sub" id="arenaSub-practice">
-      <div class="card">
-        <div class="card-title">⚔️ Practice Arena</div>
-        <div class="at-disp" id="tDisp">00:00</div>
-        <div class="at-btns">
-          <button class="at-btn go" id="tBtn" onclick="togTimer()">START</button>
-          <button class="at-btn rs" onclick="rstTimer()">RESET</button>
-        </div>
-        <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:12px;">
-          <div class="cfg-row">
-            <div class="cfg-grp" style="flex:2;min-width:130px;"><label class="cfg-lbl">SUBJECT</label>
-              <select class="cfg-sel" id="cSub" onchange="loadChaps()">
-                <option value="all">All Subjects</option>
-                <option value="physics">Physics</option>
-                <option value="chemistry">Chemistry</option>
-                <option value="maths">Mathematics</option>
-              </select>
-            </div>
-            <div class="cfg-grp" style="flex:2;min-width:130px;"><label class="cfg-lbl">CHAPTER</label>
-              <select class="cfg-sel" id="cChap"><option value="all">All Chapters</option></select>
-            </div>
-          </div>
-          <div class="cfg-row">
-            <div class="cfg-grp" style="min-width:100%;flex-basis:100%">
-              <label class="cfg-lbl">QUESTIONS</label>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-                <button type="button" class="qs-opt-btn" onclick="selArenaQs(5,this)">5</button>
-                <button type="button" class="qs-opt-btn" onclick="selArenaQs(10,this)">10</button>
-                <button type="button" class="qs-opt-btn on" onclick="selArenaQs(15,this)">15</button>
-                <button type="button" class="qs-opt-btn" onclick="selArenaQs(20,this)">20</button>
-                <button type="button" class="qs-opt-btn" onclick="selArenaQs(25,this)">25</button>
-              </div>
-              <input type="hidden" id="cTotal" value="15">
-            </div>
-            <div class="cfg-grp"><label class="cfg-lbl">TIME (min)</label><input type="number" class="cfg-in" id="cTime" value="30" min="5" max="180"></div>
-            <button class="gen-btn" onclick="genQ()">⚡ Go</button>
-          </div>
-        </div>
-        <div class="stat-pills" id="statsBar" style="display:none">
-          <div class="spill">Total:<b id="sTot">0</b></div>
-          <div class="spill">Done:<b id="sAtt">0</b></div>
-          <div class="spill">Left:<b id="sLft">0</b></div>
-          <div class="spill">MCQ:<b id="sMcq">0</b></div>
-          <div class="spill">NUM:<b id="sNum">0</b></div>
-        </div>
-        <table class="qtbl">
-          <thead><tr><th style="width:46px">Q#</th><th style="width:140px">Chapter</th><th>Answer</th></tr></thead>
-          <tbody id="qBody"></tbody>
-        </table>
-        <button class="sub-btn2" onclick="submitAns()">🔒 Submit Answers</button>
-      </div>
-      <div class="card" id="step2" style="display:none;border:2px solid #fed7aa;">
-        <div style="font-size:15px;font-weight:800;color:var(--orange);margin-bottom:12px;text-align:center;">📋 Correct Answers Daalo</div>
-        <table class="qtbl">
-          <thead><tr><th style="width:46px">Q#</th><th style="width:120px">Chapter</th><th style="width:90px">Tumhara</th><th>Sahi</th></tr></thead>
-          <tbody id="corrBody"></tbody>
-        </table>
-        <button class="res-btn-g" onclick="showResult()">📊 Result Dekho</button>
-      </div>
-      <div class="res-card" id="resCard">
-        <div style="font-size:15px;font-weight:800;color:var(--green);margin-bottom:12px;text-align:center;">🎯 Result Analysis</div>
-        <div class="res-grid">
-          <div class="res-box"><div class="res-val" style="color:var(--blue)" id="rScore">0</div><div class="res-lbl">SCORE</div></div>
-          <div class="res-box"><div class="res-val" style="color:var(--green)" id="rCorr">0</div><div class="res-lbl">CORRECT</div></div>
-          <div class="res-box"><div class="res-val" style="color:var(--red)" id="rWrong">0</div><div class="res-lbl">WRONG</div></div>
-          <div class="res-box"><div class="res-val" style="color:var(--text2)" id="rSkip">0</div><div class="res-lbl">SKIPPED</div></div>
-          <div class="res-box"><div class="res-val" style="color:var(--purple)" id="rAcc">0%</div><div class="res-lbl">ACCURACY</div></div>
-        </div>
-        <div id="rankPredictor" style="display:none;" class="rp-box">
-          <div class="rp-lbl">📊 RANK PREDICTOR (JEE MAIN)</div>
-          <div class="rp-pct" id="predPercentile">—</div>
-          <div class="rp-lbl">PERCENTILE</div>
-          <div class="rp-meta">
-            <div class="rp-meta-box">Rank: <b id="predRank">—</b></div>
-            <div class="rp-meta-box">Category: <b id="predCategory">—</b></div>
-          </div>
-          <div style="font-size:10px;opacity:.6;" id="predScaledScore"></div>
-          <div class="rp-msg" id="predMsg"></div>
-        </div>
-        <div id="ansList" style="text-align:left;margin-top:12px;"></div>
-        <div id="mistakeLogSection" style="display:none;margin-top:14px;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:10px;">📒 Galat Sawal — Note Karo</div>
-          <div id="mistakeLogItems"></div>
-          <button onclick="saveMistakeLog()" class="gen-btn" style="width:100%;margin-top:8px;background:var(--red);">💾 Mistakes Save Karo</button>
-        </div>
-      </div>
-    </div><!-- end arenaSub-practice -->
-
-    <!-- ── SUB: MOCK HISTORY ── -->
-    <div class="arena-sub" id="arenaSub-mock">
-      <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <div class="card-title" style="margin-bottom:0;">📋 Mock History</div>
-          <div id="mockAvgPill" style="display:none;" class="mock-avg-pill"><span id="mockAvgVal">—</span> <span style="font-size:10px;color:var(--text2);font-weight:600;">avg</span></div>
-        </div>
-
-        <!-- ADD MOCK FORM -->
-        <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:14px;">
-          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">➕ NAYA MOCK ADD KARO</div>
-          <div style="margin-bottom:8px;">
-            <div class="cfg-lbl" style="margin-bottom:4px;">MOCK KA NAAM</div>
-            <input type="text" id="mockNameInp" placeholder="e.g. AITS-14, Allen Mock 3..." style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
-          </div>
-          <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-            <div style="flex:1;min-width:120px;">
-              <div class="cfg-lbl" style="margin-bottom:4px;">TYPE</div>
-              <div style="display:flex;gap:6px;">
-                <button type="button" class="mock-type-btn on main" id="mockTypeMain" onclick="setMockType('main')">JEE Main</button>
-                <button type="button" class="mock-type-btn adv" id="mockTypeAdv" onclick="setMockType('adv')">Advanced</button>
-              </div>
-            </div>
-            <div style="flex:1;min-width:100px;">
-              <div class="cfg-lbl" style="margin-bottom:4px;">DATE</div>
-              <input type="date" id="mockDateInp" style="width:100%;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
-            </div>
-          </div>
-          <div style="margin-bottom:10px;">
-            <div class="cfg-lbl" style="margin-bottom:4px;">SCORE <span id="mockMaxLabel" style="color:var(--text3);font-weight:600;">(out of 300)</span></div>
-            <input type="number" id="mockScoreInp" placeholder="e.g. 187" min="0" max="360" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:#fff;">
-          </div>
-          <button onclick="addManualMock()" class="gen-btn" style="width:100%;padding:12px;">📥 Mock Save Karo</button>
-        </div>
-
-        <!-- MOCK LIST -->
-        <div id="mockLogList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi mock nahi mila. Upar add karo! 👆</div></div>
-      </div>
-    </div><!-- end arenaSub-mock -->
-
-    <!-- ── SUB: DPP ── -->
-    <div class="arena-sub" id="arenaSub-dpp" style="display:none;">
-      <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <div class="card-title" style="margin-bottom:0;">🦴 DPP Tracker</div>
-          <div id="dppAvgPill" style="display:none;background:var(--purplelt);border:1px solid #ddd6fe;border-radius:20px;padding:4px 10px;font-size:13px;font-weight:700;color:var(--purple);"><span id="dppAvgVal">—</span> <span style="font-size:10px;color:var(--text2);font-weight:600;">avg%</span></div>
-        </div>
-
-        <!-- SUBJECT FILTER -->
-        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
-          <button class="acs-fbtn on" id="dppFilterAll" onclick="setDppFilter('all',this)">📚 All</button>
-          <button class="acs-fbtn" id="dppFilterP" onclick="setDppFilter('physics',this)">⚡ Physics</button>
-          <button class="acs-fbtn" id="dppFilterC" onclick="setDppFilter('chemistry',this)">🧪 Chem</button>
-          <button class="acs-fbtn" id="dppFilterM" onclick="setDppFilter('maths',this)">📐 Maths</button>
-        </div>
-
-        <!-- ADD DPP FORM -->
-        <div style="background:var(--bg);border-radius:var(--r2);padding:12px;margin-bottom:14px;">
-          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">➕ NAYA DPP ADD KARO</div>
-
-          <!-- Subject select -->
-          <div style="margin-bottom:8px;">
-            <div class="cfg-lbl" style="margin-bottom:6px;">SUBJECT</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="dpp-sub-btn on" id="dppSubP" onclick="setDppSub('physics',this)">⚡ Physics</button>
-              <button type="button" class="dpp-sub-btn" id="dppSubC" onclick="setDppSub('chemistry',this)">🧪 Chemistry</button>
-              <button type="button" class="dpp-sub-btn" id="dppSubM" onclick="setDppSub('maths',this)">📐 Maths</button>
-            </div>
-          </div>
-
-          <!-- Chapter -->
-          <div style="margin-bottom:8px;">
-            <div class="cfg-lbl" style="margin-bottom:4px;">CHAPTER</div>
-            <input type="text" id="dppChapterInp" placeholder="e.g. Kinematics, Thermodynamics..." style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
-          </div>
-
-          <!-- Score PCM -->
-          <div style="margin-bottom:8px;">
-            <div class="cfg-lbl" style="margin-bottom:6px;">SCORE</div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <input type="number" id="dppScoreInp" placeholder="Score" min="0" style="flex:1;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:#fff;text-align:center;">
-              <span style="font-size:16px;font-weight:700;color:var(--text2);">/</span>
-              <input type="number" id="dppMaxInp" placeholder="Max" min="1" value="100" style="flex:1;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;font-weight:800;outline:none;font-family:'Inter',sans-serif;color:var(--text2);background:#fff;text-align:center;">
-            </div>
-          </div>
-
-          <!-- P C M breakdown optional -->
-          <div style="margin-bottom:10px;">
-            <div class="cfg-lbl" style="margin-bottom:4px;">PCM BREAKDOWN <span style="color:var(--text3);font-size:10px;font-weight:500;">(optional)</span></div>
-            <div style="display:flex;gap:6px;">
-              <input type="number" id="dppPhy" placeholder="P" min="0" style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid #c7d2fe;font-size:13px;font-weight:700;outline:none;font-family:'Inter',sans-serif;color:var(--blue);background:var(--bluelt);text-align:center;">
-              <input type="number" id="dppChem" placeholder="C" min="0" style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid #fed7aa;font-size:13px;font-weight:700;outline:none;font-family:'Inter',sans-serif;color:var(--orange);background:var(--orangelt);text-align:center;">
-              <input type="number" id="dppMath" placeholder="M" min="0" style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid #bbf7d0;font-size:13px;font-weight:700;outline:none;font-family:'Inter',sans-serif;color:var(--green);background:var(--greenlt);text-align:center;">
-            </div>
-          </div>
-
-          <!-- Date -->
-          <div style="margin-bottom:10px;">
-            <div class="cfg-lbl" style="margin-bottom:4px;">DATE</div>
-            <input type="date" id="dppDateInp" style="width:100%;padding:9px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;outline:none;font-family:'Inter',sans-serif;background:#fff;color:var(--text);">
-          </div>
-
-          <button onclick="addDpp()" class="gen-btn" style="width:100%;padding:12px;">📥 DPP Save Karo</button>
-        </div>
-
-        <!-- DPP LIST -->
-        <div id="dppLogList"><div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi DPP nahi mili. Upar add karo! 👆</div></div>
-      </div>
-    </div><!-- end arenaSub-dpp -->
-
-  </div><!-- end sec-arena -->
-
-  <!-- REVISION -->
-  <div class="sec" id="sec-revise">
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <div class="card-title" style="margin-bottom:0;">📓 Revision Tracker</div>
-        <div id="revTotalBadge" style="font-size:11px;font-weight:800;color:var(--purple);"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">Har chapter ke liye teen stages track karo</div>
-      <div class="rev-legend">
-        <div class="rev-leg-item"><div class="rev-leg-dot" style="background:#3b82f6;"></div>R = 1st Read</div>
-        <div class="rev-leg-item"><div class="rev-leg-dot" style="background:#ca8a04;"></div>✓ = Revision</div>
-        <div class="rev-leg-item"><div class="rev-leg-dot" style="background:var(--green);"></div>M = Mock Done</div>
-      </div>
-      <div class="rev-sub-tabs">
-        <button class="rev-sub-tab on" onclick="setRevSub('physics',this)">⚡ Physics</button>
-        <button class="rev-sub-tab" onclick="setRevSub('chemistry',this)">🧪 Chemistry</button>
-        <button class="rev-sub-tab" onclick="setRevSub('maths',this)">📐 Maths</button>
-      </div>
-      <div class="rev-prog-row">
-        <div class="rev-prog-label" id="revProgLabel">Physics</div>
-        <div class="rev-prog-bg"><div class="rev-prog-fill" id="revProgFill" style="width:0%"></div></div>
-        <div class="rev-prog-pct" id="revProgPct">0%</div>
-      </div>
-      <div id="revChList"></div>
-    </div>
-  </div>
-
-</div><!-- end wrap -->
-
-<!-- NAV -->
-<div id="bottomNav" style="display:none">
-  <button class="nav-btn on" data-sec="home"   onclick="showNav('home',this)">  <div class="nav-icon-wrap">🏠</div><div class="nav-label">Home</div></button>
-  <button class="nav-btn"   data-sec="tasks"  onclick="showNav('tasks',this)"> <div class="nav-icon-wrap">📋</div><div class="nav-label">Lectures</div></button>
-  <button class="nav-btn"   data-sec="arena"  onclick="showNav('arena',this)"> <div class="nav-icon-wrap">⚔️</div><div class="nav-label">Arena</div></button>
-  <button class="nav-btn"   data-sec="revise" onclick="showNav('revise',this)"><div class="nav-icon-wrap">📓</div><div class="nav-label">Revise</div></button>
-</div>
-
-<!-- LOGOUT MODAL -->
-<div id="logoutModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:300px;width:90%;text-align:center;">
-    <div style="font-size:40px;margin-bottom:12px;">🚪</div>
-    <div style="font-size:18px;font-weight:800;margin-bottom:8px;">Logout karna hai?</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.5;">Tera data cloud mein safe rahega.</div>
-    <div style="display:flex;gap:10px;">
-      <button onclick="closeLogoutModal()" style="flex:1;padding:12px;border-radius:10px;border:2px solid var(--border);background:#fff;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Cancel</button>
-      <button onclick="doLogout()" style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Logout</button>
+    <div class="review-grid" id="reviewGrid"></div>
+    <div class="footer-bar">
+      <button class="btn secondary" id="restartBtn">Start new sheet</button>
     </div>
   </div>
 </div>
-
-<!-- DOUBLE CONFIRM -->
-<div class="dconfirm-overlay" id="dconfirmOverlay">
-  <div class="dconfirm-box">
-    <div class="dconfirm-icon" id="dconfirmIcon">🗑️</div>
-    <div class="dconfirm-step" id="dconfirmStep">STEP 1 OF 2</div>
-    <div class="dconfirm-title" id="dconfirmTitle">Reset karna hai?</div>
-    <div class="dconfirm-msg" id="dconfirmMsg">Yeh action undo nahi hoga!</div>
-    <div class="dconfirm-btns">
-      <button class="dconfirm-cancel" onclick="dconfirmCancel()">Cancel</button>
-      <button class="dconfirm-ok" id="dconfirmOkBtn" onclick="dconfirmNext()">Haan</button>
-    </div>
-  </div>
-</div>
-
-<!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-var app = initializeApp({
-  apiKey:"AIzaSyDWIKEUfsdplqu7f6YQKPZ19SUbDTFeFeQ",
-  authDomain:"jee-tracker-b9bd4.firebaseapp.com",
-  projectId:"jee-tracker-b9bd4",
-  storageBucket:"jee-tracker-b9bd4.firebasestorage.app",
-  messagingSenderId:"53875825948",
-  appId:"1:53875825948:web:a199bb3ae362f918aceed9"
-});
-var auth = getAuth(app);
-var db;
-try { db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) }); }
-catch(e){ db = getFirestore(app); }
-var gp = new GoogleAuthProvider();
-setPersistence(auth, browserLocalPersistence).catch(function(){});
-
-window._doLogoutFn = function(){ signOut(getAuth()).catch(function(){}); };
-window.doLogin = async function(){
-  var btn=document.getElementById('loginBtn'), err=document.getElementById('loginErr');
-  btn.innerHTML='<span>⏳ Login ho raha hai...</span>'; btn.disabled=true; err.style.display='none';
-  try { await signInWithPopup(auth, gp); }
-  catch(e) {
-    if(e.code==='auth/popup-blocked'||e.code==='auth/popup-closed-by-user'){
-      try{ await signInWithRedirect(auth,gp); }catch(e2){ err.style.display='block'; err.textContent='Error: '+e2.message; }
-    } else { err.style.display='block'; err.textContent='Error: '+e.message; }
-    btn.innerHTML='<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:22px"> Google se Login Karo'; btn.disabled=false;
-  }
-};
-getRedirectResult(auth).catch(function(){});
-
-window.guestLogin = function(){
-  window._uid=null; window._currentUser=null; window._isGuest=true;
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('mainApp').style.display='block';
-  document.getElementById('topbar').style.display='flex';
-  document.getElementById('bottomNav').style.display='grid';
-  document.getElementById('userAvatar').src='https://ui-avatars.com/api/?name=Guest&background=9ca3af&color=fff&size=40';
-  document.getElementById('userName').textContent='Guest User 👀';
-  document.getElementById('logoutBtn').style.display='none';
-  document.getElementById('loginFromGuestBtn').style.display='inline-block';
-  window.initApp();
-};
-window.loginFromGuest = function(){
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('mainApp').style.display='none';
-  document.getElementById('topbar').style.display='none';
-  document.getElementById('bottomNav').style.display='none';
-  window._isGuest=false;
-};
-
-window.FS = {
-  async saveSyl(d){ var uid=window._uid; if(!uid)return; var c={}; Object.keys(d).forEach(function(k){if(d[k])c[k]=true;}); try{await setDoc(doc(db,'users',uid,'data','syllabus'),{done:c,updatedAt:serverTimestamp()},{merge:true});}catch(e){} },
-  async loadSyl(){ var uid=window._uid; if(!uid)return{}; try{var s=await getDoc(doc(db,'users',uid,'data','syllabus')); return s.exists()?(s.data().done||{}):{};} catch(e){return{};} },
-  async saveStudy(d){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'data','studytime'),d,{merge:true});}catch(e){} },
-  async loadStudy(){ var uid=window._uid; if(!uid)return{}; try{var s=await getDoc(doc(db,'users',uid,'data','studytime')); return s.exists()?s.data():{};} catch(e){return{};} },
-  async saveGoalFS(g){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'data','settings'),{dailyGoalHrs:g},{merge:true});}catch(e){} },
-  async loadGoalFS(){ var uid=window._uid; if(!uid)return 8; try{var s=await getDoc(doc(db,'users',uid,'data','settings')); return s.exists()?(s.data().dailyGoalHrs||8):8;} catch(e){return 8;} },
-  async saveChecklist(d){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'data','checklist'),{items:JSON.stringify(d),updatedAt:serverTimestamp()},{merge:true});}catch(e){} },
-  async loadChecklist(){ var uid=window._uid; if(!uid)return[]; try{var s=await getDoc(doc(db,'users',uid,'data','checklist')); if(s.exists()&&s.data().items)return JSON.parse(s.data().items); return[];}catch(e){return[];} },
-  async saveSpacedRep(d){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'data','spacedRep'),{data:JSON.stringify(d),updatedAt:serverTimestamp()},{merge:true});}catch(e){} },
-  async loadSpacedRep(){ var uid=window._uid; if(!uid)return{}; try{var s=await getDoc(doc(db,'users',uid,'data','spacedRep')); if(s.exists()&&s.data().data)return JSON.parse(s.data().data); return{};}catch(e){return{};} },
-  async saveArenaStats(d){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'data','arenaChapterStats'),{stats:JSON.stringify(d),updatedAt:serverTimestamp()},{merge:true});}catch(e){} },
-  async loadArenaStats(){ var uid=window._uid; if(!uid)return{}; try{var s=await getDoc(doc(db,'users',uid,'data','arenaChapterStats')); if(s.exists()&&s.data().stats)return JSON.parse(s.data().stats); return{};}catch(e){return{};} },
-  async saveTasksDone(d){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'data','tasksDone'),{state:JSON.stringify(d),updatedAt:serverTimestamp()},{merge:true});}catch(e){} },
-  async loadTasksDone(){ var uid=window._uid; if(!uid)return{}; try{var s=await getDoc(doc(db,'users',uid,'data','tasksDone')); if(s.exists()&&s.data().state)return JSON.parse(s.data().state); return{};}catch(e){return{};} },
-  async saveMocks(m){ var uid=window._uid; if(!uid)return; try{await addDoc(collection(db,'users',uid,'mocks'),Object.assign({},m,{createdAt:serverTimestamp()}));}catch(e){} },
-  async loadMocks(){ var uid=window._uid; if(!uid)return[]; try{var snap=await getDocs(collection(db,'users',uid,'mocks')); var list=[]; snap.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));}); list.sort(function(a,b){return a.date<b.date?1:-1;}); return list;} catch(e){return[];} },
-  async saveMockEntry(m){ var uid=window._uid; if(!uid)return; try{await setDoc(doc(db,'users',uid,'mocks',String(m.id)),Object.assign({},m,{updatedAt:serverTimestamp()}));}catch(e){} },
-  async deleteMockEntry(id){ var uid=window._uid; if(!uid)return; try{await deleteDoc(doc(db,'users',uid,'mocks',String(id)));}catch(e){} }
-};
-
-onAuthStateChanged(auth, async function(user){
-  var ls=document.getElementById('loadingScreen'); if(ls) ls.style.display='none';
-  if(user){
-    window._uid=user.uid; window._currentUser=user;
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainApp').style.display='block';
-    document.getElementById('topbar').style.display='flex';
-    document.getElementById('bottomNav').style.display='grid';
-    document.getElementById('userAvatar').src=user.photoURL||'https://ui-avatars.com/api/?name=JEE&background=4f46e5&color=fff&size=40';
-    document.getElementById('userName').textContent=user.displayName||'JEE Aspirant';
-    try{await setDoc(doc(db,'users',user.uid,'data','profile'),{displayName:user.displayName||'',email:user.email||'',lastLogin:serverTimestamp()},{merge:true});}catch(e){}
-    window.initApp();
-  } else {
-    if(!window._isGuest){
-      window._uid=null; window._currentUser=null;
-      document.getElementById('loginScreen').style.display='flex';
-      document.getElementById('mainApp').style.display='none';
-      document.getElementById('topbar').style.display='none';
-      document.getElementById('bottomNav').style.display='none';
-    }
-  }
-});
-</script>
 
 <script>
-// ═══ DATA ═══
-var SYL={
-  physics:{name:'Physics',chapters:['Units & Dimensions','Kinematics 1D','Kinematics 2D & Projectile','Laws of Motion','Work, Energy & Power','Circular Motion','Rotational Motion','Gravitation','Properties of Matter','Simple Harmonic Motion','Wave Motion & Sound','Heat & Thermodynamics','Kinetic Theory of Gases','Ray Optics','Wave Optics','Electrostatics','Current Electricity','Magnetism','Electromagnetic Induction','Alternating Current','EM Waves','Modern Physics','Semiconductor Devices','Communication Systems']},
-  chemistry:{name:'Chemistry',chapters:['Basic Concepts','Atomic Structure','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Electrochemistry','Chemical Kinetics','Surface Chemistry','Periodic Table','p-Block Elements','d & f Block Elements','Coordination Compounds','Hydrogen','s-Block Elements','Haloalkanes & Haloarenes','Alcohols, Phenols & Ethers','Aldehydes & Ketones','Carboxylic Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life','Environmental Chemistry','General Organic Chemistry','Hydrocarbons','IUPAC Nomenclature','Reaction Mechanisms','Isomerism','Metallurgy','Solid State','Solutions']},
-  maths:{name:'Mathematics',chapters:['Sets, Relations & Functions','Complex Numbers','Quadratic Equations','Progressions & Series','Binomial Theorem','Permutations & Combinations','Matrices','Determinants','Straight Lines','Circles','Parabola','Ellipse','Hyperbola','3D Geometry','Vectors','Limits & Continuity','Differentiability','Differentiation','Application of Derivatives','Indefinite Integration','Definite Integration','Area Under Curves','Differential Equations','Probability','Statistics','Trigonometry','Inverse Trigonometry','Mathematical Reasoning','Linear Programming','Height & Distance']}
-};
-var SCOL={physics:'#4f46e5',chemistry:'#ea580c',maths:'#16a34a'};
-
-// ═══ STATE ═══
-var mocks=[],done={},studyData={},dailyGoalHrs=8,arenaChapterStats={},checklist=[],spacedRep={};
-var curSub='physics',studySec=0,studyOn=false,studyIv=null,pomOn=false,pomPhase='study',pomSec=0,pomIv=null;
-var POM_STUDY=25*60,POM_BREAK=5*60,tSec=0,tOn=false,tIv=null,selDay='apr-27';
-
-// ═══ UTILS ═══
-function p2(n){return String(n).padStart(2,'0');}
-function fmtHM(s){return Math.floor(s/3600)+'h '+Math.floor((s%3600)/60)+'m';}
-function fmtHMS(s){return p2(Math.floor(s/3600))+':'+p2(Math.floor((s%3600)/60))+':'+p2(s%60);}
-function today(){return new Date().toISOString().split('T')[0];}
-
-var _toastTimer=null;
-window.showStatus=function(s){
-  var el=document.getElementById('syncToast');if(!el)return;
-  var msgs={loading:'⏳ Loading...',synced:'✅ Cloud sync OK!',saved:'✅ Saved!',save_err:'⚠️ Save error',guest:'👀 Guest Mode'};
-  var cls={save_err:'err',guest:'warn'};
-  el.textContent=msgs[s]||s; el.className='show '+(cls[s]||'');
-  if(_toastTimer)clearTimeout(_toastTimer);
-  _toastTimer=setTimeout(function(){el.className='';},3000);
-};
-
-// ═══ QUOTES ═══
-var QUOTES=[
-  {q:'Sapne woh nahi jo neend mein aate hain — sapne woh hain jo neend udaa dete hain.',a:'APJ Abdul Kalam'},
-  {q:'IIT Bombay ka gate unke liye khulta hai jo tab bhi padhte hain jab mann nahi karta.',a:'IIT Senior'},
-  {q:'99 percentile nahi — 100% dedication chahiye.',a:'JEE Mentor'},
-  {q:'Har mock test ek chance hai better banne ka. Score mat dekh, mistake dekh.',a:'JEE Topper'},
-  {q:'Powai lake ke kinare chai piyega ek din — as an IITian.',a:'Your Future Self'},
-  {q:'Distraction ek minute ka hota hai. Regret lifetime ka.',a:'IIT Bombay Gate'},
-  {q:'Aaj ka revision kal ki revolution hai.',a:'JEE Strategy'},
-  {q:'Mushkilein aati hain toh samajh lo ki tu sahi raaste par hai.',a:'JEE Topper 2023'}
+const SUBJECTS = [
+  {name:"Physics", start:1},
+  {name:"Chemistry", start:26},
+  {name:"Maths", start:51}
 ];
-(function(){
-  var d=new Date(),dy=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000),q=QUOTES[dy%QUOTES.length];
-  var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('qtext').textContent='\u201C'+q.q+'\u201D';
-  document.getElementById('qauth').textContent='\u2014 '+q.a;
-  document.getElementById('qdate').textContent=days[d.getDay()]+', '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
-})();
+// each subject: 20 MCQ then 5 numerical
+const answers = {}; // qno -> value
+let currentTab = 0;
 
-// ═══ COUNTDOWN ═══
-function selMainDate(v){selDay=v;document.getElementById('mainSessionLabel').textContent=v.startsWith('jan')?'JEE MAIN S1 2027':'JEE MAIN S2 2027';}
-function mTS(v){var p=v.split('-'),m=p[0],d=parseInt(p[1]);return m==='jan'?new Date(2027,0,d,9,0,0).getTime():new Date(2027,3,d,9,0,0).getTime();}
-function tick(){
-  var now=Date.now(),md=mTS(selDay)-now,av=new Date(2027,5,1,9,0,0).getTime()-now;
-  if(md<0)md=0;if(av<0)av=0;
-  document.getElementById('md').textContent=p2(Math.floor(md/86400000));
-  document.getElementById('mh').textContent=p2(Math.floor(md%86400000/3600000));
-  document.getElementById('mm').textContent=p2(Math.floor(md%3600000/60000));
-  document.getElementById('ms').textContent=p2(Math.floor(md%60000/1000));
-  document.getElementById('ad').textContent=p2(Math.floor(av/86400000));
-  document.getElementById('ah').textContent=p2(Math.floor(av%86400000/3600000));
-  document.getElementById('am').textContent=p2(Math.floor(av%3600000/60000));
-  document.getElementById('as2').textContent=p2(Math.floor(av%60000/1000));
+function qType(qno){
+  const localIndex = ((qno-1) % 25); // 0-24 within subject
+  return localIndex < 20 ? 'mcq' : 'num';
 }
-setInterval(tick,1000);tick();
-
-// ═══ ARENA TABS ═══
-var _arenaTab='practice';
-function switchArenaTab(tab){
-  _arenaTab=tab;
-  document.querySelectorAll('.arena-sub').forEach(function(s){s.style.display='none';});
-  var sub=document.getElementById('arenaSub-'+tab);if(sub)sub.style.display='block';
-  var tp=document.getElementById('arenaTabPractice'),tm=document.getElementById('arenaTabMock'),td=document.getElementById('arenaTabDpp');
-  if(tp){tp.className='arena-tab'+(tab==='practice'?' on-practice':'');}
-  if(tm){tm.className='arena-tab'+(tab==='mock'?' on-mock':'');}
-  if(td){td.className='arena-tab'+(tab==='dpp'?' on-dpp':'');}
-  if(tab==='mock')renderMockLog();
-  if(tab==='dpp')renderDppLog();
+function subjectOf(qno){
+  return SUBJECTS[Math.floor((qno-1)/25)];
 }
 
-// ═══ NAV ═══
-var _curSec='home';
-var _META={tasks:{icon:'📋',title:'Lectures'},arena:{icon:'⚔️',title:'Arena'},revise:{icon:'📓',title:'Revision Tracker'}};
-
-function showNav(name,btn,skipHistory){
-  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('on');});
-  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('on');});
-  var sec=document.getElementById('sec-'+name);if(sec)sec.classList.add('on');
-  if(btn)btn.classList.add('on');
-  var gBar=document.getElementById('globalBackBar');
-  if(name!=='home'&&gBar){
-    var meta=_META[name]||{icon:'📌',title:name};
-    document.getElementById('globalBackIcon').textContent=meta.icon;
-    document.getElementById('globalBackTitle').textContent=meta.title;
-    var badge=document.getElementById('globalBackBadge');
-    if(name==='revise'){var tb=document.getElementById('revTotalBadge');if(badge&&tb)badge.textContent=tb.textContent;}
-    else if(badge)badge.textContent='';
-    gBar.classList.add('show');
-  } else if(gBar){gBar.classList.remove('show');}
-  var prev=_curSec;_curSec=name;
-  if(!skipHistory)history.pushState({section:name,prev:prev},'','#'+name);
-  if(name==='revise')renderRevTracker();
-  if(name==='home'){renderChecklist();renderBadges();renderSpacedRepReminders();}
-  if(name==='tasks')renderTasks();
-  if(name==='arena')switchArenaTab(_arenaTab||'practice');
+function renderTabs(){
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = '';
+  SUBJECTS.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'tab-btn' + (i === currentTab ? ' active' : '');
+    b.textContent = s.name;
+    b.onclick = () => { currentTab = i; renderTabs(); renderQuestions(); };
+    tabsEl.appendChild(b);
+  });
 }
-function navGoBack(){
-  var prev=history.state&&history.state.prev?history.state.prev:'home';
-  var nb=document.querySelector('.nav-btn[data-sec="'+prev+'"]');
-  if(nb)showNav(prev,nb,false);else{var hb=document.querySelector('.nav-btn[data-sec="home"]');if(hb)showNav('home',hb,false);}
-}
-window.addEventListener('popstate',function(e){
-  var sec=e.state&&e.state.section?e.state.section:'home';
-  var nb=document.querySelector('.nav-btn[data-sec="'+sec+'"]')||document.querySelector('.nav-btn[data-sec="home"]');
-  if(nb)showNav(sec,nb,true);
-});
 
-// ═══ INIT ═══
-var tasksDoneState={};
-window.initApp=async function(){
-  history.replaceState({section:'home'},'','#home');
-  window.showStatus('loading');
-  done={};mocks=[];studyData={};arenaChapterStats={};checklist=[];spacedRep={};
-  if(window._isGuest){
-    try{var raw=localStorage.getItem('jee_guest');if(raw){var o=JSON.parse(raw);mocks=o.mocks||[];done=o.done||{};studyData=o.studyData||{};arenaChapterStats=o.arenaChapterStats||{};checklist=o.checklist||[];spacedRep=o.spacedRep||{};}}catch(e){}
-    dailyGoalHrs=8;try{var g=localStorage.getItem('jee_guest_goal');if(g)dailyGoalHrs=parseInt(g)||8;}catch(e){}
-    var gi=document.getElementById('goalInp');if(gi)gi.value=dailyGoalHrs;
-    try{var td=localStorage.getItem('jee_tasks_done');if(td)tasksDoneState=JSON.parse(td);}catch(e){}
-    window.showStatus('guest');
-    renderStudyUI();updateStreakBadge();renderChecklist();renderBadges();renderSpacedRepReminders();loadChaps();loadTimerState();renderMockLog();
-    return;
+function renderQuestions(){
+  const container = document.getElementById('qContainer');
+  container.innerHTML = '';
+  const subj = SUBJECTS[currentTab];
+  const startQ = subj.start;
+
+  const mcqLabel = document.createElement('div');
+  mcqLabel.className = 'section-label';
+  mcqLabel.textContent = 'SECTION A · SINGLE CORRECT (Q' + startQ + '–' + (startQ+19) + ')';
+  container.appendChild(mcqLabel);
+
+  for(let i=0;i<20;i++){
+    const qno = startQ + i;
+    container.appendChild(buildMcqRow(qno));
   }
-  try{done=await window.FS.loadSyl();}catch(e){}
-  try{mocks=await window.FS.loadMocks();}catch(e){}
-  try{studyData=await window.FS.loadStudy();}catch(e){}
-  try{dailyGoalHrs=await window.FS.loadGoalFS();}catch(e){}
-  try{arenaChapterStats=await window.FS.loadArenaStats();}catch(e){}
-  try{checklist=await window.FS.loadChecklist();}catch(e){}
-  try{spacedRep=await window.FS.loadSpacedRep();}catch(e){}
-  try{var fsd=await window.FS.loadTasksDone();if(fsd&&Object.keys(fsd).length>0){tasksDoneState=fsd;try{localStorage.setItem('jee_tasks_done',JSON.stringify(tasksDoneState));}catch(e){}}}catch(e){try{var ld=localStorage.getItem('jee_tasks_done');if(ld)tasksDoneState=JSON.parse(ld);}catch(e){}}
-  var gi2=document.getElementById('goalInp');if(gi2)gi2.value=dailyGoalHrs;
-  window.showStatus('synced');
-  renderStudyUI();updateStreakBadge();renderChecklist();renderBadges();renderSpacedRepReminders();loadChaps();loadTimerState();renderMockLog();
-};
-function saveLocal(){
-  var uid=window._isGuest?'guest':(window._uid||null);if(!uid)return;
-  try{localStorage.setItem('jee_'+uid,JSON.stringify({mocks:mocks,done:done,studyData:studyData,arenaChapterStats:arenaChapterStats,checklist:checklist,spacedRep:spacedRep}));}catch(e){}
+
+  const numLabel = document.createElement('div');
+  numLabel.className = 'section-label';
+  numLabel.textContent = 'SECTION B · NUMERICAL (Q' + (startQ+20) + '–' + (startQ+24) + ')';
+  container.appendChild(numLabel);
+
+  for(let i=20;i<25;i++){
+    const qno = startQ + i;
+    container.appendChild(buildNumRow(qno));
+  }
+  updateProgress();
 }
 
-// ═══ STUDY TIMER ═══
-function selSub(sub){
-  curSub=sub;
-  var m={physics:'ph',chemistry:'ch',maths:'ma'};
-  Object.keys(m).forEach(function(s){var el=document.getElementById('sb'+m[s]);if(el)el.classList.toggle('on',s===sub);});
-  var lbl=document.getElementById('studySubLabel');if(lbl)lbl.textContent=SYL[sub].name+' padh raha hai...';
+function buildMcqRow(qno){
+  const row = document.createElement('div');
+  row.className = 'q-row';
+  const num = document.createElement('div');
+  num.className = 'q-num';
+  num.textContent = qno + '.';
+  row.appendChild(num);
+  const bubbles = document.createElement('div');
+  bubbles.className = 'bubbles';
+  ['1','2','3','4'].forEach(opt => {
+    const b = document.createElement('div');
+    b.className = 'bubble' + (answers[qno] === opt ? ' filled' : '');
+    b.textContent = opt;
+    b.onclick = () => {
+      answers[qno] = (answers[qno] === opt) ? undefined : opt;
+      if(answers[qno] === undefined) delete answers[qno];
+      renderQuestions();
+    };
+    bubbles.appendChild(b);
+  });
+  row.appendChild(bubbles);
+  return row;
 }
-function togglePomodoro(){
-  pomOn=document.getElementById('pomToggle').checked;
-  var info=document.getElementById('pomInfo'),phase=document.getElementById('pomPhaseLabel');
-  if(pomOn){info.textContent='ON — 25+5 min';phase.style.display='inline-block';pomPhase='study';pomSec=POM_STUDY;updatePomDisplay();}
-  else{info.textContent='OFF';phase.style.display='none';clearInterval(pomIv);pomIv=null;var sd=document.getElementById('studyDisp');if(sd)sd.textContent=fmtHMS(studySec);}
+
+function buildNumRow(qno){
+  const row = document.createElement('div');
+  row.className = 'q-row';
+  const num = document.createElement('div');
+  num.className = 'q-num';
+  num.textContent = qno + '.';
+  row.appendChild(num);
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.inputMode = 'decimal';
+  input.className = 'num-input';
+  input.placeholder = 'value';
+  input.value = answers[qno] !== undefined ? answers[qno] : '';
+  input.oninput = (e) => {
+    const v = e.target.value.trim();
+    if(v === '') delete answers[qno]; else answers[qno] = v;
+    updateProgress();
+  };
+  row.appendChild(input);
+  const tag = document.createElement('span');
+  tag.className = 'num-tag';
+  tag.textContent = 'NUM';
+  row.appendChild(tag);
+  return row;
 }
-function updatePomDisplay(){
-  var ph=document.getElementById('pomPhaseLabel');
-  if(pomPhase==='study'){ph.textContent='📚 STUDY — '+Math.ceil(pomSec/60)+' min left';ph.className='pom-phase study';}
-  else{ph.textContent='☕ BREAK — '+Math.ceil(pomSec/60)+' min left';ph.className='pom-phase brk';}
-  var sd=document.getElementById('studyDisp');if(sd)sd.textContent=p2(Math.floor(pomSec/60))+':'+p2(pomSec%60)+':00';
+
+function updateProgress(){
+  const attempted = Object.keys(answers).length;
+  document.getElementById('progressText').textContent = attempted + ' / 75 attempted';
 }
-function togStudyTimer(){
-  studyOn=!studyOn;
-  var btn=document.getElementById('studyStartBtn');
-  if(studyOn){
-    btn.className='t-btn pause';btn.textContent='⏸ Pause';
-    if(pomOn){
-      clearInterval(pomIv);
-      pomIv=setInterval(function(){
-        pomSec--;
-        if(pomSec<=0){if(pomPhase==='study'){pomPhase='break';pomSec=POM_BREAK;}else{pomPhase='study';pomSec=POM_STUDY;}}
-        updatePomDisplay();
-        if(pomPhase==='study'){studySec++;var k=today();if(!studyData[k])studyData[k]={physics:0,chemistry:0,maths:0};studyData[k][curSub]=(studyData[k][curSub]||0)+1;if(studySec%30===0){saveLocal();window.FS&&window.FS.saveStudy&&window.FS.saveStudy(studyData);}}
-      },1000);
+
+document.getElementById('clearBtn').onclick = () => {
+  if(confirm('Clear all answers?')){
+    Object.keys(answers).forEach(k => delete answers[k]);
+    renderQuestions();
+  }
+};
+
+function parseAnswerKey(rawText){
+  let text = rawText;
+  const akMatch = text.match(/answer\s*key/i);
+  if(akMatch) text = text.slice(akMatch.index + akMatch[0].length);
+  const httpIdx = text.search(/https?:\/\//i);
+  if(httpIdx !== -1) text = text.slice(0, httpIdx);
+
+  const key = {};
+  // Handles formats like: "1. (2)"  "1) A"  "1,A"  "1 - 2"  "1. 4.5"  anywhere in the text,
+  // including Prayas-style keys with 3 columns per line: "1. (2) 26. (2) 51. (3)"
+  const re = /(\d{1,2})\s*[.).:\-]?\s*\(?\s*(-?\d+(?:\.\d+)?|[A-Da-d])\s*\)?/g;
+  let m;
+  while((m = re.exec(text)) !== null){
+    const qno = parseInt(m[1], 10);
+    if(qno < 1 || qno > 75) continue;
+    let val = m[2];
+    if(/^[A-Da-d]$/.test(val)){
+      val = String('ABCD'.indexOf(val.toUpperCase()) + 1); // map letter to option number
+    }
+    if(!(qno in key)) key[qno] = val; // first match wins, avoids overwriting from stray numbers
+  }
+  return key;
+}
+
+function isNumMatch(userVal, keyVal){
+  const a = parseFloat(userVal), b = parseFloat(keyVal);
+  if(isNaN(a) || isNaN(b)) return userVal.trim() === keyVal.trim();
+  return Math.abs(a-b) < 0.01;
+}
+
+document.getElementById('keyFile').onchange = (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  document.getElementById('fileNameShown').textContent = 'Loaded: ' + file.name;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    const key = parseAnswerKey(evt.target.result);
+    computeResult(key);
+  };
+  reader.readAsText(file);
+};
+
+function computeResult(key){
+  let totalScore = 0;
+  const subjStats = SUBJECTS.map(s => ({name:s.name, correct:0, wrong:0, skip:0, score:0}));
+  const reviewCells = [];
+
+  for(let qno=1; qno<=75; qno++){
+    const subjIdx = Math.floor((qno-1)/25);
+    const type = qType(qno);
+    const userAns = answers[qno];
+    const correctAns = key[qno];
+    let status = 'skip';
+    let delta = 0;
+
+    if(userAns !== undefined && userAns !== ''){
+      let isCorrect = false;
+      if(correctAns !== undefined){
+        if(type === 'mcq'){
+          isCorrect = userAns === correctAns;
+        } else {
+          isCorrect = isNumMatch(userAns, correctAns);
+        }
+      }
+      if(isCorrect){
+        status = 'correct';
+        delta = 4;
+        subjStats[subjIdx].correct++;
+      } else {
+        status = 'wrong';
+        delta = (type === 'mcq') ? -1 : 0;
+        subjStats[subjIdx].wrong++;
+      }
     } else {
-      studyIv=setInterval(function(){
-        studySec++;var el=document.getElementById('studyDisp');if(el)el.textContent=fmtHMS(studySec);
-        var k=today();if(!studyData[k])studyData[k]={physics:0,chemistry:0,maths:0};
-        studyData[k][curSub]=(studyData[k][curSub]||0)+1;
-        if(studySec%30===0){saveLocal();saveTimerState();window.FS&&window.FS.saveStudy&&window.FS.saveStudy(studyData);renderStudyUI();}
-      },1000);
+      subjStats[subjIdx].skip++;
     }
-  } else {
-    btn.className='t-btn start';btn.textContent='▶ Start';
-    clearInterval(studyIv);clearInterval(pomIv);
-    saveLocal();saveTimerState();window.FS&&window.FS.saveStudy&&window.FS.saveStudy(studyData);renderStudyUI();
-  }
-}
-function rstStudyTimer(){
-  studyOn=false;studySec=0;clearInterval(studyIv);clearInterval(pomIv);pomPhase='study';pomSec=POM_STUDY;
-  var el=document.getElementById('studyDisp');if(el)el.textContent='00:00:00';
-  var btn=document.getElementById('studyStartBtn');if(btn){btn.className='t-btn start';btn.textContent='▶ Start';}
-  if(pomOn)updatePomDisplay();saveTimerState();
-}
-function renderStudyUI(){
-  var k=today(),td=studyData[k]||{physics:0,chemistry:0,maths:0};
-  var tot=(td.physics||0)+(td.chemistry||0)+(td.maths||0);
-  var ph=document.getElementById('ph-time'),ch=document.getElementById('ch-time'),ma=document.getElementById('ma-time');
-  if(ph)ph.textContent=fmtHM(td.physics||0);if(ch)ch.textContent=fmtHM(td.chemistry||0);if(ma)ma.textContent=fmtHM(td.maths||0);
-  var pct=Math.min(100,Math.round(tot/(dailyGoalHrs*3600)*100));
-  var bar=document.getElementById('goalBar');if(bar)bar.style.width=pct+'%';
-  var gv=document.getElementById('goalValDisp');if(gv)gv.textContent=fmtHM(tot)+' / '+dailyGoalHrs+'h';
-  renderWeekGraph();
-}
-function saveGoal(){var gi=document.getElementById('goalInp');dailyGoalHrs=parseInt(gi.value)||8;if(window._isGuest){try{localStorage.setItem('jee_guest_goal',dailyGoalHrs);}catch(e){}}else{window.FS&&window.FS.saveGoalFS&&window.FS.saveGoalFS(dailyGoalHrs);}renderStudyUI();}
-function renderWeekGraph(){
-  var days=['S','M','T','W','T','F','S'],today2=new Date(),data=[],maxS=0;
-  for(var i=6;i>=0;i--){var d=new Date(today2);d.setDate(today2.getDate()-i);var k=d.toISOString().split('T')[0];var td2=studyData[k]||{physics:0,chemistry:0,maths:0};var tot=(td2.physics||0)+(td2.chemistry||0)+(td2.maths||0);data.push({day:days[d.getDay()],sec:tot,isToday:k===today()});if(tot>maxS)maxS=tot;}
-  var g=document.getElementById('weekGraph');if(!g)return;g.innerHTML='';
-  data.forEach(function(wd){var h=maxS>0?Math.max(6,Math.round(wd.sec/maxS*100)):6;var w=document.createElement('div');w.className='wbw';w.innerHTML='<div class="wbb"><div class="wbf" style="height:'+h+'%;background:'+(wd.isToday?'#4f46e5':'#a5b4fc')+'"></div></div><div class="wbd" style="color:'+(wd.isToday?'#4f46e5':'var(--text3)')+'">'+wd.day+'</div><div class="wbh">'+(wd.sec>0?(Math.round(wd.sec/360)/10)+'h':'')+'</div>';g.appendChild(w);});
-}
-function saveTimerState(){try{var uid=window._isGuest?'guest':(window._uid||null);if(!uid)return;localStorage.setItem('jee_timer_'+uid,JSON.stringify({studySec:studySec,curSub:curSub,tSec:tSec}));}catch(e){}}
-function loadTimerState(){
-  try{var uid=window._isGuest?'guest':(window._uid||null);if(!uid)return;var raw=localStorage.getItem('jee_timer_'+uid);if(!raw)return;var o=JSON.parse(raw);
-  if(typeof o.studySec==='number')studySec=o.studySec;if(o.curSub)curSub=o.curSub;if(typeof o.tSec==='number')tSec=o.tSec;
-  var sd=document.getElementById('studyDisp');if(sd)sd.textContent=fmtHMS(studySec);showT();
-  var m={physics:'ph',chemistry:'ch',maths:'ma'};Object.keys(m).forEach(function(s){var el=document.getElementById('sb'+m[s]);if(el)el.classList.toggle('on',s===curSub);});
-  var lbl=document.getElementById('studySubLabel');if(lbl&&studySec>0)lbl.textContent=SYL[curSub].name+' padh raha hai...';
-  }catch(e){}
-}
-
-// ═══ ARENA TIMER ═══
-function togTimer(){tOn=!tOn;var b=document.getElementById('tBtn');if(tOn){b.textContent='PAUSE';b.style.color='var(--red)';b.style.borderColor='var(--red)';tIv=setInterval(function(){tSec++;showT();},1000);}else{b.textContent='START';b.style.color='var(--green)';b.style.borderColor='var(--green)';clearInterval(tIv);saveTimerState();}}
-function rstTimer(){tOn=false;tSec=0;clearInterval(tIv);showT();saveTimerState();var b=document.getElementById('tBtn');b.textContent='START';b.style.color='var(--green)';b.style.borderColor='var(--green)';}
-function showT(){var el=document.getElementById('tDisp');if(el)el.textContent=p2(Math.floor(tSec/60))+':'+p2(tSec%60);}
-
-// ═══ CHECKLIST ═══
-function renderChecklist(){
-  var el=document.getElementById('checklistItems');if(!el)return;
-  if(!checklist.length){el.innerHTML='<div style="text-align:center;color:var(--text3);font-size:13px;padding:14px 0;">Koi task nahi — niche add karo! 👇</div>';return;}
-  var html='';
-  checklist.forEach(function(item,i){html+='<div class="chk-item'+(item.done?' done-chk':'')+'" onclick="toggleChkItem('+i+')"><div class="chk-box">'+(item.done?'✓':'')+'</div><div class="chk-text">'+item.text+'</div><button onclick="event.stopPropagation();deleteChkItem('+i+')" style="background:transparent;border:none;color:var(--text3);font-size:16px;cursor:pointer;padding:0 4px;line-height:1;">×</button></div>';});
-  html+='<button onclick="clearAllChecklistItems()" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--text3);font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">🗑 Saari tasks clear karo</button>';
-  el.innerHTML=html;
-}
-function addChecklistItem(){var inp=document.getElementById('newTaskInp');var text=inp.value.trim();if(!text)return;if(checklist.length>=10){alert('Max 10 tasks!');return;}checklist.push({text:text,done:false,addedAt:today()});inp.value='';saveLocal();if(!window._isGuest)window.FS.saveChecklist(checklist);renderChecklist();renderBadges();}
-function toggleChkItem(i){checklist[i].done=!checklist[i].done;saveLocal();if(!window._isGuest)window.FS.saveChecklist(checklist);renderChecklist();renderBadges();}
-function deleteChkItem(i){
-  var n=checklist[i]?checklist[i].text:'task';
-  dconfirmShow({icon:'✅',title:'Task Delete?',msg:'"'+n+'" permanently delete ho jaayega.',title2:'Pakka?',msg2:'Hamesha ke liye delete ho jaayega!',okText:'Delete Karo',okText2:'CONFIRM Delete',
-    onConfirm:function(){checklist.splice(i,1);saveLocal();if(!window._isGuest)window.FS.saveChecklist(checklist);renderChecklist();}});
-}
-function clearAllChecklistItems(){
-  dconfirmShow({icon:'✅',title:'Saari Tasks Clear?',msg:'Checklist khali ho jaayegi.',title2:'Pakka clear?',msg2:'Sab permanently delete!',okText:'Clear Karo',okText2:'CONFIRM Clear',
-    onConfirm:function(){checklist=[];saveLocal();if(!window._isGuest)window.FS.saveChecklist(checklist);renderChecklist();renderBadges();}});
-}
-
-// ═══ BADGES ═══
-function calcStreak(){
-  if(!studyData)return 0;
-  var seen=Object.keys(studyData).filter(function(k){var d=studyData[k];return (d.physics||0)+(d.chemistry||0)+(d.maths||0)>0;});
-  if(!seen.length)return 0;
-  seen.sort().reverse();var streak=0,now=new Date();now.setHours(0,0,0,0);
-  for(var i=0;i<seen.length;i++){var d=new Date(seen[i]+'T00:00:00');d.setHours(0,0,0,0);if(Math.round((now-d)/86400000)===i)streak++;else break;}
-  return streak;
-}
-function updateStreakBadge(){var s=calcStreak();var el=document.getElementById('streakBadge');if(el)el.textContent=(s>=3?'🔥':'⭐')+' '+s;}
-var BADGES=[
-  {id:'s3',ico:'🔥',name:'3 Day Streak',sub:'3 din laga!',check:function(){return calcStreak()>=3;}},
-  {id:'s7',ico:'🏆',name:'7 Day Streak',sub:'Ek hafta!',check:function(){return calcStreak()>=7;}},
-  {id:'s30',ico:'👑',name:'30 Day Streak',sub:'Legend!',check:function(){return calcStreak()>=30;}},
-  {id:'q100',ico:'📊',name:'100 Questions',sub:'100 sawal!',check:function(){var t=0;Object.keys(arenaChapterStats).forEach(function(k){t+=arenaChapterStats[k].attempted||0;});return t>=100;}},
-  {id:'q500',ico:'🚀',name:'500 Questions',sub:'Powerhouse!',check:function(){var t=0;Object.keys(arenaChapterStats).forEach(function(k){t+=arenaChapterStats[k].attempted||0;});return t>=500;}},
-  {id:'r25',ico:'📚',name:'Revision 25%',sub:'25% stages done!',check:function(){var t=revTotalDone();return t.total>0&&(t.done/t.total)>=0.25;}},
-  {id:'r50',ico:'🎯',name:'Revision 50%',sub:'Aadha ho gaya!',check:function(){var t=revTotalDone();return t.total>0&&(t.done/t.total)>=0.5;}},
-  {id:'td',ico:'✅',name:'All Done Today',sub:'Mission complete!',check:function(){return checklist.length>0&&checklist.every(function(t){return t.done;});}}
-];
-function renderBadges(){var el=document.getElementById('badgeGrid');if(!el)return;var html='';BADGES.forEach(function(b){var e=b.check();html+='<div class="bdg '+(e?'earned':'locked')+'"><div class="bdg-ico">'+b.ico+'</div><div class="bdg-name">'+b.name+'</div><div class="bdg-sub">'+b.sub+'</div></div>';});el.innerHTML=html;}
-
-// ═══ SPACED REP ═══
-function renderSpacedRepReminders(){
-  var el=document.getElementById('srList'),card=document.getElementById('srCard');if(!el||!card)return;
-  var todayStr=today(),due=[];
-  Object.keys(spacedRep).forEach(function(key){
-    var sr=spacedRep[key];if(!sr||!sr.doneDate)return;var idx=sr.nextIdx||0;if(idx>=sr.intervals.length)return;
-    var doneD=new Date(sr.doneDate),nextDate=new Date(doneD);nextDate.setDate(nextDate.getDate()+sr.intervals[idx]);
-    var diff=Math.ceil((nextDate-new Date(todayStr))/86400000);
-    var pts=key.match(/^(physics|chemistry|maths)(\d+)$/);if(!pts)return;
-    var sub=pts[1],ci=parseInt(pts[2]),ch=SYL[sub].chapters[ci];if(!ch)return;
-    if(diff<=1)due.push({key:key,ch:ch,sub:sub,diff:diff,idx:idx});
-  });
-  if(!due.length){card.style.display='none';return;}card.style.display='block';
-  var sc={physics:'#eef2ff',chemistry:'#fff7ed',maths:'#dcfce7'},st={physics:'⚡',chemistry:'🧪',maths:'📐'};
-  var html='';
-  due.forEach(function(item){
-    html+='<div class="sr-item"><span class="sr-due '+(item.diff<=0?'today':'soon')+'">'+(item.diff<=0?'⚠️ TODAY!':'📅 Tomorrow')+'</span><div style="flex:1;font-size:13px;font-weight:700;">'+item.ch+'</div><span style="font-size:10px;padding:2px 7px;border-radius:4px;background:'+sc[item.sub]+';font-weight:700;">'+st[item.sub]+'</span><button onclick="markSRDone(\''+item.key+'\','+item.idx+')" style="background:var(--green);color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">✓ Done</button></div>';
-  });
-  el.innerHTML=html;
-}
-function markSRDone(key,idx){if(!spacedRep[key])return;spacedRep[key].nextIdx=(idx+1);saveLocal();if(!window._isGuest)window.FS.saveSpacedRep(spacedRep);renderSpacedRepReminders();}
-
-// ═══ ARENA ═══
-function selArenaQs(val,btn){document.getElementById('cTotal').value=val;btn.parentNode.querySelectorAll('.qs-opt-btn').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
-function loadChaps(){
-  var sub=document.getElementById('cSub').value,sel=document.getElementById('cChap');sel.innerHTML='<option value="all">All Chapters</option>';
-  var subs=sub==='all'?['physics','chemistry','maths']:[sub];
-  subs.forEach(function(sk){var og=document.createElement('optgroup');og.label=SYL[sk].name;SYL[sk].chapters.forEach(function(ch){var op=document.createElement('option');op.value=sk+'|'+ch;op.textContent=ch;og.appendChild(op);});sel.appendChild(og);});
-}
-var qs=[],uAns={},corrAns={};
-function rnd(a){return a[Math.floor(Math.random()*a.length)];}
-function genQ(){
-  var sub=document.getElementById('cSub').value,chapV=document.getElementById('cChap').value;
-  var total=parseInt(document.getElementById('cTotal').value)||15,nM=Math.round(total*0.6),nN=total-nM;
-  qs=[];uAns={};corrAns={};
-  var pool=[];
-  if(chapV==='all'){var subs=sub==='all'?['physics','chemistry','maths']:[sub];subs.forEach(function(sk){SYL[sk].chapters.forEach(function(ch){pool.push({sk:sk,ch:ch});});});}
-  else{var pts=chapV.split('|');pool.push({sk:pts[0],ch:pts[1]});}
-  var id=1;
-  for(var i=0;i<nM;i++){var c=rnd(pool);qs.push({id:id++,type:'MCQ',sk:c.sk,ch:c.ch});}
-  for(var j=0;j<nN;j++){var c2=rnd(pool);qs.push({id:id++,type:'NUM',sk:c2.sk,ch:c2.ch});}
-  renderQ();document.getElementById('step2').style.display='none';document.getElementById('resCard').classList.remove('on');
-  document.getElementById('statsBar').style.display='flex';updAStats();rstTimer();if(!tOn)togTimer();
-}
-function renderQ(){
-  var tb=document.getElementById('qBody');tb.innerHTML='';
-  qs.forEach(function(q){
-    var tr=document.createElement('tr');
-    var td0=document.createElement('td');var qinp=document.createElement('input');qinp.type='number';qinp.value=q.id;qinp.className='qn-inp';qinp.id='qn'+q.id;qinp.min=1;
-    (function(qid){qinp.addEventListener('input',function(){autoFillQNum(qid,this.value);});})(q.id);td0.appendChild(qinp);
-    var td1=document.createElement('td');td1.innerHTML='<div class="ch-lbl" style="color:'+SCOL[q.sk]+'">'+q.ch+'</div><div class="sub-lbl2">'+SYL[q.sk].name+'</div><span class="badge-tag '+(q.type==='MCQ'?'bm':'bn')+'">'+q.type+'</span>';
-    var td2=document.createElement('td');var optsDiv=document.createElement('div');optsDiv.className='opts';
-    ['A','B','C','D'].forEach(function(l){var btn=document.createElement('button');btn.type='button';btn.className='opt';btn.id='u'+q.id+l;btn.textContent=l;(function(qid,opt){btn.addEventListener('click',function(e){e.stopPropagation();uMCQ(qid,opt);});})(q.id,l);optsDiv.appendChild(btn);});
-    var orDiv=document.createElement('div');orDiv.className='or-div';orDiv.innerHTML='<div class="ln"></div><span>YA</span><div class="ln"></div>';
-    var numInp=document.createElement('input');numInp.type='number';numInp.className='num-in';numInp.id='un'+q.id;numInp.placeholder='Number...';numInp.step='any';
-    (function(qid){numInp.addEventListener('input',function(){uNum(qid,this.value);});})(q.id);
-    td2.appendChild(optsDiv);td2.appendChild(orDiv);td2.appendChild(numInp);tr.appendChild(td0);tr.appendChild(td1);tr.appendChild(td2);tb.appendChild(tr);
-  });
-}
-function autoFillQNum(fromId,val){var n=parseInt(val);if(isNaN(n))return;for(var i=0;i<qs.length;i++){if(qs[i].id>fromId){var el=document.getElementById('qn'+qs[i].id);if(el){n++;el.value=n;}}}}
-function uMCQ(id,o){uAns[id]={t:'MCQ',v:o};['A','B','C','D'].forEach(function(x){var el=document.getElementById('u'+id+x);if(el)el.classList.toggle('sel',x===o);});var ni=document.getElementById('un'+id);if(ni)ni.value='';updAStats();}
-function uNum(id,v){if(v!==''){uAns[id]={t:'NUM',v:v};['A','B','C','D'].forEach(function(x){var e=document.getElementById('u'+id+x);if(e)e.classList.remove('sel');});}else{delete uAns[id];}updAStats();}
-function updAStats(){var att=Object.keys(uAns).length,tot=qs.length;var mcq=0,num=0;qs.forEach(function(q){if(q.type==='MCQ')mcq++;else num++;});document.getElementById('sTot').textContent=tot;document.getElementById('sAtt').textContent=att;document.getElementById('sLft').textContent=tot-att;document.getElementById('sMcq').textContent=mcq;document.getElementById('sNum').textContent=num;}
-function submitAns(){
-  if(!qs.length){alert('Pehle Generate karo!');return;}if(tOn)togTimer();corrAns={};
-  qs.forEach(function(q){var el=document.getElementById('qn'+q.id);q.dispId=el?el.value:q.id;});
-  var tb=document.getElementById('corrBody');tb.innerHTML='';
-  qs.forEach(function(q){
-    var ua=uAns[q.id];
-    var uaHTML=!ua?'<span style="color:var(--text3);font-style:italic;">skipped</span>':ua.t==='MCQ'?'<b style="color:var(--blue)">Opt '+ua.v+'</b>':'<b style="color:var(--orange)">'+ua.v+'</b>';
-    var tr=document.createElement('tr');
-    var td0=document.createElement('td');td0.innerHTML='<b style="color:var(--blue);font-size:14px;">'+(q.dispId||q.id)+'</b>';
-    var td1=document.createElement('td');td1.innerHTML='<div class="ch-lbl" style="color:'+SCOL[q.sk]+'">'+q.ch+'</div>';
-    var td2=document.createElement('td');td2.innerHTML=uaHTML;
-    var td3=document.createElement('td');var od=document.createElement('div');od.className='opts';od.style.marginBottom='4px';
-    ['A','B','C','D'].forEach(function(l){var btn=document.createElement('button');btn.type='button';btn.className='opt';btn.id='c'+q.id+l;btn.textContent=l;(function(qid,opt){btn.addEventListener('click',function(e){e.stopPropagation();cMCQ(qid,opt);});})(q.id,l);od.appendChild(btn);});
-    var ord=document.createElement('div');ord.className='or-div';ord.innerHTML='<div class="ln"></div><span>YA</span><div class="ln"></div>';
-    var ni=document.createElement('input');ni.type='number';ni.className='num-in';ni.id='cn'+q.id;ni.placeholder='Correct...';ni.step='any';
-    (function(qid){ni.addEventListener('input',function(){cNum(qid,this.value);});})(q.id);
-    td3.appendChild(od);td3.appendChild(ord);td3.appendChild(ni);tr.appendChild(td0);tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);tb.appendChild(tr);
-  });
-  document.getElementById('step2').style.display='block';document.getElementById('resCard').classList.remove('on');
-  document.getElementById('step2').scrollIntoView({behavior:'smooth',block:'start'});
-}
-function cMCQ(id,o){corrAns[id]={t:'MCQ',v:o};['A','B','C','D'].forEach(function(x){var el=document.getElementById('c'+id+x);if(el)el.classList.toggle('csel',x===o);});var ni=document.getElementById('cn'+id);if(ni)ni.value='';}
-function cNum(id,v){if(v!==''){corrAns[id]={t:'NUM',v:v};['A','B','C','D'].forEach(function(x){var e=document.getElementById('c'+id+x);if(e)e.classList.remove('csel');});}else{delete corrAns[id];}}
-function showResult(){
-  var corr=0,wrong=0,skip=0,score=0,html=[],chapData={};
-  qs.forEach(function(q){
-    var ua=uAns[q.id],ca=corrAns[q.id],status='sk',uaL='Skipped',caL=ca?(ca.t==='MCQ'?'Opt '+ca.v:ca.v):'—';
-    var ck=q.sk+'|'+q.ch;if(!chapData[ck])chapData[ck]={sub:q.sk,ch:q.ch,attempted:0,corr:0,wrong:0,skip:0};chapData[ck].attempted++;
-    if(!ua||!ca){skip++;if(ua)uaL=ua.t==='MCQ'?'Opt '+ua.v:ua.v;chapData[ck].skip++;}
-    else{
-      uaL=ua.t==='MCQ'?'Opt '+ua.v:ua.v;
-      if(ca.t==='MCQ'){if(ua.t==='MCQ'&&ua.v===ca.v){corr++;score+=4;status='ok';chapData[ck].corr++;}else{wrong++;score-=1;status='no';chapData[ck].wrong++;}}
-      else{var uv=parseFloat(ua.v),cv=parseFloat(ca.v);if(!isNaN(uv)&&!isNaN(cv)&&Math.abs(uv-cv)<=0.01){corr++;score+=4;status='ok';chapData[ck].corr++;}else{wrong++;status='no';chapData[ck].wrong++;}}
-    }
-    html.push('<div class="ans-row '+status+'"><span style="font-size:11px;font-weight:700;color:var(--blue);min-width:24px">Q'+(q.dispId||q.id)+'</span><span style="flex:1;font-size:12px;color:var(--text2)">'+q.ch+'</span><span style="font-size:13px;font-weight:700;min-width:50px">'+uaL+'</span><span style="color:var(--green);font-size:12px;min-width:50px">✓ '+caL+'</span><span>'+(status==='ok'?'✅':status==='no'?'❌':'⏭')+'</span></div>');
-  });
-  document.getElementById('rScore').textContent=score;document.getElementById('rCorr').textContent=corr;document.getElementById('rWrong').textContent=wrong;document.getElementById('rSkip').textContent=skip;document.getElementById('rAcc').textContent=(qs.length?Math.round(corr/qs.length*100):0)+'%';
-  document.getElementById('ansList').innerHTML=html.join('');
-  var rc=document.getElementById('resCard');rc.classList.add('on');rc.scrollIntoView({behavior:'smooth',block:'start'});
-  showRankPredictor(score,qs.length);prepMistakeLog(qs,uAns,corrAns);
-  mocks.unshift({id:Date.now(),date:today(),score:score,qs:qs.length,corr:corr,wrong:wrong,auto:true});
-  saveLocal();if(!window._isGuest&&window.FS&&window.FS.saveMocks)window.FS.saveMocks({date:today(),score:score,qs:qs.length,corr:corr,wrong:wrong,auto:true});
-  Object.keys(chapData).forEach(function(ck){var c=chapData[ck];if(!arenaChapterStats[ck])arenaChapterStats[ck]={sub:c.sub,ch:c.ch,attempted:0,corr:0,wrong:0,skip:0};arenaChapterStats[ck].attempted+=c.attempted||0;arenaChapterStats[ck].corr+=c.corr||0;arenaChapterStats[ck].wrong+=c.wrong||0;arenaChapterStats[ck].skip+=c.skip||0;});
-  saveLocal();if(!window._isGuest&&window.FS&&window.FS.saveArenaStats)window.FS.saveArenaStats(arenaChapterStats);
-  updateStreakBadge();renderBadges();
-}
-function showRankPredictor(score,total){
-  var rp=document.getElementById('rankPredictor');if(!rp)return;var maxS=total*4;if(maxS<=0){rp.style.display='none';return;}
-  var ss=Math.max(0,Math.round((score/maxS)*300));
-  var p;if(ss>=285)p=99.99;else if(ss>=270)p=99.95;else if(ss>=250)p=99.9;else if(ss>=230)p=99.7;else if(ss>=210)p=99.4;else if(ss>=190)p=98.8;else if(ss>=170)p=97.5;else if(ss>=150)p=95;else if(ss>=130)p=91;else if(ss>=110)p=84;else if(ss>=90)p=74;else if(ss>=70)p=60;else if(ss>=50)p=45;else if(ss>=30)p=28;else p=Math.max(1,ss*0.4);
-  var rank=Math.round((100-p)/100*1200000);
-  var rs=rank<100?'< 100':rank<500?'< 500':rank<1000?'< 1,000':rank<5000?'< 5,000':rank<10000?'< 10,000':rank<25000?'< 25,000':rank<50000?'< 50,000':rank<100000?'< 1,00,000':rank<200000?'< 2,00,000':'> 2,00,000';
-  var cat,msg;if(p>=99.9){cat='IIT Top 5';msg='🔥 IIT Bombay/Delhi pakka! Tu beast hai!';}else if(p>=99.5){cat='IIT Zone';msg='🎯 IIT milega! Consistency rakh!';}else if(p>=99){cat='IIT Zone';msg='⚡ IIT possible! Accuracy badhao!';}else if(p>=98){cat='IIT/NIT+';msg='📈 IIT karib! Weak chapters fix karo!';}else if(p>=95){cat='NIT Top';msg='💪 NIT Top branch! Aur practice!';}else if(p>=90){cat='NIT Zone';msg='📚 NIT milega! Roz mock lagao!';}else if(p>=80){cat='NIT/IIIT';msg='🚀 Mehnat badhao!';}else{cat='Keep Going';msg='💡 Concepts clear karo! Bahut time hai!';}
-  document.getElementById('predPercentile').textContent=p.toFixed(2)+'%';document.getElementById('predRank').textContent=rs;document.getElementById('predCategory').textContent=cat;document.getElementById('predMsg').textContent=msg;
-  var inf=document.getElementById('predScaledScore');if(inf)inf.textContent='Scaled: '+ss+'/300';rp.style.display='block';
-}
-var currentMistakes=[];
-function prepMistakeLog(qs,uAns,corrAns){
-  var s=document.getElementById('mistakeLogSection'),c=document.getElementById('mistakeLogItems');if(!s||!c)return;currentMistakes=[];var html='';
-  qs.forEach(function(q){
-    var ua=uAns[q.id],ca=corrAns[q.id];if(!ua||!ca)return;
-    var wrong=false;if(ca.t==='MCQ'&&ua.t==='MCQ'&&ua.v!==ca.v)wrong=true;if(ca.t==='NUM'){var uv=parseFloat(ua.v),cv=parseFloat(ca.v);if(!isNaN(uv)&&!isNaN(cv)&&Math.abs(uv-cv)>0.01)wrong=true;}
-    if(!wrong)return;var mid='m_'+Date.now()+'_'+q.id;
-    currentMistakes.push({id:mid,ch:q.ch,sub:q.sk,myAns:ua.t==='MCQ'?'Opt '+ua.v:ua.v,corrAns2:ca.t==='MCQ'?'Opt '+ca.v:ca.v,date:today(),note:''});
-    html+='<div class="err-item"><div class="err-q">'+q.ch+' | Mera: '+(ua.t==='MCQ'?'Opt '+ua.v:ua.v)+' | Sahi: '+(ca.t==='MCQ'?'Opt '+ca.v:ca.v)+'</div><textarea class="err-note" id="en_'+mid+'" placeholder="Galti ki wajah... (optional)"></textarea></div>';
-  });
-  if(currentMistakes.length){s.style.display='block';c.innerHTML=html;}else{s.style.display='none';}
-}
-function saveMistakeLog(){currentMistakes.forEach(function(m){var inp=document.getElementById('en_'+m.id);m.note=inp?inp.value.trim():'';});alert('✅ '+currentMistakes.length+' mistakes noted!');document.getElementById('mistakeLogSection').style.display='none';currentMistakes=[];}
-</script>
-
-<script>
-// ═══ TASK DATA ═══
-var TASK_DATA_RAW=[
-['2024-06-03','P','Mathematical Tools','Basic Maths',1],['2024-06-04','P','Mathematical Tools','Basic Maths',2],['2024-06-05','P','Mathematical Tools','Scalars and Vectors',3],['2024-06-06','P','Mathematical Tools','Scalars and Vectors',4],['2024-06-07','P','Mathematical Tools','Subtraction/Resolution of Vectors',5],['2024-06-08','P','Mathematical Tools','Subtraction/Resolution of Vectors',6],['2024-06-10','P','Mathematical Tools','Differentiation and Integration',7],
-['2024-06-11','P','Motion in a Straight Line','Introduction',1],['2024-06-12','P','Motion in a Straight Line','Position/Distance/Displacement',2],['2024-06-13','P','Motion in a Straight Line','Speed Velocity Acceleration',3],['2024-06-14','P','Motion in a Straight Line','Graphs',4],['2024-06-15','P','Motion in a Straight Line','Uniform Acceleration',5],['2024-06-18','P','Motion in a Straight Line','Variable Acceleration',6],['2024-06-19','P','Motion in a Straight Line','Relative Motion 1D',7],['2024-06-20','P','Motion in a Straight Line','Relative Motion 1D',8],
-['2024-06-21','P','Motion in a Plane','Introduction',1],['2024-06-22','P','Motion in a Plane','Motion in a Plane',2],['2024-06-24','P','Motion in a Plane','Motion in a Plane',3],['2024-06-25','P','Motion in a Plane','Projectile Motion',4],['2024-06-26','P','Motion in a Plane','Projectile Motion',5],['2024-06-27','P','Motion in a Plane','Relative Motion 2D',6],
-['2024-07-02','P','Laws of Motion','Newton Laws',1],['2024-07-03','P','Laws of Motion','Newton Laws',2],['2024-07-04','P','Laws of Motion','Newton Laws',3],['2024-07-05','P','Laws of Motion','Newton Laws',4],['2024-07-06','P','Laws of Motion','Spring',5],['2024-07-08','P','Laws of Motion','Pseudo Force',6],['2024-07-09','P','Laws of Motion','Friction',7],['2024-07-10','P','Laws of Motion','Friction',8],['2024-07-11','P','Laws of Motion','Friction',9],
-['2024-07-12','P','Work Energy Power','Work done by Constant Force',1],['2024-07-13','P','Work Energy Power','Work done by Variable Force',2],['2024-07-15','P','Work Energy Power','Graphical Interpretation',3],['2024-07-16','P','Work Energy Power','Kinetic Energy/Conservative Force',4],['2024-07-17','P','Work Energy Power','Potential Energy/Work-KE Theorem',5],['2024-07-18','P','Work Energy Power','Types of Equilibrium',6],['2024-07-19','P','Work Energy Power','Power',7],
-['2024-07-20','P','Circular Motion','Circular Motion',1],['2024-07-22','P','Circular Motion','Circular Motion',2],['2024-07-23','P','Circular Motion','Circular Motion',3],['2024-07-24','P','Circular Motion','Circular Motion',4],
-['2024-07-25','P','Centre of Mass','Calculation of COM',1],['2024-07-26','P','Centre of Mass','Velocity/Acceleration of COM',2],['2024-07-27','P','Centre of Mass','Conservation of Linear Momentum',3],['2024-07-29','P','Centre of Mass','Jumping from Cart/Explosion',4],['2024-07-30','P','Centre of Mass','C-Frame',5],['2024-07-31','P','Centre of Mass','Collision Introduction',6],['2024-08-01','P','Centre of Mass','Coefficient of Restitution',7],['2024-08-02','P','Centre of Mass','Impulse',8],['2024-08-03','P','Centre of Mass','Impulsive Forces',9],['2024-08-05','P','Centre of Mass','Oblique Collision',10],['2024-08-06','P','Centre of Mass','Multiple Collisions',11],
-['2024-08-07','P','Rotational Motion','Rigid Body Definition',1],['2024-08-08','P','Rotational Motion','Moment of Inertia',2],['2024-08-09','P','Rotational Motion','MI of System of Particles',3],['2024-08-10','P','Rotational Motion','MI of Rigid Bodies',4],['2024-08-12','P','Rotational Motion','Parallel/Perpendicular Axis Theorem',5],['2024-08-13','P','Rotational Motion','Radius of Gyration',6],['2024-08-14','P','Rotational Motion','Torque/Rotational Equilibrium',7],['2024-08-16','P','Rotational Motion','KE of Rotating Body',8],['2024-08-17','P','Rotational Motion','Rotation about Fixed Axis',9],['2024-08-20','P','Rotational Motion','Angular Momentum',10],['2024-08-21','P','Rotational Motion','Combined Translation-Rotation',11],['2024-08-22','P','Rotational Motion','Combined Translation-Rotation',12],['2024-08-23','P','Rotational Motion','Rolling Motion',13],['2024-08-24','P','Rotational Motion','Rolling on Moving Platform',14],['2024-08-26','P','Rotational Motion','Instantaneous Axis of Rotation',15],
-['2024-08-27','P','Mech Properties of Solids','Elasticity Energy',1],
-['2024-08-28','P','Mech Properties of Fluids','Fluid Statics',1],['2024-08-29','P','Mech Properties of Fluids','Fluid Statics',2],['2024-08-30','P','Mech Properties of Fluids','Fluid Statics',3],['2024-08-31','P','Mech Properties of Fluids','Fluid Dynamics',4],['2024-09-02','P','Mech Properties of Fluids','Fluid Dynamics',5],['2024-09-03','P','Mech Properties of Fluids','Surface Tension',6],['2024-09-04','P','Mech Properties of Fluids','Surface Tension',7],['2024-09-05','P','Mech Properties of Fluids','Viscosity',8],['2024-09-07','P','Mech Properties of Fluids','Viscosity',9],['2024-09-09','P','Mech Properties of Fluids','Viscosity',10],
-['2024-09-10','P','Thermal Properties','Thermal Expansion',1],['2024-09-11','P','Thermal Properties','Calorimetry',2],['2024-09-12','P','Thermal Properties','Calorimetry',3],['2024-09-13','P','Thermal Properties','Conduction',4],['2024-09-14','P','Thermal Properties','Radiation',5],
-['2024-09-16','P','Kinetic Theory & Thermo','Gas Laws',1],['2024-09-17','P','Kinetic Theory & Thermo','Pressure and Kinetic Energy',2],['2024-09-18','P','Kinetic Theory & Thermo','Ideal Gas Processes',3],['2024-09-19','P','Kinetic Theory & Thermo','Thermodynamic System',4],['2024-09-20','P','Kinetic Theory & Thermo','First/Second Law of Thermodynamics',5],
-['2024-09-21','P','Oscillations','Linear SHM',1],['2024-09-23','P','Oscillations','Linear SHM',2],['2024-09-24','P','Oscillations','Energy in SHM',3],['2024-09-25','P','Oscillations','Spring Combinations',4],['2024-09-26','P','Oscillations','Angular SHM',5],['2024-09-27','P','Oscillations','Special Cases of SHM',6],
-['2024-09-28','P','Waves','Travelling Waves',1],['2024-09-30','P','Waves','Wave Function',2],['2024-10-01','P','Waves','Superposition and Interference',3],['2024-10-03','P','Waves','Standing Waves',4],['2024-10-04','P','Waves','Doppler Effect',5],['2024-10-05','P','Waves','Wave Optics Overview',6],
-['2024-10-07','P','Electric Charges & Fields','Charge Introduction',1],['2024-10-08','P','Electric Charges & Fields','Coulombs Law',2],['2024-10-09','P','Electric Charges & Fields','Electric Field',3],['2024-10-10','P','Electric Charges & Fields','Continuous Charge Distribution',4],['2024-10-11','P','Electric Charges & Fields','Continuous Charge Distribution',5],['2024-10-14','P','Electric Charges & Fields','Charged Particle in E Field',6],['2024-10-15','P','Electric Charges & Fields','Charged Particle in E Field',7],['2024-10-16','P','Electric Charges & Fields','Electric Flux/Gauss Law',8],['2024-10-17','P','Electric Charges & Fields','Electric Dipole',9],['2024-10-18','P','Electric Charges & Fields','Short Dipole in Non-Uniform Field',10],
-['2024-10-19','P','Electrostatics & Capacitance','Electrostatic Potential',1],['2024-10-21','P','Electrostatics & Capacitance','Equipotential Surface',2],['2024-10-22','P','Electrostatics & Capacitance','PE and Dipole',3],['2024-10-23','P','Electrostatics & Capacitance','Electrostatics of Conductor',4],['2024-10-24','P','Electrostatics & Capacitance','Conductor and Capacitance',5],['2024-10-25','P','Electrostatics & Capacitance','Charging of Capacitor',6],['2024-10-26','P','Electrostatics & Capacitance','Combination of Capacitors',7],['2024-10-28','P','Electrostatics & Capacitance','Dielectric in Capacitor',8],['2024-10-29','P','Electrostatics & Capacitance','Dielectric in Capacitor',9],
-['2024-10-30','P','Gravitation','Newtons Law of Gravitation',1],['2024-11-04','P','Gravitation','Keplers Law',2],
-['2024-11-05','P','Current Electricity','Electric Current',1],['2024-11-06','P','Current Electricity','Current in Conductors',2],['2024-11-09','P','Current Electricity','Kirchhoffs Laws/Wheatstone Bridge',3],['2024-11-11','P','Current Electricity','Heating Effect/Cells',4],['2024-11-12','P','Current Electricity','Measuring Instruments',5],['2024-11-13','P','Current Electricity','RC Circuit',6],['2024-11-14','P','Current Electricity','RC Circuit',7],
-['2024-11-15','P','Moving Charges & Magnetism','Biot-Savart Law',1],['2024-11-16','P','Moving Charges & Magnetism','B-field due to Current Ring',2],['2024-11-18','P','Moving Charges & Magnetism','Amperes Law',3],['2024-11-19','P','Moving Charges & Magnetism','Force on Moving Charge',4],['2024-11-20','P','Moving Charges & Magnetism','Lorentz Force',5],['2024-11-21','P','Moving Charges & Magnetism','Force on Current Carrying Conductor',6],['2024-11-22','P','Moving Charges & Magnetism','Torque on Loop',7],
-['2024-11-23','P','Magnetism & Matter','Ferromagnetism',1],
-['2024-11-25','P','EM Induction','Magnetic Flux/Lenzs Law',1],['2024-11-26','P','EM Induction','Faradays Law',2],['2024-11-27','P','EM Induction','Calculation of Induced EMF',3],['2024-11-28','P','EM Induction','Self Inductance',4],['2024-11-29','P','EM Induction','Mutual Inductance',5],['2024-11-30','P','EM Induction','Inductor/Induced Electric Field',6],
-['2024-12-02','P','Alternating Current','Introduction to AC',1],['2024-12-03','P','Alternating Current','Average and RMS Values',2],['2024-12-04','P','Alternating Current','Types of AC Circuits',3],['2024-12-05','P','Alternating Current','Series LCR Circuit',4],['2024-12-06','P','Alternating Current','LC Oscillations and Transformer',5],
-['2024-12-07','P','EM Waves','Characteristics of EM Waves',1],
-['2024-12-09','P','Ray Optics','Plane Mirrors',1],['2024-12-10','P','Ray Optics','Reflection from Curved Surface',2],['2024-12-11','P','Ray Optics','Refraction of Light',3],['2024-12-12','P','Ray Optics','Prism',4],['2024-12-13','P','Ray Optics','Total Internal Reflection',5],['2024-12-14','P','Ray Optics','Refraction from Spherical Surface',6],['2024-12-16','P','Ray Optics','Thin Lens',7],['2024-12-17','P','Ray Optics','Thin Lens',8],['2024-12-18','P','Ray Optics','Thin Lens',9],['2024-12-19','P','Ray Optics','Thin Lens',10],['2024-12-20','P','Ray Optics','Thin Lens',11],['2024-12-21','P','Ray Optics','Optical Instruments',12],
-['2024-12-23','P','Dual Nature','Dual Nature of Matter',1],['2024-12-24','P','Dual Nature','Photoelectric Effect',2],['2024-12-26','P','Dual Nature','Quantum Theory of Light',3],
-['2024-12-27','P','Atoms','Atomic Models',1],['2024-12-28','P','Atoms','Bohrs Model',2],['2024-12-30','P','Atoms','Hydrogen Spectra',3],
-['2024-12-31','P','Nuclei','Introduction to Nucleus',1],['2025-01-02','P','Nuclei','Radioactive Decay',2],
-['2025-01-03','P','Semiconductors','Intrinsic/Extrinsic',1],['2025-01-04','P','Semiconductors','PN Junction Diode',2],['2025-01-06','P','Semiconductors','PN Junction Applications',3],
-['2025-01-07','P','Wave Optics','Huygens Wave Theory',1],['2025-01-08','P','Wave Optics','YDSE & Fringe Visibility',2],['2025-01-09','P','Wave Optics','Thin Film Interference',3],['2025-01-10','P','Wave Optics','Diffraction and Polarization',4],['2025-01-11','P','Wave Optics','Scattering and Doppler',5],
-['2025-01-13','P','Units & Measurements','Dimensional Analysis',1],['2025-01-15','P','Units & Measurements','Significant Figures and Errors',2],
-// PHYSICAL CHEMISTRY
-['2025-06-09','PC','Some Basic Concepts','Nature of Matter/SI Units',1],['2025-06-10','PC','Some Basic Concepts','Laws of Chemical Combinations',2],['2025-06-11','PC','Some Basic Concepts','Dalton Atomic Theory',3],['2025-06-12','PC','Some Basic Concepts','Gram Atomic Mass',4],['2025-06-13','PC','Some Basic Concepts','Molecular Mass',5],['2025-06-14','PC','Some Basic Concepts','Average Molecular Mass',6],['2025-06-16','PC','Some Basic Concepts','Percentage Composition',7],['2025-06-17','PC','Some Basic Concepts','Mole Concept',8],['2025-06-18','PC','Some Basic Concepts','Concentration Terms',9],['2025-06-19','PC','Some Basic Concepts','Stoichiometry',10],['2025-06-20','PC','Some Basic Concepts','POAC and Eudiometry',11],
-['2025-06-21','PC','Redox Reaction','Introduction',1],['2025-06-23','PC','Redox Reaction','Balancing and n-Factor',2],['2025-06-24','PC','Redox Reaction','Law of Equivalence',3],['2025-06-25','PC','Redox Reaction','Redox Titration',4],['2025-06-26','PC','Redox Reaction','Iodometric Titration',5],
-['2025-06-27','PC','Structure of Atom','Introduction',1],['2025-06-28','PC','Structure of Atom','Fundamental Particles',2],['2025-06-30','PC','Structure of Atom','Nature of Light',3],['2025-07-01','PC','Structure of Atom','Bohr Model',4],['2025-07-02','PC','Structure of Atom','Ionization Energy',5],['2025-07-03','PC','Structure of Atom','Spectrum/Energy Levels',6],['2025-07-04','PC','Structure of Atom','Quantum Numbers',7],
-['2025-08-05','PC','Solutions','Binary Solution/Concentration',1],['2025-08-06','PC','Solutions','Solubility/Vapour Pressure',2],['2025-08-07','PC','Solutions','Vapour Pressure',3],['2025-08-09','PC','Solutions','Ideal and Non-ideal Solutions',4],['2025-08-11','PC','Solutions','Osmosis/Osmotic Pressure',5],['2025-08-12','PC','Solutions','Vant Hoff Factor',6],['2025-08-13','PC','Solutions','Abnormal Molar Masses',7],
-['2025-08-14','PC','Chemical Kinetics','Rate/Order/Molecularity',1],['2025-08-16','PC','Chemical Kinetics','Integrated Rate Equations',2],['2025-08-18','PC','Chemical Kinetics','Pseudo First Order',3],['2025-08-19','PC','Chemical Kinetics','Activation Energy',4],['2025-08-20','PC','Chemical Kinetics','Temperature Dependence',5],['2025-08-21','PC','Chemical Kinetics','Parallel and Sequential Decay',6],['2025-08-22','PC','Chemical Kinetics','Effect of Catalyst',7],
-['2025-08-23','PC','Thermodynamics','Introduction',1],['2025-08-25','PC','Thermodynamics','1st Law/Enthalpy',2],['2025-08-26','PC','Thermodynamics','Q/W/DU/DH Calculations',3],['2025-08-28','PC','Thermodynamics','Thermochemistry',4],['2025-08-29','PC','Thermodynamics','Enthalpy Changes',5],['2025-08-30','PC','Thermodynamics','Calorimetry and Entropy',6],['2025-09-01','PC','Thermodynamics','Entropy Solids/Liquids',7],['2025-09-02','PC','Thermodynamics','Standard Absolute Entropy',8],['2025-09-03','PC','Thermodynamics','Comparing Entropies',9],['2025-09-04','PC','Thermodynamics','Gibbs Free Energy',10],
-['2025-09-05','PC','Chemical Equilibrium','Intro/Law of Mass Action',1],['2025-09-06','PC','Chemical Equilibrium','Variation of Kc',2],['2025-09-08','PC','Chemical Equilibrium','Reaction Quotient',3],['2025-09-09','PC','Chemical Equilibrium','Degree of Dissociation',4],['2025-09-10','PC','Chemical Equilibrium','Le Chateliers Principle',5],['2025-09-11','PC','Chemical Equilibrium','Free Energy and Physical Eq',6],
-['2025-09-12','PC','Ionic Equilibrium','Electrolytes/Acid-Base',1],['2025-09-13','PC','Ionic Equilibrium','pH Scale',2],['2025-09-15','PC','Ionic Equilibrium','Common Ion Effect',3],['2025-09-16','PC','Ionic Equilibrium','pH and Buffer Solution',4],['2025-09-17','PC','Ionic Equilibrium','Salt Hydrolysis',5],['2025-09-18','PC','Ionic Equilibrium','Acid-Base Titration/Ksp',6],
-['2025-09-19','PC','Electrochemistry','Electrochemical Cell',1],['2025-09-20','PC','Electrochemistry','Nernst Equation',2],['2025-09-22','PC','Electrochemistry','Electrolysis/Faradays Laws',3],['2025-09-23','PC','Electrochemistry','Molar Conductivity',4],['2025-09-24','PC','Electrochemistry','Kohlrauschs Law',5],['2025-09-25','PC','Electrochemistry','Conductometric Titrations',6],['2025-09-26','PC','Electrochemistry','Commercial Cells/Corrosion',7],
-['2025-12-31','PC','States of Matter','Gas Laws/Kinetic Theory',1],['2026-01-02','PC','Solid State','Crystal Structure',1],['2026-01-03','PC','Surface Chemistry','Adsorption/Colloids',1],
-// INORGANIC CHEMISTRY
-['2025-07-05','IC','Periodic Table','Classification/Historical Dev',1],['2025-07-07','IC','Periodic Table','Modern Periodic Law',2],['2025-07-08','IC','Periodic Table','Electronic Configuration',3],['2025-07-09','IC','Periodic Table','Metals/Non-metals',4],['2025-07-10','IC','Periodic Table','Diagonal Relationship',5],['2025-07-11','IC','Periodic Table','Periodic Properties/ENeg',6],['2025-07-12','IC','Periodic Table','Atomic Radius/IP Trends',7],['2025-07-14','IC','Periodic Table','Electronegativity Scales',8],['2025-07-15','IC','Periodic Table','Application of ENeg',9],
-['2025-07-16','IC','Chemical Bonding','Ionic Bond/Lattice Energy',1],['2025-07-17','IC','Chemical Bonding','Kossel-Lewis Approach',2],['2025-07-18','IC','Chemical Bonding','VSEPR Theory',3],['2025-07-19','IC','Chemical Bonding','Valence Bond Theory',4],['2025-07-21','IC','Chemical Bonding','VBT and VSEPR',5],['2025-07-22','IC','Chemical Bonding','Hybridization',6],['2025-07-23','IC','Chemical Bonding','Dipole Moment',7],['2025-07-24','IC','Chemical Bonding','Fajans Rule',8],['2025-07-25','IC','Chemical Bonding','LCAO',9],['2025-07-26','IC','Chemical Bonding','Molecular Orbital Theory',10],['2025-07-28','IC','Chemical Bonding','Shapes of MOs',11],['2025-07-29','IC','Chemical Bonding','Bond Enthalpy',12],['2025-07-30','IC','Chemical Bonding','Bond Enthalpy',13],['2025-07-31','IC','Chemical Bonding','Bond Parameters',14],['2025-08-01','IC','Chemical Bonding','Hydrogen Bonds',15],['2025-08-02','IC','Chemical Bonding','Intermolecular Forces',16],['2025-08-04','IC','Chemical Bonding','Back/Bridge Bonding',17],
-['2025-11-24','IC','Coordination Compounds','Double Salt/Complex',1],['2025-11-25','IC','Coordination Compounds','Perfect/Imperfect Complex',2],['2025-11-26','IC','Coordination Compounds','Terms Used',3],['2025-11-27','IC','Coordination Compounds','Ligand Classification',4],['2025-11-28','IC','Coordination Compounds','Werner Theory',5],['2025-11-29','IC','Coordination Compounds','EAN',6],['2025-12-01','IC','Coordination Compounds','Nomenclature/VBT',7],['2025-12-02','IC','Coordination Compounds','VBT',8],['2025-12-03','IC','Coordination Compounds','Crystal Field Theory',9],['2025-12-04','IC','Coordination Compounds','Stability of Complexes',10],['2025-12-05','IC','Coordination Compounds','Isomerism',11],['2025-12-06','IC','Coordination Compounds','Organometallic Compounds',12],['2025-12-08','IC','Coordination Compounds','Applications',13],['2025-12-09','IC','Coordination Compounds','Applications',14],
-['2025-12-10','IC','Salt Analysis','Introduction',1],['2025-12-11','IC','Salt Analysis','Analysis of Anions',2],['2025-12-12','IC','Salt Analysis','Class A Group 1',3],['2025-12-13','IC','Salt Analysis','Group 1 Anions',4],['2025-12-15','IC','Salt Analysis','Group 1 Anions',5],['2025-12-16','IC','Salt Analysis','Class B Radicals',6],['2025-12-17','IC','Salt Analysis','Analysis of Cations',7],['2025-12-18','IC','Salt Analysis','Basic Radical ID',8],
-['2025-12-19','IC','p-Block Elements','Group 13 and 14',1],['2025-12-20','IC','p-Block Elements','Carbon/Silicon',2],['2025-12-22','IC','p-Block Elements','Nitrogen Family',3],['2025-12-23','IC','p-Block Elements','Phosphorus/Oxygen Family',4],['2025-12-24','IC','p-Block Elements','Sulphur/Halogens/Noble Gases',5],
-['2025-12-26','IC','d and f Block','Introduction/Properties',1],['2025-12-27','IC','Metallurgy','General Principles',1],['2025-12-29','IC','Hydrogen','Dihydrogen/Hydrides/Water',1],['2025-12-30','IC','s-Block Elements','Group 1 and 2',1],
-// ORGANIC CHEMISTRY
-['2025-08-11','OC','IUPAC Nomenclature','Structural Representation',1],['2025-08-12','OC','IUPAC Nomenclature','Important Definitions',2],['2025-08-13','OC','IUPAC Nomenclature','IUPAC System',3],['2025-08-14','OC','IUPAC Nomenclature','IUPAC System',4],['2025-08-16','OC','IUPAC Nomenclature','IUPAC System',5],['2025-08-18','OC','IUPAC Nomenclature','Hydrocarbons Nomenclature',6],['2025-08-19','OC','IUPAC Nomenclature','Non-Carbon Groups',7],['2025-08-20','OC','IUPAC Nomenclature','Polyfunctional Groups',8],['2025-08-21','OC','IUPAC Nomenclature','Other Compounds',9],
-['2025-08-22','OC','GOC','Bond Fission/Intermediates',1],['2025-08-23','OC','GOC','Reaction Reagents',2],['2025-08-25','OC','GOC','Electronic Displacement',3],['2025-08-26','OC','GOC','Inductive Effect',4],['2025-08-28','OC','GOC','Resonance Effect',5],['2025-08-29','OC','GOC','Mesomeric Effect',6],['2025-08-30','OC','GOC','SIR Effect',7],['2025-09-01','OC','GOC','Hyperconjugation',8],['2025-09-02','OC','GOC','Electromeric Effect',9],['2025-09-03','OC','GOC','Types of Organic Reactions',10],['2025-09-04','OC','GOC','Aromaticity',11],['2025-09-05','OC','GOC','Acid/Base Strength',12],
-['2025-09-06','OC','Isomerism','Introduction',1],['2025-09-08','OC','Isomerism','Conformational Isomerism',2],['2025-09-09','OC','Isomerism','Conformational Isomerism',3],['2025-09-10','OC','Isomerism','Configurational Isomerism',4],['2025-09-11','OC','Isomerism','Geometrical Isomerism',5],['2025-09-12','OC','Isomerism','Properties of Geometrical Isomers',6],['2025-09-13','OC','Isomerism','Properties of Geometrical Isomers',7],['2025-09-15','OC','Isomerism','Nomenclature of Geo Isomers',8],['2025-09-16','OC','Isomerism','Nomenclature of Geo Isomers',9],['2025-09-17','OC','Isomerism','Optical Isomerism',10],['2025-09-18','OC','Isomerism','Optical Isomerism',11],['2025-09-19','OC','Isomerism','Optical Isomerism',12],['2025-09-20','OC','Isomerism','Optical Isomerism',13],['2025-09-22','OC','Isomerism','Optical Isomerism',14],
-['2025-09-23','OC','Hydrocarbons','Alkane Preparation',1],['2025-09-24','OC','Hydrocarbons','Alkane Properties',2],['2025-09-25','OC','Hydrocarbons','Alkene Preparation',3],['2025-09-26','OC','Hydrocarbons','Alkene Properties',4],['2025-09-27','OC','Hydrocarbons','Alkyne Preparation',5],['2025-09-29','OC','Hydrocarbons','Alkyne Properties',6],['2025-09-30','OC','Hydrocarbons','Benzene Preparation',7],['2025-10-01','OC','Hydrocarbons','Benzene Properties',8],['2025-10-03','OC','Hydrocarbons','Electrophilic Substitution',9],['2025-10-04','OC','Hydrocarbons','Toluene Preparation',10],['2025-10-06','OC','Hydrocarbons','Toluene Properties',11],['2025-10-07','OC','Hydrocarbons','Toluene Uses',12],
-['2025-10-08','OC','Haloalkanes','Substitution and Elimination',1],['2025-10-09','OC','Haloalkanes','Substitution and Elimination',2],['2025-10-10','OC','Haloalkanes','Substitution and Elimination',3],['2025-10-11','OC','Haloalkanes','Substitution and Elimination',4],['2025-10-13','OC','Haloalkanes','Substitution and Elimination',5],['2025-10-14','OC','Haloalkanes','Substitution and Elimination',6],['2025-10-15','OC','Haloalkanes','Substitution and Elimination',7],['2025-10-16','OC','Haloalkanes','Substitution and Elimination',8],
-['2025-10-17','OC','Alcohols/Phenols','Reduction',1],['2025-10-24','OC','Alcohols/Phenols','Reduction',2],['2025-10-25','OC','Alcohols/Phenols','Oxidation',3],['2025-10-29','OC','Alcohols/Phenols','POC',4],['2025-10-30','OC','Alcohols/Phenols','Carbene and Nitrene',5],['2025-10-31','OC','Alcohols/Phenols','Carbene and Nitrene',6],
-['2025-11-01','OC','Aldehydes/Ketones','Carbonyl Group/Nomenclature',1],['2025-11-03','OC','Aldehydes/Ketones','Nucleophilic Addition',2],['2025-11-04','OC','Aldehydes/Ketones','Aldol Condensation',3],['2025-11-05','OC','Aldehydes/Ketones','Miscellaneous Reactions',4],['2025-11-06','OC','Aldehydes/Ketones','Carboxylic Acid Reactions',5],['2025-11-07','OC','Aldehydes/Ketones','Carboxylic Acid Derivatives',6],
-['2025-11-08','OC','Amines','Physical Properties/POC',1],
-['2025-11-10','OC','Biomolecules','Carbohydrates/Proteins',1],['2025-11-11','OC','Biomolecules','Proteins/Vitamins/Nucleic Acids',2],
-['2025-12-24','OC','Polymers','Classification/Polymerisation',1],['2025-12-26','OC','Everyday Life Chem','Drugs/Chemicals in Food',1],['2025-12-27','OC','Environmental Chem','Pollution/Green Chemistry',1],
-// MATHEMATICS
-['2025-06-09','M','Basic Maths','Number System',1],['2025-06-10','M','Basic Maths','Number System',2],['2025-06-11','M','Basic Maths','Number System',3],['2025-06-12','M','Basic Maths','Wavy Curve Method',4],['2025-06-13','M','Basic Maths','Wavy Curve Method',5],['2025-06-14','M','Basic Maths','Wavy Curve Method',6],['2025-06-16','M','Basic Maths','Logarithm',7],['2025-06-17','M','Basic Maths','Logarithm',8],['2025-06-18','M','Basic Maths','Logarithm',9],['2025-06-19','M','Basic Maths','Modulus',10],['2025-06-20','M','Basic Maths','Modulus',11],['2025-06-21','M','Basic Maths','Modulus',12],['2025-06-23','M','Basic Maths','Modulus',13],
-['2025-06-24','M','Quadratic Equations','Introduction',1],['2025-06-25','M','Quadratic Equations','Common Roots',2],['2025-06-26','M','Quadratic Equations','Theory of Equations',3],['2025-06-27','M','Quadratic Equations','Graph of Quadratic',4],['2025-06-28','M','Quadratic Equations','Sign of Quadratic',5],['2025-06-30','M','Quadratic Equations','Location of Roots',6],['2025-07-01','M','Quadratic Equations','Some Results',7],['2025-07-02','M','Quadratic Equations','Descartes Rule',8],['2025-07-03','M','Quadratic Equations','Descartes Rule',9],
-['2025-07-04','M','Sequence and Series','Introduction',1],['2025-07-05','M','Sequence and Series','AP',2],['2025-07-07','M','Sequence and Series','GP',3],['2025-07-08','M','Sequence and Series','HP',4],['2025-07-09','M','Sequence and Series','Insertion of Means',5],['2025-07-10','M','Sequence and Series','AGS',6],['2025-07-11','M','Sequence and Series','Method of Difference',7],['2025-07-12','M','Sequence and Series','Telescopic Series',8],['2025-07-14','M','Sequence and Series','Telescopic Series',9],
-['2025-07-15','M','Trig Functions','Introduction',1],['2025-07-16','M','Trig Functions','Basic Identities',2],['2025-07-17','M','Trig Functions','Domain and Range',3],['2025-07-18','M','Trig Functions','Allied Angles',4],['2025-07-19','M','Trig Functions','Transformation Formulae',5],['2025-07-21','M','Trig Functions','Transformation/Identities',6],['2025-07-22','M','Trig Functions','Max/Min Value',7],['2025-07-23','M','Trig Functions','Max/Min Value',8],
-['2025-07-24','M','Trig Equations','Introduction',1],['2025-07-25','M','Trig Equations','Solution',2],['2025-07-26','M','Trig Equations','Types',3],['2025-07-28','M','Trig Equations','Types',4],['2025-07-29','M','Trig Equations','Types',5],
-['2025-07-30','M','P and C','Introduction/Permutation',1],['2025-07-31','M','P and C','Circular Permutation/Combination',2],['2025-08-01','M','P and C','Divisors/Exponent',3],['2025-08-02','M','P and C','Division and Distribution',4],['2025-08-04','M','P and C','Division and Distribution',5],['2025-08-05','M','P and C','Derangement',6],['2025-08-06','M','P and C','Derangement',7],['2025-08-07','M','P and C','Some Rules',8],
-['2025-08-09','M','Binomial Theorem','Introduction',1],['2025-08-11','M','Binomial Theorem','General/Middle Terms',2],['2025-08-12','M','Binomial Theorem','Greatest Term',3],['2025-08-13','M','Binomial Theorem','Sum of Coefficients',4],['2025-08-14','M','Binomial Theorem','Multinomial Theorem',5],['2025-08-16','M','Binomial Theorem','Any Index',6],
-['2025-08-18','M','Straight Lines','Introduction/Section Formula',1],['2025-08-19','M','Straight Lines','Centres of Triangle',2],['2025-08-20','M','Straight Lines','Area and Locus',3],['2025-08-21','M','Straight Lines','Straight Line/Slope',4],['2025-08-22','M','Straight Lines','Standard Forms',5],['2025-08-23','M','Straight Lines','Angle Between Lines',6],['2025-08-25','M','Straight Lines','Perpendicular Distance/Family',7],['2025-08-26','M','Straight Lines','Pair of Straight Lines',8],['2025-08-28','M','Straight Lines','Pair of Straight Lines',9],
-['2025-08-29','M','Circles','Introduction',1],['2025-08-30','M','Circles','Intercept/Position',2],['2025-09-01','M','Circles','Tangent/Normal',3],['2025-09-02','M','Circles','Pair of Tangents/Radical Axis',4],['2025-09-03','M','Circles','Family of Circles',5],['2025-09-04','M','Circles','Angle of Intersection',6],['2025-09-05','M','Circles','Circumscribing',7],['2025-09-06','M','Circles','Circumscribing',8],
-['2025-09-08','M','Parabola','Introduction',1],['2025-09-09','M','Parabola','Types/General Equation',2],['2025-09-10','M','Parabola','Position of Point/Line',3],['2025-09-11','M','Parabola','Tangent and Normal',4],['2025-09-12','M','Parabola','Chord of Contact',5],['2025-09-13','M','Parabola','Director Circle',6],
-['2025-09-15','M','Ellipse','Introduction',1],['2025-09-16','M','Ellipse','General Equation',2],['2025-09-17','M','Ellipse','Focal Distance',3],['2025-09-18','M','Ellipse','Tangent',4],['2025-09-19','M','Ellipse','Normal/Director Circle',5],
-['2025-09-20','M','Hyperbola','Introduction',1],['2025-09-22','M','Hyperbola','Focal Distance',2],['2025-09-23','M','Hyperbola','Tangent/Normal',3],['2025-09-24','M','Hyperbola','Asymptotes/Rect Hyperbola',4],
-['2025-09-25','M','Determinants','Introduction/Cofactors',1],['2025-09-26','M','Determinants','General Properties',2],['2025-09-27','M','Determinants','Addition/Product',3],['2025-09-29','M','Determinants','Solution of Equations',4],
-['2025-09-30','M','Matrices','Introduction/Types',1],['2025-10-01','M','Matrices','Trace/Operations',2],['2025-10-03','M','Matrices','Transpose',3],['2025-10-04','M','Matrices','Symmetric/Skew-Symmetric',4],['2025-10-06','M','Matrices','Orthogonal/Adjoint',5],['2025-10-07','M','Matrices','Inverse/Equation Solving',6],
-['2025-10-08','M','Sets','Introduction',1],['2025-10-09','M','Sets','Types and Operations',2],['2025-10-10','M','Sets','Algebra of Sets',3],
-['2025-10-11','M','Relations and Functions','Relation Types',1],['2025-10-13','M','Relations and Functions','Functions/Domain-Range',2],['2025-10-14','M','Relations and Functions','Types of Functions',3],['2025-10-15','M','Relations and Functions','Classification',4],['2025-10-16','M','Relations and Functions','Composite Function',5],['2025-10-17','M','Relations and Functions','Odd/Even Function',6],['2025-10-24','M','Relations and Functions','Period of Function',7],['2025-10-25','M','Relations and Functions','Inverse of Function',8],['2025-10-29','M','Relations and Functions','Some Graphs',9],
-['2025-10-30','M','Inverse Trig','Introduction',1],['2025-10-31','M','Inverse Trig','Domain and Range',2],['2025-11-01','M','Inverse Trig','Graph',3],['2025-11-03','M','Inverse Trig','Properties',4],['2025-11-04','M','Inverse Trig','Some Graphs',5],
-['2025-11-05','M','Limits and Continuity','Limit',1],['2025-11-06','M','Limits and Continuity','Limit',2],['2025-11-07','M','Limits and Continuity','Method Finding Limit',3],['2025-11-08','M','Limits and Continuity','Sandwich Theorem',4],['2025-11-10','M','Limits and Continuity','Continuity',5],['2025-11-11','M','Limits and Continuity','IMVT',6],['2025-11-12','M','Limits and Continuity','Differentiability',7],['2025-11-13','M','Limits and Continuity','Differentiability',8],['2025-11-14','M','Limits and Continuity','Differentiability',9],
-['2025-11-15','M','Differentiation','Differentiation',1],['2025-11-17','M','Differentiation','Differentiation',2],['2025-11-18','M','Differentiation','Differentiation',3],['2025-11-19','M','Differentiation','Differentiation',4],
-['2025-11-20','M','Indefinite Integration','Introduction',1],['2025-11-21','M','Indefinite Integration','Integration by Substitution',2],['2025-11-22','M','Indefinite Integration','Integration by Parts',3],['2025-11-24','M','Indefinite Integration','Algebraic Function',4],['2025-11-25','M','Indefinite Integration','Trig/Irrational Forms',5],
-['2025-11-26','M','Application of Derivatives','Rate of Change/Tangent',1],['2025-11-27','M','Application of Derivatives','Shortest Distance',2],['2025-11-28','M','Application of Derivatives','Monotonicity',3],['2025-11-29','M','Application of Derivatives','Maxima and Minima',4],['2025-12-01','M','Application of Derivatives','Concavity/Rolles Theorem',5],['2025-12-02','M','Application of Derivatives','LMVT/Curve Sketching',6],
-['2025-12-03','M','Definite Integration','Introduction',1],['2025-12-04','M','Definite Integration','Properties',2],['2025-12-05','M','Definite Integration','Newton-Leibniz',3],['2025-12-06','M','Definite Integration','Limit as a Sum',4],['2025-12-08','M','Definite Integration','Gamma Function',5],
-['2025-12-09','M','Application of Integrals','Area Between Curves',1],['2025-12-10','M','Application of Integrals','Curve Sketching',2],
-['2025-12-11','M','Differential Equations','Introduction',1],['2025-12-12','M','Differential Equations','Solution',2],['2025-12-13','M','Differential Equations','Orthogonal Trajectory',3],['2025-12-15','M','Differential Equations','Applications',4],
-['2025-12-16','M','Vector Algebra','Introduction/Types',1],['2025-12-17','M','Vector Algebra','Collinear Vectors',2],['2025-12-18','M','Vector Algebra','Coplanar Vectors',3],['2025-12-19','M','Vector Algebra','Dot and Cross Product',4],['2025-12-19','M','Vector Algebra','Scalar Triple Product',5],['2025-12-20','M','Vector Algebra','Reciprocal System',6],
-['2025-12-20','M','3D Geometry','Introduction',1],['2025-12-22','M','3D Geometry','Direction Cosines',2],['2025-12-23','M','3D Geometry','Angle/Plane',3],['2025-12-24','M','3D Geometry','Area/Planes',4],['2025-12-26','M','3D Geometry','Family of Planes',5],
-['2025-12-26','M','Complex Numbers','Introduction',1],['2025-12-27','M','Complex Numbers','Argand Plane',2],['2025-12-27','M','Complex Numbers','Modulus and Argument',3],['2025-12-29','M','Complex Numbers','De Moivres Theorem',4],['2025-12-30','M','Complex Numbers','nth Root of Unity',5],['2025-12-31','M','Complex Numbers','Geometry of Complex',6],
-['2026-01-02','M','Probability','Introduction',1],['2026-01-03','M','Probability','Probability',2],['2026-01-05','M','Probability','Some Theorems',3],['2026-01-06','M','Probability','Conditional Probability',4],['2026-01-07','M','Probability','Bayes Theorem',5],['2026-01-08','M','Probability','Binomial Distribution',6],
-['2026-01-09','M','Statistics','Introduction',1],['2026-01-10','M','Statistics','Mean/Mode/Variance',2],
-['2026-01-12','M','Solution of Triangle','Sine/Cosine Rule',1],['2026-01-13','M','Solution of Triangle','Napiers Analogy',2],['2026-01-15','M','Solution of Triangle','Regular Polygon',3],
-// TESTS
-['2025-05-03','TEST','JEE Main-1','Part Test JEE Main',1],['2025-05-17','TEST','JEE Main-2','Part Test JEE Main',2],['2025-05-31','TEST','JEE Main-3','Part Test JEE Main',3],['2025-06-14','TEST','JEE Advanced-1','Part Test JEE Advanced',4],['2025-06-28','TEST','JEE Main-4','Part Test JEE Main',5],['2025-07-12','TEST','JEE Main-5','Part Test JEE Main',6],['2025-07-26','TEST','AITS-1','Part Test Main',7],['2025-08-02','TEST','AITS-2','Part Test Advanced',8],['2025-08-09','TEST','JEE Advanced-2','Part Test JEE Advanced',9],['2025-08-30','TEST','JEE Main-6','Part Test JEE Main',10],['2025-09-06','TEST','AITS-3','Part Test Main',11],['2025-09-20','TEST','AITS-4','Part Test Advanced',12],['2025-10-04','TEST','JEE Main-7','Part Test JEE Main',13],['2025-10-11','TEST','AITS-5','Part Test Main',14],['2025-11-01','TEST','AITS-6','Part Test Main',15],['2025-11-08','TEST','JEE Main-8','Part Test JEE Main',16],['2025-11-15','TEST','AITS-7','Part Test Main',17],['2025-11-17','TEST','AITS-8','Full Syllabus Main',18],['2025-11-19','TEST','AITS-9','Full Syllabus Main',19],['2025-11-22','TEST','AITS-10','Full Syllabus Main',20],['2025-11-24','TEST','AITS-11','Full Syllabus Main',21],['2025-12-13','TEST','AITS-12','Full Syllabus Main',22],['2025-12-20','TEST','AITS-13','Full Syllabus Main',23],['2025-12-27','TEST','AITS-14','Full Test Advanced',24],['2026-01-03','TEST','AITS-15','Full Test Main',25],['2026-01-10','TEST','AITS-16','Full Test Advanced',26],['2026-01-24','TEST','AITS-17','Full Test Main',27],['2026-01-31','TEST','AITS-18','Full Test Main',28],['2026-02-21','TEST','AITS-19','Full Test Advanced',29],['2026-02-28','TEST','AITS-20','Full Test Advanced',30],['2026-03-07','TEST','AITS-21','Full Test Advanced',31],['2026-03-14','TEST','AITS-22','Full Test Advanced',32],['2026-03-21','TEST','AITS-23','Full Test Advanced',33]
-];
-
-var taskFilterCurrent='all',TASKS_PAGE=8,tasksShowCount=TASKS_PAGE,completedShowCount=5;
-
-function shiftDate(iso,sub){var p=iso.split('-'),y=parseInt(p[0]),m=parseInt(p[1])-1,d=parseInt(p[2]);if(sub==='P'){if(y===2024)y=2026;else if(y===2025)y=2027;}else{if(y===2025)y=2026;else if(y===2026)y=2027;}return new Date(y,m,d);}
-function tagClass(s){var m={P:'tag-phy',PC:'tag-pc',IC:'tag-ioc',OC:'tag-oc',M:'tag-math',TEST:'tag-test'};return m[s]||'tag-phy';}
-function tagLabel(s){var m={P:'Physics',PC:'P.Chem',IC:'I.Chem',OC:'O.Chem',M:'Maths',TEST:'Test'};return m[s]||s;}
-function fmtDate(d){var ds=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],ms=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return ds[d.getDay()]+', '+d.getDate()+' '+ms[d.getMonth()]+' '+d.getFullYear();}
-
-function buildTaskList(){
-  var now=new Date();now.setHours(0,0,0,0);var list=[];
-  TASK_DATA_RAW.forEach(function(r,idx){
-    var d=shiftDate(r[0],r[1]);if(d>=now){var isTest=(r[1]==='TEST');list.push({id:'t'+idx,date:d,sub:r[1],chapter:r[2],topic:r[3],num:r[4],title:isTest?r[2]:r[2]+' L'+r[4]+' \u2014 '+r[3]});}
-  });
-  list.sort(function(a,b){return a.date-b.date;});return list;
-}
-function setTaskFilter(code,btn){taskFilterCurrent=code;tasksShowCount=TASKS_PAGE;document.querySelectorAll('#taskFilters .acs-fbtn').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');renderTasks();}
-function showMoreTasks(){tasksShowCount+=20;renderTasks();}
-function showMoreCompleted(){completedShowCount+=10;renderTasks();}
-function toggleTask(id){tasksDoneState[id]=!tasksDoneState[id];try{localStorage.setItem('jee_tasks_done',JSON.stringify(tasksDoneState));}catch(e){}if(!window._isGuest&&window.FS&&window._uid)window.FS.saveTasksDone(tasksDoneState);renderTasks();}
-
-function renderTasks(){
-  var all=buildTaskList();
-  var filtered=taskFilterCurrent==='all'?all:all.filter(function(t){return t.sub===taskFilterCurrent;});
-  var pending=filtered.filter(function(t){return !tasksDoneState[t.id];});
-  var done2=filtered.filter(function(t){return tasksDoneState[t.id];});
-  var tl=document.getElementById('tasksList'),tc=document.getElementById('taskCounter');
-  if(tc)tc.textContent=pending.length+' pending';
-  if(!tl)return;
-  if(!pending.length){tl.innerHTML='<div style="text-align:center;color:var(--green);font-size:14px;font-weight:700;padding:20px 0;">🎉 Saare lectures complete!</div>';}
-  else{
-    var show=pending.slice(0,tasksShowCount);tl.innerHTML='';
-    show.forEach(function(t){
-      var div=document.createElement('div');div.className='task-item';div.onclick=function(){toggleTask(t.id);};
-      div.innerHTML='<div class="task-chk"></div><div class="task-body"><div class="task-date">'+fmtDate(t.date)+'</div><div class="task-title">'+t.title+'</div><div class="task-sub"><span class="task-tag '+tagClass(t.sub)+'">'+tagLabel(t.sub)+'</span></div></div>';
-      tl.appendChild(div);
-    });
-    var mb=document.getElementById('tasksMoreBtn');if(mb)mb.style.display=pending.length>tasksShowCount?'block':'none';
-  }
-  var cb=document.getElementById('completedBox'),cl=document.getElementById('completedList'),cc=document.getElementById('completedCounter');
-  if(done2.length>0){
-    if(cb)cb.style.display='block';if(cc)cc.textContent=done2.length+' done';
-    if(cl){
-      cl.innerHTML='';var showC=done2.slice(0,completedShowCount);
-      showC.forEach(function(t){
-        var div=document.createElement('div');div.className='task-item done';div.onclick=function(){toggleTask(t.id);};
-        div.innerHTML='<div class="task-chk">✓</div><div class="task-body"><div class="task-date">'+fmtDate(t.date)+'</div><div class="task-title">'+t.title+'</div><div class="task-sub"><span class="task-tag '+tagClass(t.sub)+'">'+tagLabel(t.sub)+'</span></div></div>';
-        cl.appendChild(div);
-      });
-      var cmb=document.getElementById('completedMoreBtn');if(cmb)cmb.style.display=done2.length>completedShowCount?'block':'none';
-    }
-  } else {if(cb)cb.style.display='none';}
-}
-</script>
-
-<script>
-// ═══ MOCK LOG ═══
-var _mockType='main';
-
-function setMockType(type){
-  _mockType=type;
-  document.getElementById('mockTypeMain').className='mock-type-btn'+(type==='main'?' on main':' main');
-  document.getElementById('mockTypeAdv').className='mock-type-btn'+(type==='adv'?' on adv':' adv');
-  document.getElementById('mockMaxLabel').textContent=type==='main'?'(out of 300)':'(out of 360)';
-}
-
-function addManualMock(){
-  var name=document.getElementById('mockNameInp').value.trim();
-  var score=document.getElementById('mockScoreInp').value.trim();
-  var date=document.getElementById('mockDateInp').value||today();
-  if(!name){alert('Mock ka naam likhao!');return;}
-  if(score===''||isNaN(parseInt(score))){alert('Score daalo!');return;}
-  var maxScore=_mockType==='main'?300:360;
-  var s=parseInt(score);
-  if(s<0||s>maxScore){alert('Score 0 se '+maxScore+' ke beech hona chahiye!');return;}
-  var mock={id:'m_'+Date.now(),date:date,name:name,type:_mockType,score:s,maxScore:maxScore,manual:true};
-  mocks.unshift(mock);
-  saveLocal();
-  if(!window._isGuest&&window.FS&&window.FS.saveMockEntry)window.FS.saveMockEntry(mock);
-  document.getElementById('mockNameInp').value='';
-  document.getElementById('mockScoreInp').value='';
-  document.getElementById('mockDateInp').value='';
-  renderMockLog();
-  window.showStatus('saved');
-}
-
-function deleteMock(id){
-  dconfirmShow({icon:'📋',title:'Mock Delete?',msg:'Yeh mock permanently delete ho jaayega.',title2:'Pakka delete?',msg2:'Hamesha ke liye chala jaayega!',okText:'Delete',okText2:'CONFIRM Delete',
-    onConfirm:function(){
-      mocks=mocks.filter(function(m){return m.id!==id;});
-      saveLocal();
-      if(!window._isGuest&&window.FS&&window.FS.deleteMockEntry)window.FS.deleteMockEntry(id);
-      renderMockLog();
-      window.showStatus('saved');
-    }
-  });
-}
-
-function renderMockLog(){
-  var el=document.getElementById('mockLogList');if(!el)return;
-  var manualMocks=mocks.filter(function(m){return m.manual;});
-  var avgPill=document.getElementById('mockAvgPill'),avgVal=document.getElementById('mockAvgVal');
-  if(manualMocks.length>0&&avgPill&&avgVal){
-    var total=manualMocks.reduce(function(s,m){return s+(m.score||0);},0);
-    avgPill.style.display='flex';
-    avgVal.textContent=Math.round(total/manualMocks.length);
-  } else if(avgPill){avgPill.style.display='none';}
-  if(!manualMocks.length){el.innerHTML='<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi mock nahi mila. Upar add karo! 👆</div>';return;}
-  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var html='';
-  manualMocks.forEach(function(m){
-    var d=new Date(m.date+'T00:00:00');
-    var dateStr=d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
-    var max=m.maxScore||(m.type==='adv'?360:300);
-    var isAdv=m.type==='adv';
-    var pct=Math.round((m.score/max)*100);
-    html+='<div class="mock-entry">'
-      +'<div class="mock-entry-left">'
-        +'<div class="mock-entry-name">'+(m.name||'Practice Test')+'</div>'
-        +'<div style="display:flex;align-items:center;gap:6px;margin-top:3px;">'
-          +'<span class="mock-entry-type '+(isAdv?'mock-type-adv':'mock-type-main')+'">'+(isAdv?'ADV':'MAIN')+'</span>'
-          +'<span class="mock-entry-date">'+dateStr+'</span>'
-        +'</div>'
-        +'<div style="margin-top:5px;background:var(--border);border-radius:99px;height:5px;overflow:hidden;"><div style="height:100%;border-radius:99px;background:'+(isAdv?'var(--purple)':'var(--blue)')+'  ;width:'+pct+'%;transition:width .4s;"></div></div>'
-      +'</div>'
-      +'<div class="mock-score-box '+(isAdv?'mock-score-adv':'mock-score-main')+'">'
-        +'<div class="mock-score-val">'+m.score+'</div>'
-        +'<div class="mock-score-max">/'+max+'</div>'
-      +'</div>'
-      +'<button class="mock-del-btn" onclick="deleteMock(\''+m.id+'\')">🗑</button>'
-    +'</div>';
-  });
-  el.innerHTML=html;
-}
-
-// ═══ DPP TRACKER ═══
-var dppList=[], _dppSub='physics', _dppFilter='all';
-
-function dppLoad(){try{var raw=localStorage.getItem('jee_dpp');if(raw)dppList=JSON.parse(raw);}catch(e){dppList=[];}}
-function dppSave(){try{localStorage.setItem('jee_dpp',JSON.stringify(dppList));}catch(e){}}
-
-function setDppSub(sub,btn){
-  _dppSub=sub;
-  document.querySelectorAll('.dpp-sub-btn').forEach(function(b){b.classList.remove('on');});
-  if(btn)btn.classList.add('on');
-}
-
-function setDppFilter(filter,btn){
-  _dppFilter=filter;
-  document.querySelectorAll('#arenaSub-dpp .acs-fbtn').forEach(function(b){b.classList.remove('on');});
-  if(btn)btn.classList.add('on');
-  renderDppLog();
-}
-
-function addDpp(){
-  dppLoad();
-  var chapter=document.getElementById('dppChapterInp').value.trim();
-  var score=document.getElementById('dppScoreInp').value.trim();
-  var max=document.getElementById('dppMaxInp').value.trim()||'100';
-  var date=document.getElementById('dppDateInp').value||today();
-  var phy=document.getElementById('dppPhy').value.trim();
-  var chem=document.getElementById('dppChem').value.trim();
-  var math=document.getElementById('dppMath').value.trim();
-  if(!chapter){alert('Chapter ka naam likhao!');return;}
-  if(score===''||isNaN(parseInt(score))){alert('Score daalo!');return;}
-  var s=parseInt(score), m=parseInt(max)||100;
-  if(s<0||s>m){alert('Score 0 se '+m+' ke beech hona chahiye!');return;}
-  // Count DPPs for this subject to auto-number
-  var subDpps=dppList.filter(function(d){return d.sub===_dppSub;});
-  var dppNum=subDpps.length+1;
-  var entry={id:'dpp_'+Date.now(),sub:_dppSub,chapter:chapter,score:s,max:m,date:date,num:dppNum};
-  if(phy!=='')entry.phy=parseInt(phy);
-  if(chem!=='')entry.chem=parseInt(chem);
-  if(math!=='')entry.math=parseInt(math);
-  dppList.unshift(entry);
-  dppSave();
-  // Clear form
-  document.getElementById('dppChapterInp').value='';
-  document.getElementById('dppScoreInp').value='';
-  document.getElementById('dppMaxInp').value='100';
-  document.getElementById('dppDateInp').value='';
-  document.getElementById('dppPhy').value='';
-  document.getElementById('dppChem').value='';
-  document.getElementById('dppMath').value='';
-  renderDppLog();
-  window.showStatus('saved');
-}
-
-function deleteDpp(id){
-  dconfirmShow({icon:'🦴',title:'DPP Delete?',msg:'Yeh DPP entry delete ho jaayegi.',title2:'Pakka delete?',msg2:'Hamesha ke liye chala jaayega!',okText:'Delete',okText2:'CONFIRM Delete',
-    onConfirm:function(){
-      dppLoad();
-      dppList=dppList.filter(function(d){return d.id!==id;});
-      dppSave();
-      renderDppLog();
-      window.showStatus('saved');
-    }
-  });
-}
-
-function renderDppLog(){
-  dppLoad();
-  var el=document.getElementById('dppLogList');if(!el)return;
-  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var subNames={physics:'Physics',chemistry:'Chemistry',maths:'Maths'};
-  var subTagClass={physics:'p',chemistry:'c',maths:'m'};
-  var subEmoji={physics:'⚡',chemistry:'🧪',maths:'📐'};
-
-  // filter
-  var filtered=_dppFilter==='all'?dppList:dppList.filter(function(d){return d.sub===_dppFilter;});
-
-  // avg pill
-  var avgPill=document.getElementById('dppAvgPill'),avgVal=document.getElementById('dppAvgVal');
-  if(filtered.length>0&&avgPill&&avgVal){
-    var totalPct=filtered.reduce(function(s,d){return s+Math.round(d.score/d.max*100);},0);
-    avgPill.style.display='flex';
-    avgVal.textContent=Math.round(totalPct/filtered.length)+'%';
-  } else if(avgPill){avgPill.style.display='none';}
-
-  if(!filtered.length){
-    el.innerHTML='<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0;">Koi DPP nahi mili. Upar add karo! 👆</div>';
-    return;
+    subjStats[subjIdx].score += delta;
+    totalScore += delta;
+    reviewCells.push({qno, status});
   }
 
-  // Group by subject, number sequentially within each subject
-  var subCount={physics:0,chemistry:0,maths:0};
-  // Build display list sorted by date desc but number by subject order
-  var displayList=[];
-  // re-number in chronological order per subject
-  var bySubChron={physics:[],chemistry:[],maths:[]};
-  dppList.forEach(function(d){if(bySubChron[d.sub])bySubChron[d.sub].push(d.id);});
+  document.getElementById('scoreBig').textContent = totalScore;
+  document.getElementById('scoreOutOf').textContent = 'out of 300  ·  +4 correct, -1 wrong (MCQ), 0 for numerical wrong';
 
-  var html='';
-  filtered.forEach(function(d){
-    var pct=Math.round(d.score/d.max*100);
-    var dObj=new Date(d.date+'T00:00:00');
-    var dateStr=dObj.getDate()+' '+months[dObj.getMonth()]+' '+dObj.getFullYear();
-    var subList=bySubChron[d.sub]||[];
-    var dppNum=subList.indexOf(d.id)+1;
-    var tagCls=subTagClass[d.sub]||'p';
-    var pctColor=pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--red)';
-
-    // PCM chips
-    var pcmHtml='';
-    if(d.phy!==undefined)pcmHtml+='<span class="dpp-pcm-chip" style="background:var(--bluelt);color:var(--blue);">P:'+d.phy+'</span>';
-    if(d.chem!==undefined)pcmHtml+='<span class="dpp-pcm-chip" style="background:var(--orangelt);color:var(--orange);">C:'+d.chem+'</span>';
-    if(d.math!==undefined)pcmHtml+='<span class="dpp-pcm-chip" style="background:var(--greenlt);color:var(--green);">M:'+d.math+'</span>';
-
-    html+='<div class="dpp-entry">'
-      +'<div class="dpp-num-badge">'+dppNum+'</div>'
-      +'<div class="dpp-entry-body">'
-        +'<div class="dpp-entry-chapter">'+d.chapter+'</div>'
-        +'<div class="dpp-entry-meta">'
-          +'<span class="dpp-sub-tag '+tagCls+'">'+subEmoji[d.sub]+' '+subNames[d.sub]+'</span>'
-          +'<span class="dpp-entry-date">'+dateStr+'</span>'
-        +'</div>'
-        +(pcmHtml?'<div class="dpp-pcm-row">'+pcmHtml+'</div>':'')
-      +'</div>'
-      +'<div class="dpp-score-box">'
-        +'<div class="dpp-score-val" style="color:'+pctColor+';">'+d.score+'/'+d.max+'</div>'
-        +'<div class="dpp-score-pct">'+pct+'%</div>'
-      +'</div>'
-      +'<button class="dpp-del-btn" onclick="deleteDpp(''+d.id+'')">🗑</button>'
-    +'</div>';
+  const tbody = document.getElementById('subjTableBody');
+  tbody.innerHTML = '';
+  subjStats.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.name}</td><td>${s.correct}</td><td>${s.wrong}</td><td>${s.skip}</td><td>${s.score}</td>`;
+    tbody.appendChild(tr);
   });
-  el.innerHTML=html;
-}
 
-// ═══ REVISION TRACKER ═══
-var revState={},revSub='physics';
-
-function revLoad(){try{var raw=localStorage.getItem('jee_rev');if(raw)revState=JSON.parse(raw);}catch(e){revState={};}}
-function revSaveLS(){try{localStorage.setItem('jee_rev',JSON.stringify(revState));}catch(e){}}
-function revKey(sub,i){return sub+'_'+i;}
-function revGet(sub,i){return revState[revKey(sub,i)]||{s1:0,s2:0,s3:0,cnt:0};}
-function revSet(sub,i,obj){revState[revKey(sub,i)]=obj;revSaveLS();}
-
-function revToggleStage(sub,i,stage){
-  var r=revGet(sub,i);r['s'+stage]=r['s'+stage]?0:1;revSet(sub,i,r);
-  renderRevTracker();
-}
-function revAddCount(sub,i,delta){
-  var r=revGet(sub,i);r.cnt=Math.max(0,(r.cnt||0)+delta);revSet(sub,i,r);
-  renderRevTracker();
-}
-function setRevSub(sub,btn){
-  revSub=sub;
-  document.querySelectorAll('.rev-sub-tab').forEach(function(b){b.classList.remove('on');});
-  if(btn)btn.classList.add('on');
-  renderRevTracker();
-}
-
-function revTotalDone(){
-  var total=0,done=0;
-  ['physics','chemistry','maths'].forEach(function(sub){
-    SYL[sub].chapters.forEach(function(ch,i){
-      total+=3;var r=revGet(sub,i);if(r.s1)done++;if(r.s2)done++;if(r.s3)done++;
-    });
+  const grid = document.getElementById('reviewGrid');
+  grid.innerHTML = '';
+  reviewCells.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'review-cell ' + c.status;
+    div.textContent = c.qno;
+    grid.appendChild(div);
   });
-  return{total:total,done:done};
+
+  document.getElementById('paperContent').style.display = 'none';
+  document.getElementById('resultWrap').classList.add('show');
 }
 
-function renderRevTracker(){
-  revLoad();
-  var chapters=SYL[revSub].chapters;
-  var el=document.getElementById('revChList');if(!el)return;
-  var totalStages=chapters.length*3,doneStages=0;
-  chapters.forEach(function(ch,i){var r=revGet(revSub,i);if(r.s1)doneStages++;if(r.s2)doneStages++;if(r.s3)doneStages++;});
-  var pct=totalStages>0?Math.round(doneStages/totalStages*100):0;
-  var pf=document.getElementById('revProgFill'),pp=document.getElementById('revProgPct'),pl=document.getElementById('revProgLabel');
-  if(pf)pf.style.width=pct+'%';if(pp)pp.textContent=pct+'%';
-  var snames={physics:'Physics',chemistry:'Chemistry',maths:'Maths'};
-  if(pl)pl.textContent=snames[revSub]||revSub;
-  var tb=document.getElementById('revTotalBadge');if(tb){var tot=revTotalDone();tb.textContent=tot.done+'/'+tot.total+' stages';}
+document.getElementById('restartBtn').onclick = () => {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('paperContent').style.display = 'block';
+  document.getElementById('uploadZone').style.display = 'none';
+  document.getElementById('keyFile').value = '';
+  document.getElementById('fileNameShown').textContent = '';
+  currentTab = 0;
+  renderTabs();
+  renderQuestions();
+};
 
-  var html='';
-  chapters.forEach(function(ch,i){
-    var r=revGet(revSub,i);var cnt=r.cnt||0;
-    html+='<div class="rev-ch-item">'
-      +'<div class="rev-ch-name" title="'+ch+'">'+ch+'</div>'
-      +'<div class="rev-stages">'
-      +'<button class="rev-stage-btn s1'+(r.s1?' on':'')+'" onclick="revToggleStage(\''+revSub+'\','+i+',1)" title="1st Read">R</button>'
-      +'<button class="rev-stage-btn s2'+(r.s2?' on':'')+'" onclick="revToggleStage(\''+revSub+'\','+i+',2)" title="Revision">&#10003;</button>'
-      +'<button class="rev-stage-btn s3'+(r.s3?' on':'')+'" onclick="revToggleStage(\''+revSub+'\','+i+',3)" title="Mock Done">M</button>'
-      +'</div>'
-      +'<div class="rev-count-wrap">'
-      +'<div class="rev-count-label">REV</div>'
-      +'<div class="rev-count-row">'
-      +'<button class="rev-cnt-btn minus" onclick="revAddCount(\''+revSub+'\','+i+',-1)">&#8722;</button>'
-      +'<div class="rev-count-num'+(cnt>=3?' hot':'')+'">'+cnt+'</div>'
-      +'<button class="rev-cnt-btn plus" onclick="revAddCount(\''+revSub+'\','+i+',1)">+</button>'
-      +'</div></div>'
-      +'</div>';
-  });
-  el.innerHTML=html;
-}
-
-// ═══ DOUBLE CONFIRM ═══
-var _dconf={step:0,cfg:null};
-function dconfirmShow(cfg){
-  _dconf={step:1,cfg:cfg};_renderDconfirm();
-  document.getElementById('dconfirmOverlay').classList.add('open');
-}
-function _renderDconfirm(){
-  var c=_dconf.cfg,s=_dconf.step;
-  document.getElementById('dconfirmIcon').textContent=c.icon||'🗑️';
-  document.getElementById('dconfirmStep').textContent='STEP '+s+' OF 2';
-  document.getElementById('dconfirmTitle').textContent=s===1?c.title:c.title2;
-  document.getElementById('dconfirmMsg').textContent=s===1?c.msg:c.msg2;
-  var ok=document.getElementById('dconfirmOkBtn');ok.textContent=s===1?c.okText:c.okText2;
-  ok.className='dconfirm-ok'+(s===2?' step2':'');
-}
-function dconfirmNext(){
-  if(_dconf.step===1){_dconf.step=2;_renderDconfirm();}
-  else{document.getElementById('dconfirmOverlay').classList.remove('open');if(_dconf.cfg&&_dconf.cfg.onConfirm)_dconf.cfg.onConfirm();}
-}
-function dconfirmCancel(){document.getElementById('dconfirmOverlay').classList.remove('open');_dconf={step:0,cfg:null};}
-
-// ═══ DARK MODE ═══
-(function(){if(localStorage.getItem('jee_dm')==='1')document.body.classList.add('dark');})();
-function toggleDarkMode(){
-  document.body.classList.toggle('dark');
-  try{localStorage.setItem('jee_dm',document.body.classList.contains('dark')?'1':'0');}catch(e){}
-}
-
-// ═══ LOGOUT ═══
-function confirmLogout(){var m=document.getElementById('logoutModal');if(m)m.style.display='flex';}
-function closeLogoutModal(){var m=document.getElementById('logoutModal');if(m)m.style.display='none';}
-function doLogout(){closeLogoutModal();if(window._doLogoutFn)window._doLogoutFn();}
-
-// ═══ VISIBILITY / SAVE ON HIDE ═══
-document.addEventListener('visibilitychange',function(){if(document.hidden&&studyOn){saveLocal();saveTimerState();if(!window._isGuest&&window.FS&&window.FS.saveStudy)window.FS.saveStudy(studyData);}});
-window.addEventListener('pagehide',function(){if(studyOn){saveLocal();saveTimerState();}});
-
-// INIT REVISION
-revLoad();
-// INIT DPP
-dppLoad();
+renderTabs();
+renderQuestions();
 </script>
 </body>
 </html>
