@@ -3,441 +3,419 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMR • 75 Question Answer Sheet</title>
+<title>The Amber Leaf Café | Digital Menu</title>
 <style>
   :root{
-    --paper:#f2ecd9;
-    --paper-line:#c9bd98;
-    --ink:#1f2a44;
-    --ink-soft:#4a5578;
-    --lead:#2e3b5e;
-    --accent:#b5442e;
-    --green:#2f6b47;
-    --red:#a3312a;
-    --gray:#8a8471;
+    --bg:#fbf7f2;
+    --card:#ffffff;
+    --primary:#8b4513;
+    --accent:#d4a24c;
+    --accent-dark:#b8863a;
+    --text:#2b2118;
+    --muted:#8a7f74;
+    --veg:#2e8b3d;
+    --nonveg:#c0392b;
+    --shadow: 0 4px 16px rgba(43,33,24,0.08);
+    --radius:16px;
   }
-  *{box-sizing:border-box;}
+  *{box-sizing:border-box;margin:0;padding:0;}
   body{
-    margin:0;
-    background:#e7ddc2;
-    background-image:
-      repeating-linear-gradient(#e7ddc2 0 27px, rgba(0,0,0,0.035) 27px 28px);
-    font-family: 'Courier New', Courier, monospace;
-    color:var(--ink);
-    padding:18px;
-  }
-  .sheet{
-    max-width:760px;
-    margin:0 auto;
-    background:var(--paper);
-    border:2px solid var(--ink);
-    box-shadow:6px 6px 0 rgba(31,42,68,0.25);
-    padding:20px 18px 30px;
-  }
-  .head{
-    text-align:center;
-    border-bottom:3px double var(--ink);
-    padding-bottom:12px;
-    margin-bottom:16px;
-  }
-  .head h1{
-    font-family: Georgia, 'Times New Roman', serif;
-    letter-spacing:2px;
-    font-size:22px;
-    margin:0 0 4px;
-    color:var(--lead);
-  }
-  .head .sub{font-size:11px; color:var(--ink-soft); letter-spacing:1px;}
-  .meta-row{
-    display:flex; gap:10px; flex-wrap:wrap;
-    margin-bottom:16px; font-size:12px;
-  }
-  .meta-row input{
-    font-family:inherit; background:transparent; border:none;
-    border-bottom:1px dashed var(--ink-soft); padding:2px 4px;
-    flex:1; min-width:120px; color:var(--ink);
-  }
-  .meta-row input:focus{outline:none; border-bottom-color:var(--accent);}
-  .tabs{
-    display:flex; gap:6px; margin-bottom:14px;
-  }
-  .tab-btn{
-    flex:1; padding:8px 4px; font-family:inherit; font-size:11px;
-    letter-spacing:1px; text-transform:uppercase;
-    background:#e3d9b8; border:1px solid var(--ink); cursor:pointer;
-    color:var(--ink-soft);
-  }
-  .tab-btn.active{ background:var(--lead); color:var(--paper); font-weight:bold; }
-  .progress{
-    font-size:11px; color:var(--ink-soft); text-align:right; margin-bottom:10px;
-  }
-  .section-label{
-    font-size:11px; letter-spacing:1px; color:var(--accent); margin:14px 0 6px;
-    border-bottom:1px solid var(--paper-line); padding-bottom:3px;
-  }
-  .q-row{
-    display:flex; align-items:center; gap:10px;
-    padding:6px 4px; border-bottom:1px dotted var(--paper-line);
-  }
-  .q-num{
-    width:28px; font-size:12px; font-weight:bold; color:var(--ink-soft); text-align:right;
-  }
-  .bubbles{ display:flex; gap:8px; }
-  .bubble{
-    width:26px; height:26px; border-radius:50%;
-    border:1.6px solid var(--ink); display:flex; align-items:center; justify-content:center;
-    font-size:11px; cursor:pointer; background:transparent; color:var(--ink-soft);
-    transition: all .12s ease;
-  }
-  .bubble:hover{ border-color:var(--accent); }
-  .bubble.filled{
-    background:var(--ink); color:var(--paper); border-color:var(--ink);
-    transform:scale(1.05);
-  }
-  .num-input{
-    width:110px; font-family:inherit; font-size:13px; padding:5px 6px;
-    border:1.6px solid var(--ink); background:#fffdf6; color:var(--ink);
-  }
-  .num-input:focus{ outline:none; border-color:var(--accent); }
-  .num-tag{ font-size:9px; color:var(--gray); letter-spacing:1px; }
-  .footer-bar{
-    margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
-  }
-  .btn{
-    font-family:inherit; letter-spacing:1px; text-transform:uppercase; font-size:12px;
-    padding:10px 18px; border:2px solid var(--ink); background:var(--lead); color:var(--paper);
-    cursor:pointer;
-  }
-  .btn.secondary{ background:transparent; color:var(--ink); }
-  .btn:hover{ opacity:0.85; }
-  input[type=file]{
-    font-family:inherit; font-size:12px; color:var(--ink);
-    background:#fffdf6; border:1.6px solid var(--ink); padding:8px;
-    max-width:320px; margin:8px auto 0; display:block;
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:60px;
   }
 
-  /* Result screen */
-  .result-wrap{ display:none; }
-  .result-wrap.show{ display:block; }
-  .sheet.result-mode .paper-content{ display:none; }
-  .score-hero{
-    text-align:center; padding:18px 0 10px; border-bottom:3px double var(--ink); margin-bottom:16px;
+  /* Header */
+  header{
+    background:linear-gradient(135deg,var(--primary),#5c2e0d);
+    color:#fff;
+    padding:28px 20px 20px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
   }
-  .score-hero .big{
-    font-family:Georgia, serif; font-size:48px; color:var(--lead); line-height:1;
+  header::after{
+    content:"";
+    position:absolute;
+    top:-40px;right:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
   }
-  .score-hero .out-of{ font-size:13px; color:var(--ink-soft); }
-  .subj-table{ width:100%; border-collapse:collapse; font-size:12px; margin-bottom:16px; }
-  .subj-table th, .subj-table td{
-    border:1px solid var(--paper-line); padding:6px 8px; text-align:center;
+  .header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
   }
-  .subj-table th{ background:#e3d9b8; }
-  .legend{ display:flex; gap:14px; font-size:11px; justify-content:center; margin-bottom:14px; color:var(--ink-soft); }
-  .legend span.dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:4px; }
-  .review-grid{
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(52px,1fr)); gap:4px; margin-bottom:10px;
+  .brand h1{
+    font-size:1.6rem;
+    font-weight:700;
+    letter-spacing:0.5px;
   }
-  .review-cell{
-    text-align:center; font-size:10px; padding:5px 2px; border:1px solid var(--paper-line);
+  .brand p{
+    font-size:0.85rem;
+    opacity:0.85;
+    margin-top:4px;
+    font-style:italic;
   }
-  .review-cell.correct{ background:#d7ead9; color:var(--green); }
-  .review-cell.wrong{ background:#f2d6d2; color:var(--red); }
-  .review-cell.skip{ background:#eee7d3; color:var(--gray); }
-  .hint{ font-size:11px; color:var(--ink-soft); text-align:center; margin-top:8px; }
+  .table-badge{
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.3);
+    padding:8px 14px;
+    border-radius:12px;
+    text-align:center;
+    backdrop-filter:blur(4px);
+    white-space:nowrap;
+  }
+  .table-badge span{display:block;font-size:0.65rem;opacity:0.8;text-transform:uppercase;letter-spacing:1px;}
+  .table-badge strong{font-size:1.1rem;}
+
+  .banner{
+    margin-top:18px;
+    height:110px;
+    border-radius:14px;
+    background:
+      linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.25)),
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="150"><rect width="400" height="150" fill="%23a56c3a"/><circle cx="60" cy="40" r="30" fill="%23c98a4a" opacity="0.5"/><circle cx="340" cy="110" r="50" fill="%23c98a4a" opacity="0.4"/></svg>');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    z-index:1;
+  }
+  .banner-badge{
+    background:var(--accent);
+    color:#3a2a10;
+    font-weight:700;
+    padding:6px 16px;
+    border-radius:20px;
+    font-size:0.85rem;
+    box-shadow:0 4px 10px rgba(0,0,0,0.25);
+  }
+
+  /* Search */
+  .search-wrap{
+    padding:16px 20px 0;
+  }
+  .search-box{
+    display:flex;
+    align-items:center;
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:10px 14px;
+    gap:10px;
+  }
+  .search-box svg{flex-shrink:0;opacity:0.5;}
+  .search-box input{
+    border:none;
+    outline:none;
+    flex:1;
+    font-size:0.95rem;
+    background:transparent;
+    color:var(--text);
+  }
+  .search-box input::placeholder{color:var(--muted);}
+
+  /* Category tabs */
+  .cat-bar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--bg);
+    padding:16px 0 10px;
+    margin-top:4px;
+  }
+  .cat-scroll{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:4px 20px 8px;
+    scrollbar-width:none;
+  }
+  .cat-scroll::-webkit-scrollbar{display:none;}
+  .cat-btn{
+    flex-shrink:0;
+    background:var(--card);
+    border:1px solid #eee2d3;
+    color:var(--text);
+    padding:9px 18px;
+    border-radius:30px;
+    font-size:0.85rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.25s ease;
+    white-space:nowrap;
+    box-shadow:0 2px 6px rgba(43,33,24,0.05);
+  }
+  .cat-btn.active{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+    transform:translateY(-1px);
+    box-shadow:0 4px 10px rgba(139,69,19,0.3);
+  }
+
+  /* Menu grid */
+  main{padding:6px 20px 20px;}
+  .section-title{
+    font-size:1.1rem;
+    font-weight:700;
+    margin:20px 4px 10px;
+    color:var(--primary);
+  }
+  .menu-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  @media(min-width:640px){
+    .menu-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(min-width:960px){
+    .menu-grid{grid-template-columns:1fr 1fr 1fr;}
+  }
+
+  .item-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+    animation:fadeIn 0.4s ease;
+  }
+  .item-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 22px rgba(43,33,24,0.14);
+  }
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(8px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  .item-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .item-name-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .veg-dot{
+    width:14px;height:14px;
+    border:2px solid var(--veg);
+    border-radius:3px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .veg-dot::after{
+    content:"";
+    width:6px;height:6px;
+    background:var(--veg);
+    border-radius:50%;
+  }
+  .nonveg-dot{
+    width:14px;height:14px;
+    border:2px solid var(--nonveg);
+    border-radius:3px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .nonveg-dot::after{
+    content:"";
+    width:0;height:0;
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-bottom:7px solid var(--nonveg);
+  }
+  .item-name{
+    font-size:1rem;
+    font-weight:700;
+  }
+  .price-tag{
+    font-weight:700;
+    color:var(--primary);
+    font-size:1rem;
+    white-space:nowrap;
+  }
+  .item-desc{
+    font-size:0.85rem;
+    color:var(--muted);
+    line-height:1.4;
+  }
+  .badge{
+    position:absolute;
+    top:-8px;
+    right:14px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:#3a2a10;
+    font-size:0.68rem;
+    font-weight:800;
+    padding:4px 10px;
+    border-radius:20px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+    box-shadow:0 3px 8px rgba(184,134,58,0.4);
+  }
+
+  .no-results{
+    text-align:center;
+    padding:40px 20px;
+    color:var(--muted);
+  }
+  .no-results div{font-size:2.2rem;margin-bottom:8px;}
+
+  footer{
+    text-align:center;
+    padding:24px 20px 10px;
+    color:var(--muted);
+    font-size:0.8rem;
+    line-height:1.6;
+  }
+  footer strong{color:var(--primary);}
 </style>
 </head>
 <body>
 
-<div class="sheet" id="sheet">
-  <div class="head">
-    <h1>OMR ANSWER SHEET</h1>
-    <div class="sub">75 QUESTIONS · 20 + 5 PATTERN · 3 SUBJECTS</div>
-  </div>
-
-  <div class="paper-content" id="paperContent">
-    <div class="meta-row">
-      <input type="text" id="candName" placeholder="Name">
-      <input type="text" id="testName" placeholder="Test / Mock name">
-      <input type="date" id="testDate">
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <h1>The Amber Leaf Café</h1>
+      <p>Slow Coffee, Honest Food</p>
     </div>
-
-    <div class="tabs" id="tabs"></div>
-    <div class="progress" id="progressText"></div>
-    <div id="qContainer"></div>
-
-    <div class="footer-bar">
-      <button class="btn secondary" id="clearBtn">Clear all</button>
-    </div>
-    <div class="hint">Bubble in an option for Q1–20 type questions. Type the value for numerical questions. Then upload a .txt answer key below to see your result.</div>
-
-    <div id="uploadZone" style="text-align:center; margin-top:16px; border-top:2px dashed var(--ink-soft); padding-top:14px;">
-      <p style="font-size:13px; color:var(--ink); font-weight:bold; letter-spacing:1px;">STEP 2 — UPLOAD ANSWER KEY</p>
-      <p style="font-size:12px; color:var(--ink-soft);">Answer key format — one per line: <code>1,A</code> or <code>21,4.5</code> (comma, space, dot or bracket all work)</p>
-      <input type="file" id="keyFile" accept=".txt">
-      <div id="fileNameShown" style="font-size:11px;margin-top:6px;color:var(--ink-soft);"></div>
+    <div class="table-badge">
+      <span>Table No.</span>
+      <strong id="tableNumber">07</strong>
     </div>
   </div>
+  <div class="banner">
+    <span class="banner-badge">✨ Scan. Order. Savour.</span>
+  </div>
+</header>
 
-  <div class="result-wrap" id="resultWrap">
-    <div class="score-hero">
-      <div class="big" id="scoreBig">0</div>
-      <div class="out-of" id="scoreOutOf">out of 300</div>
-    </div>
-    <table class="subj-table">
-      <thead><tr><th>Subject</th><th>Correct</th><th>Wrong</th><th>Skipped</th><th>Score</th></tr></thead>
-      <tbody id="subjTableBody"></tbody>
-    </table>
-    <div class="legend">
-      <span><span class="dot" style="background:#2f6b47"></span>Correct</span>
-      <span><span class="dot" style="background:#a3312a"></span>Wrong</span>
-      <span><span class="dot" style="background:#8a8471"></span>Skipped</span>
-    </div>
-    <div class="review-grid" id="reviewGrid"></div>
-    <div class="footer-bar">
-      <button class="btn secondary" id="restartBtn">Start new sheet</button>
-    </div>
+<div class="search-wrap">
+  <div class="search-box">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Search for dishes, drinks...">
   </div>
 </div>
 
+<div class="cat-bar">
+  <div class="cat-scroll" id="catBar">
+    <button class="cat-btn active" data-cat="all">All</button>
+    <button class="cat-btn" data-cat="beverages">Beverages</button>
+    <button class="cat-btn" data-cat="snacks">Snacks</button>
+    <button class="cat-btn" data-cat="main">Main Course</button>
+    <button class="cat-btn" data-cat="desserts">Desserts</button>
+  </div>
+</div>
+
+<main>
+  <div class="menu-grid" id="menuGrid"></div>
+  <div class="no-results" id="noResults" style="display:none;">
+    <div>🔍</div>
+    No dishes match your search.
+  </div>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> The Amber Leaf Café. All rights reserved.<br>
+  <strong>Powered by Digital Menu</strong>
+</footer>
+
 <script>
-const SUBJECTS = [
-  {name:"Physics", start:1},
-  {name:"Chemistry", start:26},
-  {name:"Maths", start:51}
-];
-// each subject: 20 MCQ then 5 numerical
-const answers = {}; // qno -> value
-let currentTab = 0;
+  const menuData = [
+    { name:"Masala Chai", desc:"Freshly brewed with cardamom, ginger & cloves.", price:60, cat:"beverages", veg:true, badge:"" },
+    { name:"Cold Brew Coffee", desc:"Slow-steeped 18 hours, smooth & bold.", price:150, cat:"beverages", veg:true, badge:"Bestseller" },
+    { name:"Virgin Mojito", desc:"Fresh mint, lime & soda, chilled to perfection.", price:130, cat:"beverages", veg:true, badge:"" },
+    { name:"Hazelnut Cappuccino", desc:"Espresso with steamed milk & hazelnut syrup.", price:170, cat:"beverages", veg:true, badge:"Must Try" },
 
-function qType(qno){
-  const localIndex = ((qno-1) % 25); // 0-24 within subject
-  return localIndex < 20 ? 'mcq' : 'num';
-}
-function subjectOf(qno){
-  return SUBJECTS[Math.floor((qno-1)/25)];
-}
+    { name:"Paneer Tikka", desc:"Char-grilled cottage cheese with mint chutney.", price:220, cat:"snacks", veg:true, badge:"Bestseller" },
+    { name:"Chicken 65", desc:"Spicy deep-fried chicken bites, South Indian style.", price:250, cat:"snacks", veg:false, badge:"" },
+    { name:"Crispy Corn Salt & Pepper", desc:"Golden fried corn tossed in pepper seasoning.", price:180, cat:"snacks", veg:true, badge:"" },
+    { name:"Peri Peri Fries", desc:"Crunchy fries tossed in tangy peri peri spice.", price:160, cat:"snacks", veg:true, badge:"Must Try" },
 
-function renderTabs(){
-  const tabsEl = document.getElementById('tabs');
-  tabsEl.innerHTML = '';
-  SUBJECTS.forEach((s, i) => {
-    const b = document.createElement('button');
-    b.className = 'tab-btn' + (i === currentTab ? ' active' : '');
-    b.textContent = s.name;
-    b.onclick = () => { currentTab = i; renderTabs(); renderQuestions(); };
-    tabsEl.appendChild(b);
-  });
-}
+    { name:"Butter Chicken", desc:"Tender chicken in a rich tomato-butter gravy.", price:340, cat:"main", veg:false, badge:"Bestseller" },
+    { name:"Paneer Butter Masala", desc:"Cottage cheese cubes in a creamy tomato curry.", price:290, cat:"main", veg:true, badge:"" },
+    { name:"Veg Biryani", desc:"Fragrant basmati rice layered with spiced veggies.", price:260, cat:"main", veg:true, badge:"" },
+    { name:"Mutton Rogan Josh", desc:"Slow-cooked mutton in a Kashmiri spice blend.", price:390, cat:"main", veg:false, badge:"Must Try" },
+    { name:"Margherita Pizza", desc:"Classic pizza with fresh basil & mozzarella.", price:280, cat:"main", veg:true, badge:"" },
 
-function renderQuestions(){
-  const container = document.getElementById('qContainer');
-  container.innerHTML = '';
-  const subj = SUBJECTS[currentTab];
-  const startQ = subj.start;
+    { name:"Chocolate Lava Cake", desc:"Warm molten chocolate cake with vanilla ice cream.", price:190, cat:"desserts", veg:true, badge:"Bestseller" },
+    { name:"Gulab Jamun (2 pcs)", desc:"Soft milk dumplings soaked in sugar syrup.", price:110, cat:"desserts", veg:true, badge:"" },
+    { name:"Tiramisu", desc:"Classic Italian coffee-flavoured layered dessert.", price:230, cat:"desserts", veg:true, badge:"Must Try" },
+    { name:"Blueberry Cheesecake", desc:"Creamy baked cheesecake topped with blueberry compote.", price:210, cat:"desserts", veg:true, badge:"" }
+  ];
 
-  const mcqLabel = document.createElement('div');
-  mcqLabel.className = 'section-label';
-  mcqLabel.textContent = 'SECTION A · SINGLE CORRECT (Q' + startQ + '–' + (startQ+19) + ')';
-  container.appendChild(mcqLabel);
+  const menuGrid = document.getElementById('menuGrid');
+  const noResults = document.getElementById('noResults');
+  const searchInput = document.getElementById('searchInput');
+  const catBar = document.getElementById('catBar');
+  let activeCat = 'all';
 
-  for(let i=0;i<20;i++){
-    const qno = startQ + i;
-    container.appendChild(buildMcqRow(qno));
-  }
+  function renderMenu(){
+    const query = searchInput.value.trim().toLowerCase();
+    const filtered = menuData.filter(item=>{
+      const matchesCat = activeCat === 'all' || item.cat === activeCat;
+      const matchesSearch = item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
+      return matchesCat && matchesSearch;
+    });
 
-  const numLabel = document.createElement('div');
-  numLabel.className = 'section-label';
-  numLabel.textContent = 'SECTION B · NUMERICAL (Q' + (startQ+20) + '–' + (startQ+24) + ')';
-  container.appendChild(numLabel);
-
-  for(let i=20;i<25;i++){
-    const qno = startQ + i;
-    container.appendChild(buildNumRow(qno));
-  }
-  updateProgress();
-}
-
-function buildMcqRow(qno){
-  const row = document.createElement('div');
-  row.className = 'q-row';
-  const num = document.createElement('div');
-  num.className = 'q-num';
-  num.textContent = qno + '.';
-  row.appendChild(num);
-  const bubbles = document.createElement('div');
-  bubbles.className = 'bubbles';
-  ['1','2','3','4'].forEach(opt => {
-    const b = document.createElement('div');
-    b.className = 'bubble' + (answers[qno] === opt ? ' filled' : '');
-    b.textContent = opt;
-    b.onclick = () => {
-      answers[qno] = (answers[qno] === opt) ? undefined : opt;
-      if(answers[qno] === undefined) delete answers[qno];
-      renderQuestions();
-    };
-    bubbles.appendChild(b);
-  });
-  row.appendChild(bubbles);
-  return row;
-}
-
-function buildNumRow(qno){
-  const row = document.createElement('div');
-  row.className = 'q-row';
-  const num = document.createElement('div');
-  num.className = 'q-num';
-  num.textContent = qno + '.';
-  row.appendChild(num);
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.inputMode = 'decimal';
-  input.className = 'num-input';
-  input.placeholder = 'value';
-  input.value = answers[qno] !== undefined ? answers[qno] : '';
-  input.oninput = (e) => {
-    const v = e.target.value.trim();
-    if(v === '') delete answers[qno]; else answers[qno] = v;
-    updateProgress();
-  };
-  row.appendChild(input);
-  const tag = document.createElement('span');
-  tag.className = 'num-tag';
-  tag.textContent = 'NUM';
-  row.appendChild(tag);
-  return row;
-}
-
-function updateProgress(){
-  const attempted = Object.keys(answers).length;
-  document.getElementById('progressText').textContent = attempted + ' / 75 attempted';
-}
-
-document.getElementById('clearBtn').onclick = () => {
-  if(confirm('Clear all answers?')){
-    Object.keys(answers).forEach(k => delete answers[k]);
-    renderQuestions();
-  }
-};
-
-function parseAnswerKey(rawText){
-  let text = rawText;
-  const akMatch = text.match(/answer\s*key/i);
-  if(akMatch) text = text.slice(akMatch.index + akMatch[0].length);
-  const httpIdx = text.search(/https?:\/\//i);
-  if(httpIdx !== -1) text = text.slice(0, httpIdx);
-
-  const key = {};
-  // Handles formats like: "1. (2)"  "1) A"  "1,A"  "1 - 2"  "1. 4.5"  anywhere in the text,
-  // including Prayas-style keys with 3 columns per line: "1. (2) 26. (2) 51. (3)"
-  const re = /(\d{1,2})\s*[.).:\-]?\s*\(?\s*(-?\d+(?:\.\d+)?|[A-Da-d])\s*\)?/g;
-  let m;
-  while((m = re.exec(text)) !== null){
-    const qno = parseInt(m[1], 10);
-    if(qno < 1 || qno > 75) continue;
-    let val = m[2];
-    if(/^[A-Da-d]$/.test(val)){
-      val = String('ABCD'.indexOf(val.toUpperCase()) + 1); // map letter to option number
+    menuGrid.innerHTML = '';
+    if(filtered.length === 0){
+      noResults.style.display = 'block';
+      return;
     }
-    if(!(qno in key)) key[qno] = val; // first match wins, avoids overwriting from stray numbers
-  }
-  return key;
-}
+    noResults.style.display = 'none';
 
-function isNumMatch(userVal, keyVal){
-  const a = parseFloat(userVal), b = parseFloat(keyVal);
-  if(isNaN(a) || isNaN(b)) return userVal.trim() === keyVal.trim();
-  return Math.abs(a-b) < 0.01;
-}
-
-document.getElementById('keyFile').onchange = (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
-  document.getElementById('fileNameShown').textContent = 'Loaded: ' + file.name;
-  const reader = new FileReader();
-  reader.onload = (evt) => {
-    const key = parseAnswerKey(evt.target.result);
-    computeResult(key);
-  };
-  reader.readAsText(file);
-};
-
-function computeResult(key){
-  let totalScore = 0;
-  const subjStats = SUBJECTS.map(s => ({name:s.name, correct:0, wrong:0, skip:0, score:0}));
-  const reviewCells = [];
-
-  for(let qno=1; qno<=75; qno++){
-    const subjIdx = Math.floor((qno-1)/25);
-    const type = qType(qno);
-    const userAns = answers[qno];
-    const correctAns = key[qno];
-    let status = 'skip';
-    let delta = 0;
-
-    if(userAns !== undefined && userAns !== ''){
-      let isCorrect = false;
-      if(correctAns !== undefined){
-        if(type === 'mcq'){
-          isCorrect = userAns === correctAns;
-        } else {
-          isCorrect = isNumMatch(userAns, correctAns);
-        }
-      }
-      if(isCorrect){
-        status = 'correct';
-        delta = 4;
-        subjStats[subjIdx].correct++;
-      } else {
-        status = 'wrong';
-        delta = (type === 'mcq') ? -1 : 0;
-        subjStats[subjIdx].wrong++;
-      }
-    } else {
-      subjStats[subjIdx].skip++;
-    }
-    subjStats[subjIdx].score += delta;
-    totalScore += delta;
-    reviewCells.push({qno, status});
+    filtered.forEach(item=>{
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.innerHTML = `
+        ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
+        <div class="item-top">
+          <div class="item-name-row">
+            <span class="${item.veg ? 'veg-dot' : 'nonveg-dot'}"></span>
+            <span class="item-name">${item.name}</span>
+          </div>
+          <span class="price-tag">₹${item.price}</span>
+        </div>
+        <p class="item-desc">${item.desc}</p>
+      `;
+      menuGrid.appendChild(card);
+    });
   }
 
-  document.getElementById('scoreBig').textContent = totalScore;
-  document.getElementById('scoreOutOf').textContent = 'out of 300  ·  +4 correct, -1 wrong (MCQ), 0 for numerical wrong';
+  searchInput.addEventListener('input', renderMenu);
 
-  const tbody = document.getElementById('subjTableBody');
-  tbody.innerHTML = '';
-  subjStats.forEach(s => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.name}</td><td>${s.correct}</td><td>${s.wrong}</td><td>${s.skip}</td><td>${s.score}</td>`;
-    tbody.appendChild(tr);
+  catBar.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.cat-btn');
+    if(!btn) return;
+    document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    renderMenu();
   });
 
-  const grid = document.getElementById('reviewGrid');
-  grid.innerHTML = '';
-  reviewCells.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'review-cell ' + c.status;
-    div.textContent = c.qno;
-    grid.appendChild(div);
-  });
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-  document.getElementById('paperContent').style.display = 'none';
-  document.getElementById('resultWrap').classList.add('show');
-}
-
-document.getElementById('restartBtn').onclick = () => {
-  Object.keys(answers).forEach(k => delete answers[k]);
-  document.getElementById('resultWrap').classList.remove('show');
-  document.getElementById('paperContent').style.display = 'block';
-  document.getElementById('uploadZone').style.display = 'none';
-  document.getElementById('keyFile').value = '';
-  document.getElementById('fileNameShown').textContent = '';
-  currentTab = 0;
-  renderTabs();
-  renderQuestions();
-};
-
-renderTabs();
-renderQuestions();
+  renderMenu();
 </script>
+
 </body>
 </html>
