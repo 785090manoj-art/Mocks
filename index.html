@@ -1,421 +1,636 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Amber Leaf Café | Digital Menu</title>
+<title>Panchayat Ballot — Voting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <style>
   :root{
-    --bg:#fbf7f2;
-    --card:#ffffff;
-    --primary:#8b4513;
-    --accent:#d4a24c;
-    --accent-dark:#b8863a;
-    --text:#2b2118;
-    --muted:#8a7f74;
-    --veg:#2e8b3d;
-    --nonveg:#c0392b;
-    --shadow: 0 4px 16px rgba(43,33,24,0.08);
-    --radius:16px;
+    --navy:#101830;
+    --navy-2:#1b2648;
+    --paper:#F5F1E6;
+    --paper-dim:#e9e3d3;
+    --ink:#2b2620;
+    --marigold:#E3A23C;
+    --marigold-dim:#c98a2c;
+    --stamp:#4B2A5E;
+    --stamp-2:#6b3d84;
+    --muted:#8B93A7;
+    --good:#3f7d5c;
+    --line: rgba(245,241,230,0.14);
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
   body{
-    font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    padding-bottom:60px;
-  }
-
-  /* Header */
-  header{
-    background:linear-gradient(135deg,var(--primary),#5c2e0d);
-    color:#fff;
-    padding:28px 20px 20px;
-    border-radius:0 0 28px 28px;
-    box-shadow:var(--shadow);
-    position:relative;
-    overflow:hidden;
-  }
-  header::after{
-    content:"";
-    position:absolute;
-    top:-40px;right:-40px;
-    width:160px;height:160px;
-    background:rgba(255,255,255,0.08);
-    border-radius:50%;
-  }
-  .header-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:12px;
-  }
-  .brand h1{
-    font-size:1.6rem;
-    font-weight:700;
-    letter-spacing:0.5px;
-  }
-  .brand p{
-    font-size:0.85rem;
-    opacity:0.85;
-    margin-top:4px;
-    font-style:italic;
-  }
-  .table-badge{
-    background:rgba(255,255,255,0.15);
-    border:1px solid rgba(255,255,255,0.3);
-    padding:8px 14px;
-    border-radius:12px;
-    text-align:center;
-    backdrop-filter:blur(4px);
-    white-space:nowrap;
-  }
-  .table-badge span{display:block;font-size:0.65rem;opacity:0.8;text-transform:uppercase;letter-spacing:1px;}
-  .table-badge strong{font-size:1.1rem;}
-
-  .banner{
-    margin-top:18px;
-    height:110px;
-    border-radius:14px;
     background:
-      linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.25)),
-      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="150"><rect width="400" height="150" fill="%23a56c3a"/><circle cx="60" cy="40" r="30" fill="%23c98a4a" opacity="0.5"/><circle cx="340" cy="110" r="50" fill="%23c98a4a" opacity="0.4"/></svg>');
-    background-size:cover;
-    background-position:center;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    z-index:1;
-  }
-  .banner-badge{
-    background:var(--accent);
-    color:#3a2a10;
-    font-weight:700;
-    padding:6px 16px;
-    border-radius:20px;
-    font-size:0.85rem;
-    box-shadow:0 4px 10px rgba(0,0,0,0.25);
-  }
-
-  /* Search */
-  .search-wrap{
-    padding:16px 20px 0;
-  }
-  .search-box{
-    display:flex;
-    align-items:center;
-    background:var(--card);
-    border-radius:14px;
-    box-shadow:var(--shadow);
-    padding:10px 14px;
-    gap:10px;
-  }
-  .search-box svg{flex-shrink:0;opacity:0.5;}
-  .search-box input{
-    border:none;
-    outline:none;
-    flex:1;
-    font-size:0.95rem;
-    background:transparent;
-    color:var(--text);
-  }
-  .search-box input::placeholder{color:var(--muted);}
-
-  /* Category tabs */
-  .cat-bar{
-    position:sticky;
-    top:0;
-    z-index:50;
-    background:var(--bg);
-    padding:16px 0 10px;
-    margin-top:4px;
-  }
-  .cat-scroll{
-    display:flex;
-    gap:10px;
-    overflow-x:auto;
-    padding:4px 20px 8px;
-    scrollbar-width:none;
-  }
-  .cat-scroll::-webkit-scrollbar{display:none;}
-  .cat-btn{
-    flex-shrink:0;
-    background:var(--card);
-    border:1px solid #eee2d3;
-    color:var(--text);
-    padding:9px 18px;
-    border-radius:30px;
-    font-size:0.85rem;
-    font-weight:600;
-    cursor:pointer;
-    transition:all 0.25s ease;
-    white-space:nowrap;
-    box-shadow:0 2px 6px rgba(43,33,24,0.05);
-  }
-  .cat-btn.active{
-    background:var(--primary);
-    color:#fff;
-    border-color:var(--primary);
-    transform:translateY(-1px);
-    box-shadow:0 4px 10px rgba(139,69,19,0.3);
-  }
-
-  /* Menu grid */
-  main{padding:6px 20px 20px;}
-  .section-title{
-    font-size:1.1rem;
-    font-weight:700;
-    margin:20px 4px 10px;
-    color:var(--primary);
-  }
-  .menu-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:14px;
-  }
-  @media(min-width:640px){
-    .menu-grid{grid-template-columns:1fr 1fr;}
-  }
-  @media(min-width:960px){
-    .menu-grid{grid-template-columns:1fr 1fr 1fr;}
-  }
-
-  .item-card{
-    background:var(--card);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    padding:16px;
-    position:relative;
+      radial-gradient(ellipse at top left, #16204a 0%, transparent 55%),
+      radial-gradient(ellipse at bottom right, #1a2450 0%, transparent 50%),
+      var(--navy);
+    min-height:100vh;
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--paper);
     display:flex;
     flex-direction:column;
-    gap:8px;
-    transition:transform 0.25s ease, box-shadow 0.25s ease;
-    animation:fadeIn 0.4s ease;
+    align-items:center;
+    padding:28px 16px 60px;
   }
-  .item-card:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 22px rgba(43,33,24,0.14);
+  .hidden{display:none !important;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    margin-bottom:6px;
   }
-  @keyframes fadeIn{
-    from{opacity:0;transform:translateY(8px);}
-    to{opacity:1;transform:translateY(0);}
+  h1.brand{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:26px;
+    margin:0 0 2px;
+    letter-spacing:0.01em;
   }
+  .brand-wrap{text-align:center;margin-bottom:28px;}
+  .sub{color:var(--muted);font-size:13px;}
+  .card{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:14px;
+    padding:28px 26px;
+    width:100%;
+    max-width:420px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.04);
+    position:relative;
+  }
+  .card.wide{max-width:760px;}
+  .card h2{
+    font-family:'Fraunces', serif;
+    font-size:21px;
+    margin:0 0 4px;
+    font-weight:600;
+  }
+  .card p.desc{color:#6b6357;font-size:13.5px;margin:0 0 20px;line-height:1.5;}
+  label{
+    display:block;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:#7a7264;
+    margin-bottom:6px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  input[type=text], input[type=tel], input[type=password]{
+    width:100%;
+    padding:13px 14px;
+    border-radius:9px;
+    border:1.5px solid #d9d2c0;
+    background:#fffdf8;
+    font-size:16px;
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink);
+    margin-bottom:16px;
+    outline:none;
+    transition:border-color .15s;
+  }
+  input:focus{border-color:var(--stamp);}
+  .btn{
+    width:100%;
+    padding:13px 14px;
+    border-radius:9px;
+    border:none;
+    font-size:15px;
+    font-weight:600;
+    font-family:'IBM Plex Sans', sans-serif;
+    cursor:pointer;
+    transition:transform .08s, filter .15s;
+  }
+  .btn:active{transform:scale(0.985);}
+  .btn-primary{background:var(--navy);color:var(--paper);}
+  .btn-primary:hover{filter:brightness(1.2);}
+  .btn-marigold{background:var(--marigold);color:#221704;}
+  .btn-marigold:hover{filter:brightness(1.08);}
+  .btn-ghost{background:transparent;color:#6b6357;border:1.5px solid #d9d2c0;margin-top:10px;}
+  .btn-ghost:hover{background:#eee8d9;}
+  .err{color:#a13d2b;font-size:13px;margin:-8px 0 14px;}
+  .demo-otp{
+    font-family:'IBM Plex Mono', monospace;
+    background:#eee6cf;
+    border:1px dashed #c9b98a;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13px;
+    margin-bottom:16px;
+    color:#5a4d2f;
+  }
+  .demo-otp b{font-size:18px;letter-spacing:0.1em;color:var(--stamp);}
+  a.admin-link{
+    color:var(--muted);
+    font-size:12.5px;
+    text-decoration:none;
+    margin-top:22px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  a.admin-link:hover{color:var(--marigold);text-decoration:underline;}
 
-  .item-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:10px;
-  }
-  .item-name-row{
+  /* candidate ballot */
+  .ballot-row{
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:14px;
+    border:1.5px solid #d9d2c0;
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    cursor:pointer;
+    background:#fffdf8;
+    transition:border-color .12s, background .12s;
   }
-  .veg-dot{
-    width:14px;height:14px;
-    border:2px solid var(--veg);
-    border-radius:3px;
+  .ballot-row.selected{
+    border-color:var(--stamp);
+    background:#f4ecf8;
+  }
+  .serial{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:#948a76;
+    width:16px;
+  }
+  .symbol{
+    width:36px;height:36px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
+    font-size:17px;flex-shrink:0;
+    background:var(--navy-2);color:var(--marigold);
   }
-  .veg-dot::after{
-    content:"";
-    width:6px;height:6px;
-    background:var(--veg);
+  .cand-name{font-weight:600;font-size:15.5px;flex:1;}
+  .radio-dot{
+    width:20px;height:20px;border-radius:50%;
+    border:2px solid #c9c0aa;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ballot-row.selected .radio-dot{border-color:var(--stamp);}
+  .radio-dot .fill{width:10px;height:10px;border-radius:50%;background:var(--stamp);display:none;}
+  .ballot-row.selected .radio-dot .fill{display:block;}
+
+  .stamp-wrap{
+    display:flex;flex-direction:column;align-items:center;
+    padding:10px 0 6px;
+  }
+  .stamp-mark{
+    width:88px;height:88px;
     border-radius:50%;
-  }
-  .nonveg-dot{
-    width:14px;height:14px;
-    border:2px solid var(--nonveg);
-    border-radius:3px;
+    border:4px solid var(--stamp);
+    color:var(--stamp);
     display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-align:center;
+    line-height:1.3;
+    transform:rotate(-14deg) scale(0);
+    animation:stampIn .45s cubic-bezier(.2,1.4,.4,1) forwards;
+    box-shadow:0 0 0 3px rgba(75,42,94,0.12);
+    position:relative;
   }
-  .nonveg-dot::after{
-    content:"";
-    width:0;height:0;
-    border-left:5px solid transparent;
-    border-right:5px solid transparent;
-    border-bottom:7px solid var(--nonveg);
+  .stamp-mark::after{
+    content:'';
+    position:absolute;inset:-4px;
+    border-radius:50%;
+    border:1px solid var(--stamp);
+    opacity:0.4;
   }
-  .item-name{
-    font-size:1rem;
-    font-weight:700;
+  @keyframes stampIn{
+    0%{transform:rotate(-30deg) scale(0.2);opacity:0;}
+    60%{transform:rotate(-10deg) scale(1.12);opacity:1;}
+    100%{transform:rotate(-14deg) scale(1);opacity:1;}
   }
-  .price-tag{
-    font-weight:700;
-    color:var(--primary);
-    font-size:1rem;
-    white-space:nowrap;
-  }
-  .item-desc{
-    font-size:0.85rem;
-    color:var(--muted);
-    line-height:1.4;
-  }
-  .badge{
-    position:absolute;
-    top:-8px;
-    right:14px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
-    color:#3a2a10;
-    font-size:0.68rem;
-    font-weight:800;
-    padding:4px 10px;
-    border-radius:20px;
+  .stamp-caption{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
     text-transform:uppercase;
-    letter-spacing:0.4px;
-    box-shadow:0 3px 8px rgba(184,134,58,0.4);
+    color:var(--stamp);
+    margin-top:14px;
+  }
+  .voted-note{
+    text-align:center;
+    color:#6b6357;
+    font-size:13.5px;
+    margin-top:6px;
   }
 
-  .no-results{
-    text-align:center;
-    padding:40px 20px;
-    color:var(--muted);
+  /* admin */
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+  .stat-box{background:#fffdf8;border:1.5px solid #d9d2c0;border-radius:10px;padding:14px;text-align:center;}
+  .stat-box .num{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--navy);}
+  .stat-box .lbl{font-size:11px;color:#8a8172;text-transform:uppercase;letter-spacing:0.06em;font-family:'IBM Plex Mono',monospace;margin-top:2px;}
+  .bar-row{margin-bottom:12px;}
+  .bar-row .top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px;font-weight:600;}
+  .bar-track{background:#e9e3d3;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:var(--stamp);border-radius:6px;transition:width .4s;}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px;}
+  th{
+    text-align:left;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+    text-transform:uppercase;letter-spacing:0.05em;color:#8a8172;
+    padding:8px 8px;border-bottom:1.5px solid #d9d2c0;
   }
-  .no-results div{font-size:2.2rem;margin-bottom:8px;}
-
-  footer{
-    text-align:center;
-    padding:24px 20px 10px;
-    color:var(--muted);
-    font-size:0.8rem;
-    line-height:1.6;
+  td{padding:9px 8px;border-bottom:1px solid #ece6d6;}
+  tr:last-child td{border-bottom:none;}
+  .toolbar{display:flex;gap:10px;margin-bottom:14px;}
+  .toolbar input{margin-bottom:0;flex:1;}
+  .toolbar .btn{width:auto;padding:12px 18px;white-space:nowrap;}
+  .pill{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;padding:3px 9px;border-radius:20px;
+    background:var(--navy-2);color:var(--marigold);
   }
-  footer strong{color:var(--primary);}
+  .row-between{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+  .logout-x{background:none;border:none;color:#8a8172;font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer;text-decoration:underline;padding:0;}
+  @media (max-width:480px){
+    .stat-grid{grid-template-columns:1fr 1fr 1fr;}
+    .stat-box .num{font-size:20px;}
+    .toolbar{flex-direction:column;}
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <div class="brand">
-      <h1>The Amber Leaf Café</h1>
-      <p>Slow Coffee, Honest Food</p>
+  <div class="brand-wrap">
+    <div class="eyebrow">Gram Panchayat · 2027</div>
+    <h1 class="brand">Panchayat Ballot</h1>
+    <div class="sub">Secure mobile verified voting</div>
+  </div>
+
+  <!-- SCREEN: mobile entry -->
+  <div id="screen-mobile" class="card">
+    <h2>Apna mobile number daaliye</h2>
+    <p class="desc">Ek mobile number se sirf ek hi voter ID banti hai. OTP se verify karke aage badhein.</p>
+    <label for="inp-mobile">Mobile Number</label>
+    <input type="tel" id="inp-mobile" maxlength="10" placeholder="9876543210">
+    <div id="mobile-err" class="err hidden"></div>
+    <div id="recaptcha-container"></div>
+    <button class="btn btn-primary" id="send-otp-btn" onclick="sendOtp()">OTP Bhejein</button>
+    <div style="text-align:center;">
+      <a class="admin-link" href="#" onclick="showScreen('admin-login');return false;">Admin Login →</a>
     </div>
-    <div class="table-badge">
-      <span>Table No.</span>
-      <strong id="tableNumber">07</strong>
+  </div>
+
+  <!-- SCREEN: otp entry -->
+  <div id="screen-otp" class="card hidden">
+    <h2>OTP Verify Karein</h2>
+    <p class="desc" id="otp-desc">6-digit OTP daaliye jo aapke number par SMS se aaya hai.</p>
+    <div id="otp-send-err" class="err hidden"></div>
+    <label for="inp-otp">Enter OTP</label>
+    <input type="text" id="inp-otp" maxlength="6" inputmode="numeric" placeholder="000000">
+    <div id="otp-err" class="err hidden"></div>
+    <button class="btn btn-primary" onclick="verifyOtp()">Verify</button>
+    <button class="btn btn-ghost" onclick="showScreen('mobile')">← Number badlein</button>
+  </div>
+
+  <!-- SCREEN: register (new voter) -->
+  <div id="screen-register" class="card hidden">
+    <h2>Naya Voter Registration</h2>
+    <p class="desc">Yeh number pehli baar use ho raha hai. Apna naam likhein.</p>
+    <label for="inp-name">Poora Naam</label>
+    <input type="text" id="inp-name" placeholder="Aapka naam">
+    <div id="reg-err" class="err hidden"></div>
+    <button class="btn btn-primary" onclick="registerVoter()">Register &amp; Aage Badhein</button>
+  </div>
+
+  <!-- SCREEN: vote -->
+  <div id="screen-vote" class="card">
+    <h2>Apna Vote Daalein</h2>
+    <p class="desc" id="vote-desc">Ek candidate chunein aur vote confirm karein.</p>
+    <div id="ballot-list"></div>
+    <button class="btn btn-marigold" id="cast-btn" onclick="castVote()">Vote Confirm Karein</button>
+    <button class="btn btn-ghost" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- SCREEN: confirmation -->
+  <div id="screen-confirm" class="card hidden">
+    <div class="stamp-wrap">
+      <div class="stamp-mark">VOTE<br>RECORDED</div>
+      <div class="stamp-caption">Indelible Ink Applied</div>
     </div>
+    <p class="voted-note">Aapne vote diya: <b id="confirm-name"></b></p>
+    <button class="btn btn-ghost" style="margin-top:18px;" onclick="goToVoteScreen()">Vote Edit Karein (galti se click hua ho to)</button>
+    <button class="btn btn-ghost" onclick="logout()">Logout</button>
   </div>
-  <div class="banner">
-    <span class="banner-badge">✨ Scan. Order. Savour.</span>
-  </div>
-</header>
 
-<div class="search-wrap">
-  <div class="search-box">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="11" cy="11" r="8"></circle>
-      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
-    <input type="text" id="searchInput" placeholder="Search for dishes, drinks...">
+  <!-- SCREEN: admin login -->
+  <div id="screen-admin-login" class="card hidden">
+    <h2>Admin Login</h2>
+    <p class="desc">Result aur voter list dekhne ke liye password daalein.</p>
+    <label for="inp-admin-pass">Password</label>
+    <input type="password" id="inp-admin-pass" placeholder="••••••••">
+    <div id="admin-err" class="err hidden"></div>
+    <button class="btn btn-primary" onclick="adminLogin()">Login</button>
+    <button class="btn btn-ghost" onclick="showScreen('mobile')">← Wapas</button>
   </div>
-</div>
 
-<div class="cat-bar">
-  <div class="cat-scroll" id="catBar">
-    <button class="cat-btn active" data-cat="all">All</button>
-    <button class="cat-btn" data-cat="beverages">Beverages</button>
-    <button class="cat-btn" data-cat="snacks">Snacks</button>
-    <button class="cat-btn" data-cat="main">Main Course</button>
-    <button class="cat-btn" data-cat="desserts">Desserts</button>
+  <!-- SCREEN: admin panel -->
+  <div id="screen-admin-panel" class="card wide hidden">
+    <div class="row-between">
+      <div>
+        <h2 style="margin-bottom:2px;">Admin Panel</h2>
+        <span class="sub" style="color:#8a8172;">Live results &amp; voter records</span>
+      </div>
+      <button class="logout-x" onclick="logout()">Logout</button>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="num" id="stat-registered">0</div><div class="lbl">Registered</div></div>
+      <div class="stat-box"><div class="num" id="stat-voted">0</div><div class="lbl">Votes Cast</div></div>
+      <div class="stat-box"><div class="num" id="stat-turnout">0%</div><div class="lbl">Turnout</div></div>
+    </div>
+    <div id="bar-results"></div>
+    <div class="toolbar" style="margin-top:22px;">
+      <input type="text" id="search-box" placeholder="Naam ya mobile se search karein..." oninput="renderTable()">
+      <button class="btn btn-ghost" onclick="refreshAdmin()">↻ Refresh</button>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Naam</th><th>Mobile</th><th>Vote Diya</th></tr></thead>
+      <tbody id="voter-table-body"></tbody>
+    </table>
   </div>
-</div>
-
-<main>
-  <div class="menu-grid" id="menuGrid"></div>
-  <div class="no-results" id="noResults" style="display:none;">
-    <div>🔍</div>
-    No dishes match your search.
-  </div>
-</main>
-
-<footer>
-  &copy; <span id="year"></span> The Amber Leaf Café. All rights reserved.<br>
-  <strong>Powered by Digital Menu</strong>
-</footer>
 
 <script>
-  const menuData = [
-    { name:"Masala Chai", desc:"Freshly brewed with cardamom, ginger & cloves.", price:60, cat:"beverages", veg:true, badge:"" },
-    { name:"Cold Brew Coffee", desc:"Slow-steeped 18 hours, smooth & bold.", price:150, cat:"beverages", veg:true, badge:"Bestseller" },
-    { name:"Virgin Mojito", desc:"Fresh mint, lime & soda, chilled to perfection.", price:130, cat:"beverages", veg:true, badge:"" },
-    { name:"Hazelnut Cappuccino", desc:"Espresso with steamed milk & hazelnut syrup.", price:170, cat:"beverages", veg:true, badge:"Must Try" },
+// ---- CONFIG ----
+const CANDIDATES = [
+  { id: 1, name: "Dilip Dewal", symbol: "★" },
+  { id: 2, name: "Moti Dan",    symbol: "◆" },
+  { id: 3, name: "Other",       symbol: "●" }   // rename this to the 3rd candidate's real name
+];
+const ADMIN_PASSWORD = "Panchayat@2027"; // change this anytime
 
-    { name:"Paneer Tikka", desc:"Char-grilled cottage cheese with mint chutney.", price:220, cat:"snacks", veg:true, badge:"Bestseller" },
-    { name:"Chicken 65", desc:"Spicy deep-fried chicken bites, South Indian style.", price:250, cat:"snacks", veg:false, badge:"" },
-    { name:"Crispy Corn Salt & Pepper", desc:"Golden fried corn tossed in pepper seasoning.", price:180, cat:"snacks", veg:true, badge:"" },
-    { name:"Peri Peri Fries", desc:"Crunchy fries tossed in tangy peri peri spice.", price:160, cat:"snacks", veg:true, badge:"Must Try" },
+// ---- FIREBASE CONFIG ----
+// 1. console.firebase.google.com → create project → Authentication → enable "Phone" sign-in
+// 2. Project settings → Your apps → Web app → copy config below
+// 3. Upgrade to Blaze plan (billing) — first 10 SMS/day are free
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+const FIREBASE_CONFIGURED = firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY";
+if (FIREBASE_CONFIGURED) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-    { name:"Butter Chicken", desc:"Tender chicken in a rich tomato-butter gravy.", price:340, cat:"main", veg:false, badge:"Bestseller" },
-    { name:"Paneer Butter Masala", desc:"Cottage cheese cubes in a creamy tomato curry.", price:290, cat:"main", veg:true, badge:"" },
-    { name:"Veg Biryani", desc:"Fragrant basmati rice layered with spiced veggies.", price:260, cat:"main", veg:true, badge:"" },
-    { name:"Mutton Rogan Josh", desc:"Slow-cooked mutton in a Kashmiri spice blend.", price:390, cat:"main", veg:false, badge:"Must Try" },
-    { name:"Margherita Pizza", desc:"Classic pizza with fresh basil & mozzarella.", price:280, cat:"main", veg:true, badge:"" },
+// ---- STATE ----
+let pendingMobile = null;
+let confirmationResult = null;
+let recaptchaVerifier = null;
+let currentVoter = null; // {name, mobile, vote, votedAt}
+let selectedCandidateId = null;
+let votersCache = [];
 
-    { name:"Chocolate Lava Cake", desc:"Warm molten chocolate cake with vanilla ice cream.", price:190, cat:"desserts", veg:true, badge:"Bestseller" },
-    { name:"Gulab Jamun (2 pcs)", desc:"Soft milk dumplings soaked in sugar syrup.", price:110, cat:"desserts", veg:true, badge:"" },
-    { name:"Tiramisu", desc:"Classic Italian coffee-flavoured layered dessert.", price:230, cat:"desserts", veg:true, badge:"Must Try" },
-    { name:"Blueberry Cheesecake", desc:"Creamy baked cheesecake topped with blueberry compote.", price:210, cat:"desserts", veg:true, badge:"" }
-  ];
+function showScreen(name){
+  const ids = ["mobile","otp","register","vote","confirm","admin-login","admin-panel"];
+  ids.forEach(id => {
+    document.getElementById("screen-"+id).classList.toggle("hidden", id !== name);
+  });
+}
 
-  const menuGrid = document.getElementById('menuGrid');
-  const noResults = document.getElementById('noResults');
-  const searchInput = document.getElementById('searchInput');
-  const catBar = document.getElementById('catBar');
-  let activeCat = 'all';
+// ---- STORAGE HELPERS ----
+async function loadVoters(){
+  try{
+    const res = await window.storage.get("voters", true);
+    return res ? JSON.parse(res.value) : [];
+  }catch(e){
+    return [];
+  }
+}
+async function saveVoters(list){
+  try{
+    await window.storage.set("voters", JSON.stringify(list), true);
+  }catch(e){
+    console.error("storage save failed", e);
+  }
+}
 
-  function renderMenu(){
-    const query = searchInput.value.trim().toLowerCase();
-    const filtered = menuData.filter(item=>{
-      const matchesCat = activeCat === 'all' || item.cat === activeCat;
-      const matchesSearch = item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
-      return matchesCat && matchesSearch;
-    });
-
-    menuGrid.innerHTML = '';
-    if(filtered.length === 0){
-      noResults.style.display = 'block';
-      return;
-    }
-    noResults.style.display = 'none';
-
-    filtered.forEach(item=>{
-      const card = document.createElement('div');
-      card.className = 'item-card';
-      card.innerHTML = `
-        ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
-        <div class="item-top">
-          <div class="item-name-row">
-            <span class="${item.veg ? 'veg-dot' : 'nonveg-dot'}"></span>
-            <span class="item-name">${item.name}</span>
-          </div>
-          <span class="price-tag">₹${item.price}</span>
-        </div>
-        <p class="item-desc">${item.desc}</p>
-      `;
-      menuGrid.appendChild(card);
+// ---- MOBILE + OTP (Firebase Phone Auth) ----
+function ensureRecaptcha(){
+  if(!recaptchaVerifier){
+    recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'invisible'
     });
   }
+  return recaptchaVerifier;
+}
 
-  searchInput.addEventListener('input', renderMenu);
+async function sendOtp(){
+  const val = document.getElementById("inp-mobile").value.trim();
+  const errEl = document.getElementById("mobile-err");
+  if(!/^[6-9]\d{9}$/.test(val)){
+    errEl.textContent = "Sahi 10-digit mobile number daalein.";
+    errEl.classList.remove("hidden");
+    return;
+  }
+  errEl.classList.add("hidden");
 
-  catBar.addEventListener('click', (e)=>{
-    const btn = e.target.closest('.cat-btn');
-    if(!btn) return;
-    document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    activeCat = btn.dataset.cat;
-    renderMenu();
+  if(!FIREBASE_CONFIGURED){
+    errEl.textContent = "Firebase config abhi set nahi hai — code me firebaseConfig bharo (dekho comment upar).";
+    errEl.classList.remove("hidden");
+    return;
+  }
+
+  pendingMobile = val;
+  const btn = document.getElementById("send-otp-btn");
+  btn.textContent = "Bhej rahe hain...";
+  btn.disabled = true;
+  try{
+    const verifier = ensureRecaptcha();
+    confirmationResult = await firebase.auth().signInWithPhoneNumber("+91" + pendingMobile, verifier);
+    document.getElementById("otp-desc").textContent = "+91 " + pendingMobile + " par bheja gaya OTP daalein.";
+    document.getElementById("inp-otp").value = "";
+    document.getElementById("otp-send-err").classList.add("hidden");
+    showScreen("otp");
+  }catch(e){
+    console.error(e);
+    let msg = "OTP bhejne me dikkat hui. Dobara try karein.";
+    if(e.code === "auth/too-many-requests") msg = "Bahut zyada try ho gaye, thodi der baad try karein.";
+    if(e.code === "auth/invalid-phone-number") msg = "Mobile number galat lag raha hai.";
+    if(e.code === "auth/quota-exceeded") msg = "Aaj ka free SMS quota khatam ho gaya, kal try karein.";
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+    if(recaptchaVerifier){ recaptchaVerifier.render().then(id => { if(window.grecaptcha) grecaptcha.reset(id); }); }
+  }finally{
+    btn.textContent = "OTP Bhejein";
+    btn.disabled = false;
+  }
+}
+
+async function verifyOtp(){
+  const val = document.getElementById("inp-otp").value.trim();
+  const errEl = document.getElementById("otp-err");
+  try{
+    await confirmationResult.confirm(val);
+  }catch(e){
+    errEl.textContent = "Galat OTP. Dobara try karein.";
+    errEl.classList.remove("hidden");
+    return;
+  }
+  errEl.classList.add("hidden");
+  votersCache = await loadVoters();
+  const existing = votersCache.find(v => v.mobile === pendingMobile);
+  if(existing){
+    currentVoter = existing;
+    if(existing.vote){
+      goToConfirmScreen();
+    }else{
+      goToVoteScreen();
+    }
+  }else{
+    showScreen("register");
+  }
+}
+
+async function registerVoter(){
+  const name = document.getElementById("inp-name").value.trim();
+  const errEl = document.getElementById("reg-err");
+  if(name.length < 2){
+    errEl.textContent = "Apna poora naam likhein.";
+    errEl.classList.remove("hidden");
+    return;
+  }
+  errEl.classList.add("hidden");
+  currentVoter = { name, mobile: pendingMobile, vote: null, votedAt: null };
+  votersCache.push(currentVoter);
+  await saveVoters(votersCache);
+  goToVoteScreen();
+}
+
+// ---- VOTING ----
+function renderBallot(){
+  const list = document.getElementById("ballot-list");
+  list.innerHTML = "";
+  CANDIDATES.forEach(c => {
+    const row = document.createElement("div");
+    row.className = "ballot-row" + (selectedCandidateId === c.id ? " selected" : "");
+    row.onclick = () => { selectedCandidateId = c.id; renderBallot(); };
+    row.innerHTML = `
+      <div class="serial">${c.id}</div>
+      <div class="symbol">${c.symbol}</div>
+      <div class="cand-name">${c.name}</div>
+      <div class="radio-dot"><div class="fill"></div></div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function goToVoteScreen(){
+  selectedCandidateId = currentVoter.vote || null;
+  document.getElementById("vote-desc").textContent = currentVoter.vote
+    ? "Aap apna vote badal sakte hain (galti se click hone par)."
+    : "Ek candidate chunein aur vote confirm karein.";
+  document.getElementById("cast-btn").textContent = currentVoter.vote ? "Vote Update Karein" : "Vote Confirm Karein";
+  renderBallot();
+  showScreen("vote");
+}
+
+async function castVote(){
+  if(!selectedCandidateId){
+    alert("Pehle ek candidate chunein.");
+    return;
+  }
+  currentVoter.vote = selectedCandidateId;
+  currentVoter.votedAt = new Date().toISOString();
+  const idx = votersCache.findIndex(v => v.mobile === currentVoter.mobile);
+  if(idx >= 0) votersCache[idx] = currentVoter;
+  await saveVoters(votersCache);
+  goToConfirmScreen();
+}
+
+function goToConfirmScreen(){
+  const cand = CANDIDATES.find(c => c.id === currentVoter.vote);
+  document.getElementById("confirm-name").textContent = cand ? cand.name : "-";
+  showScreen("confirm");
+  // restart stamp animation
+  const stamp = document.querySelector("#screen-confirm .stamp-mark");
+  stamp.style.animation = "none";
+  void stamp.offsetWidth;
+  stamp.style.animation = null;
+}
+
+function logout(){
+  if(FIREBASE_CONFIGURED && firebase.auth().currentUser){
+    firebase.auth().signOut();
+  }
+  pendingMobile = null;
+  confirmationResult = null;
+  currentVoter = null;
+  selectedCandidateId = null;
+  document.getElementById("inp-mobile").value = "";
+  showScreen("mobile");
+}
+
+// ---- ADMIN ----
+function adminLogin(){
+  const val = document.getElementById("inp-admin-pass").value;
+  const errEl = document.getElementById("admin-err");
+  if(val !== ADMIN_PASSWORD){
+    errEl.textContent = "Galat password.";
+    errEl.classList.remove("hidden");
+    return;
+  }
+  errEl.classList.add("hidden");
+  document.getElementById("inp-admin-pass").value = "";
+  showScreen("admin-panel");
+  refreshAdmin();
+}
+
+async function refreshAdmin(){
+  votersCache = await loadVoters();
+  const total = votersCache.length;
+  const votedCount = votersCache.filter(v => v.vote).length;
+  document.getElementById("stat-registered").textContent = total;
+  document.getElementById("stat-voted").textContent = votedCount;
+  document.getElementById("stat-turnout").textContent = total ? Math.round((votedCount/total)*100) + "%" : "0%";
+
+  const bars = document.getElementById("bar-results");
+  bars.innerHTML = "";
+  CANDIDATES.forEach(c => {
+    const count = votersCache.filter(v => v.vote === c.id).length;
+    const pct = votedCount ? Math.round((count/votedCount)*100) : 0;
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.innerHTML = `
+      <div class="top"><span>${c.symbol} ${c.name}</span><span class="pill">${count} vote${count===1?'':'s'} · ${pct}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;"></div></div>
+    `;
+    bars.appendChild(row);
   });
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  renderTable();
+}
 
-  renderMenu();
+function renderTable(){
+  const q = document.getElementById("search-box").value.trim().toLowerCase();
+  const tbody = document.getElementById("voter-table-body");
+  tbody.innerHTML = "";
+  const filtered = votersCache.filter(v =>
+    !q || v.name.toLowerCase().includes(q) || v.mobile.includes(q)
+  );
+  filtered.forEach((v, i) => {
+    const cand = CANDIDATES.find(c => c.id === v.vote);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${v.name}</td>
+      <td>${v.mobile}</td>
+      <td>${cand ? cand.symbol+" "+cand.name : "<span style='color:#a13d2b;'>Not voted</span>"}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// init
+showScreen("mobile");
 </script>
-
 </body>
 </html>
