@@ -452,10 +452,12 @@ async function sendOtp(){
     showScreen("otp");
   }catch(e){
     console.error(e);
-    let msg = "OTP bhejne me dikkat hui. Dobara try karein.";
+    let msg = "OTP bhejne me dikkat hui: " + (e.code || "") + " — " + (e.message || "");
     if(e.code === "auth/too-many-requests") msg = "Bahut zyada try ho gaye, thodi der baad try karein.";
     if(e.code === "auth/invalid-phone-number") msg = "Mobile number galat lag raha hai.";
     if(e.code === "auth/quota-exceeded") msg = "Aaj ka free SMS quota khatam ho gaya, kal try karein.";
+    if(e.code === "auth/unauthorized-domain") msg = "Yeh domain Firebase me authorized nahi hai (Authentication → Settings → Authorized domains me add karein).";
+    if(e.code === "auth/billing-not-enabled") msg = "Blaze plan enable nahi hai — Firebase console me Usage and billing se upgrade karein.";
     errEl.textContent = msg;
     errEl.classList.remove("hidden");
     if(recaptchaVerifier){ recaptchaVerifier.render().then(id => { if(window.grecaptcha) grecaptcha.reset(id); }); }
